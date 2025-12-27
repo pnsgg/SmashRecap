@@ -20,6 +20,8 @@
 		"@sveltejs/kit": "^2.49.1",
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"@types/node": "^22",
+		"@types/react": "^19.2.7",
+		"@types/react-dom": "^19.2.3",
 		"eslint": "^9.39.1",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.13.1",
@@ -33,6 +35,11 @@
 		"vite": "^7.2.6"
 	},
 	"dependencies": {
-		"gql.tada": "^1.9.0"
+		"@remotion/cli": "^4.0.396",
+		"@remotion/player": "^4.0.396",
+		"gql.tada": "^1.9.0",
+		"react": "^19.2.3",
+		"react-dom": "^19.2.3",
+		"remotion": "^4.0.396"
 	}
 }
