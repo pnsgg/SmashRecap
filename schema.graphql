@@ -4,7 +4,9 @@ the query resolve configuration, or the override value passed through the
 directive as publicCache(cacheAge: INT) argument.
 """
 directive @publicCache(
-  """Optional override for the query-level cacheAge value, in seconds."""
+  """
+  Optional override for the query-level cacheAge value, in seconds.
+  """
   cacheAge: Int
 ) on FIELD
 
@@ -14,147 +16,267 @@ Specify a field to only be included in the response if the user is logged in.
 directive @userData on FIELD
 
 type Query {
-  """Returns user address"""
+  """
+  Returns user address
+  """
   address(userId: ID!, type: String!): Address
   availableWidgets(profileType: String!): [ProfileWidget]
 
-  """Returns a card"""
+  """
+  Returns a card
+  """
   card(externalId: ID): Card
 
-  """Paginated, filterable list of cards"""
+  """
+  Paginated, filterable list of cards
+  """
   cards(query: CardPaginationQuery!): CardConnection
-  contentRows(profileType: String!, profileSlug: String, profileId: ID, page: String): [ProfileContentRow]
+  contentRows(
+    profileType: String!
+    profileSlug: String
+    profileId: ID
+    page: String
+  ): [ProfileContentRow]
 
-  """Returns the authenticated user"""
+  """
+  Returns the authenticated user
+  """
   currentUser: User
 
-  """Returns a Deck"""
+  """
+  Returns a Deck
+  """
   deck(id: ID!): Deck
 
-  """Returns a list of emailCategories"""
+  """
+  Returns a list of emailCategories
+  """
   emailCategories: [EmailCategory]
 
-  """Returns a list of emailTypes"""
+  """
+  Returns a list of emailTypes
+  """
   emailTypes: [EmailType]
 
-  """Returns an entrant given its id"""
+  """
+  Returns an entrant given its id
+  """
   entrant(id: ID!): Entrant
 
-  """Paginated, filterable list of entrants"""
+  """
+  Paginated, filterable list of entrants
+  """
   entrants(query: EntrantPaginationQuery!): EntrantConnection
 
-  """Returns an event given its id or slug"""
+  """
+  Returns an event given its id or slug
+  """
   event(id: ID, slug: String): Event
 
-  """Returns an event check in group given its id"""
+  """
+  Returns an event check in group given its id
+  """
   eventCheckInGroup(id: ID!): EventCheckInGroup
 
-  """Returns a event seed given its id"""
+  """
+  Returns a event seed given its id
+  """
   eventSeed(id: ID): EventSeed
 
-  """Returns a Game given its id"""
+  """
+  Returns a Game given its id
+  """
   game(id: ID!): Game
 
-  """Returns a paginated list of Games"""
+  """
+  Returns a paginated list of Games
+  """
   games(query: PaginatedGamesQuery): GameConnection
 
-  """Get a hub by id or slug"""
+  """
+  Get a hub by id or slug
+  """
   hub(id: ID, slug: String): Hub
 
-  """Paginated, filterable list of hubs"""
+  """
+  Paginated, filterable list of hubs
+  """
   hubs(query: HubPaginationQuery): HubConnection
 
-  """Returns an iteration given an id"""
+  """
+  Returns an iteration given an id
+  """
   iteration(id: ID!): RankingIteration
 
-  """Returns a league given its id or slug"""
+  """
+  Returns a league given its id or slug
+  """
   league(id: ID, slug: String): League
 
-  """Paginated, filterable list of leagues"""
+  """
+  Paginated, filterable list of leagues
+  """
   leagues(query: LeagueQuery!): LeagueConnection
 
-  """Get an application by id"""
+  """
+  Get an application by id
+  """
   oauthApplication(id: ID!): AuthClient
 
-  """List of scopes"""
+  """
+  List of scopes
+  """
   oauthScopes(ids: [ID]): [AuthScope]
 
-  """Returns an array of EntityOptions"""
+  """
+  Returns an array of EntityOptions
+  """
   options(entityType: String!): [Option]
 
-  """Returns a participant given its id"""
+  """
+  Returns a participant given its id
+  """
   participant(id: ID!, isAdmin: Boolean): Participant
 
-  """Returns a phase given its id"""
+  """
+  Returns a phase given its id
+  """
   phase(id: ID): Phase
 
-  """Returns a phase group given its id"""
+  """
+  Returns a phase group given its id
+  """
   phaseGroup(id: ID): PhaseGroup
 
-  """Returns a player given an id"""
+  """
+  Returns a player given an id
+  """
   player(id: ID!): Player
 
-  """Returns a player rank given an id"""
+  """
+  Returns a player rank given an id
+  """
   playerRank(id: ID!): PlayerRank
 
-  """Paginated, filterable list of players"""
+  """
+  Paginated, filterable list of players
+  """
   players(query: PlayerQuery!): PlayerConnection
   profile(profileType: String!, profileSlug: String, profileId: ID): Profile
 
-  """Deprecated"""
-  profileAuthorization(id: ID, type: AuthorizationType, profileType: String, profileId: ID): ProfileAuthorization @deprecated(reason: "Use User.profileAuthorization")
+  """
+  Deprecated
+  """
+  profileAuthorization(
+    id: ID
+    type: AuthorizationType
+    profileType: String
+    profileId: ID
+  ): ProfileAuthorization @deprecated(reason: "Use User.profileAuthorization")
   profileId(profileType: String!, profileSlug: String!): ID
-  profileNav(profileType: String!, profileSlug: String, profileId: ID, isAdmin: Boolean, bustCache: Int): ProfileNav
-  profileTasks(profileType: String!, profileId: ID!, systemIds: [ID], activeOnly: Boolean, showDismissed: Boolean, minPriority: Int): [Task]
+  profileNav(
+    profileType: String!
+    profileSlug: String
+    profileId: ID
+    isAdmin: Boolean
+    bustCache: Int
+  ): ProfileNav
+  profileTasks(
+    profileType: String!
+    profileId: ID!
+    systemIds: [ID]
+    activeOnly: Boolean
+    showDismissed: Boolean
+    minPriority: Int
+  ): [Task]
   profileTranslations(profileType: String!, profileId: Int!): JSON
-  profileWidgetPageLayout(profileType: String!, profileId: Int!, page: String!): ProfileWidgetPageLayout
+  profileWidgetPageLayout(
+    profileType: String!
+    profileId: Int!
+    page: String!
+  ): ProfileWidgetPageLayout
 
-  """Returns a list of regions, sorted by country"""
+  """
+  Returns a list of regions, sorted by country
+  """
   regions: [Region]
 
-  """Paginated, filterable list of ScheduleItems"""
-  schedule(profileType: String!, profileId: ID, profileSlug: String, query: ScheduleQuery): LegacyScheduleItemConnection
+  """
+  Paginated, filterable list of ScheduleItems
+  """
+  schedule(
+    profileType: String!
+    profileId: ID
+    profileSlug: String
+    query: ScheduleQuery
+  ): LegacyScheduleItemConnection
 
-  """Returns a phase seed given its id"""
+  """
+  Returns a phase seed given its id
+  """
   seed(id: ID): Seed
 
-  """Returns an array of EntityOptionSelections"""
+  """
+  Returns an array of EntityOptionSelections
+  """
   selections(userId: ID!, entityType: String!): [Selection]
 
-  """Returns a series given an id or slug"""
+  """
+  Returns a series given an id or slug
+  """
   series(id: ID, slug: String): RankingSeries
 
-  """Returns a set given its id"""
+  """
+  Returns a set given its id
+  """
   set(id: ID!): Set
 
-  """Returns a set slot given its id"""
+  """
+  Returns a set slot given its id
+  """
   setSlot(id: ID!): SetSlot
 
-  """Returns a paginated list of Sets"""
+  """
+  Returns a paginated list of Sets
+  """
   sets(
     page: Int
     perPage: Int
 
-    """How to sort these sets"""
+    """
+    How to sort these sets
+    """
     sortType: SetSortType
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection
 
-  """A shop entity"""
+  """
+  A shop entity
+  """
   shop(id: ID, slug: String): Shop
 
-  """A shop level entity"""
+  """
+  A shop level entity
+  """
   shopLevel(id: ID): ShopLevel
 
-  """A shop product"""
+  """
+  A shop product
+  """
   shopProduct(id: ID): ShopProduct
 
-  """The availability state of a short slug"""
+  """
+  The availability state of a short slug
+  """
   slugAvailability(tournamentId: ID!, shortSlug: String): SlugAvailability
 
-  """Returns a standing given a standingId"""
+  """
+  Returns a standing given a standingId
+  """
   standing(id: ID!): Standing
 
   """
@@ -162,44 +284,79 @@ type Query {
   """
   standingGroup(containerType: String, containerId: ID, id: ID): StandingGroup
 
-  """Returns an station given its id"""
+  """
+  Returns an station given its id
+  """
   station(id: ID!): Stations
 
-  """Returns the CSV column definitions of the status update API call"""
+  """
+  Returns the CSV column definitions of the status update API call
+  """
   statusUpdateCsvConfig: CSVConfig
 
-  """Returns an stream given its id"""
+  """
+  Returns an stream given its id
+  """
   stream(id: ID!): Streams
 
-  """Returns all the stream queues for a given tournament"""
+  """
+  Returns all the stream queues for a given tournament
+  """
   streamQueue(tournamentId: ID!, includePlayerStreams: Boolean): [StreamQueue]
 
-  """Returns a task for the current user"""
-  task(id: ID!): Task @deprecated(reason: "Not yet implemented to fetch by ID. Use \"userTasks\" resolvers on specific domain objects instead for now")
+  """
+  Returns a task for the current user
+  """
+  task(id: ID!): Task
+    @deprecated(
+      reason: "Not yet implemented to fetch by ID. Use \"userTasks\" resolvers on specific domain objects instead for now"
+    )
 
-  """Returns a team given its id"""
+  """
+  Returns a team given its id
+  """
   team(id: ID, slug: String, inviteCode: String): Team
 
-  """Paginated, filterable list of teams"""
+  """
+  Paginated, filterable list of teams
+  """
   teams(query: TeamsPaginationQuery!): TeamConnection
 
-  """Returns a team given its id"""
+  """
+  Returns a team given its id
+  """
   test(id: ID!): Test
 
-  """Returns the top games for the past 30 days by number of registrants"""
+  """
+  Returns the top games for the past 30 days by number of registrants
+  """
   topGames: [Videogame]
-  topLevelNav(profileType: String!, profileSlug: String, profileId: ID, isAdmin: Boolean, bustCache: Int): TopLevelNav
+  topLevelNav(
+    profileType: String!
+    profileSlug: String
+    profileId: ID
+    isAdmin: Boolean
+    bustCache: Int
+  ): TopLevelNav
 
-  """Returns a tournament given its id or slug"""
+  """
+  Returns a tournament given its id or slug
+  """
   tournament(id: ID, slug: String): Tournament
 
-  """Paginated, filterable list of tournaments"""
+  """
+  Paginated, filterable list of tournaments
+  """
   tournaments(query: TournamentQuery!): TournamentConnection
 
-  """Returns the CSV column definitions of the tracking update API call"""
+  """
+  Returns the CSV column definitions of the tracking update API call
+  """
   trackingUpdateCsvConfig: CSVConfig
 
-  """Returns an unclaimed user given a user hash"""
+  """
+  Returns an unclaimed user given a user hash
+  """
   unclaimedUser(hash: String!, tournamentId: ID): JSON
 
   """
@@ -211,7 +368,9 @@ type Query {
     """
     limit: Int
 
-    """Filter upcoming Events by Tournament"""
+    """
+    Filter upcoming Events by Tournament
+    """
     tournamentId: ID
 
     """
@@ -226,23 +385,35 @@ type Query {
     userIsOwner: Boolean = true
   ): [Event]
 
-  """Returns a user given a user slug of the form user/abc123, or id"""
+  """
+  Returns a user given a user slug of the form user/abc123, or id
+  """
   user(id: ID, slug: String): User
 
-  """Returns an array of EntityOptionValues"""
+  """
+  Returns an array of EntityOptionValues
+  """
   values(entityType: String!): [Value]
 
-  """Returns a videogame given its id"""
+  """
+  Returns a videogame given its id
+  """
   videogame(id: ID, slug: String): Videogame
 
-  """Returns paginated list of videogames matching the search criteria."""
+  """
+  Returns paginated list of videogames matching the search criteria.
+  """
   videogames(query: VideogameQuery!): VideogameConnection
 
-  """Returns a list of votes for a user"""
+  """
+  Returns a list of votes for a user
+  """
   votes(userId: ID!): [Votes]
 }
 
-"""A user's address"""
+"""
+A user's address
+"""
 type Address {
   id: ID
   address: String
@@ -269,9 +440,13 @@ Represents a Unix Timestamp. Supports up to 53 bit int values,
 """
 scalar Timestamp
 
-"""specification for a widget that can be placed on profile pages"""
+"""
+specification for a widget that can be placed on profile pages
+"""
 type ProfileWidget {
-  """All of the fields for the widget configuration form"""
+  """
+  All of the fields for the widget configuration form
+  """
   configGqlFields: [String]
   id: String
   defaultConfig: JSON
@@ -289,31 +464,47 @@ The `JSON` scalar type represents JSON values as specified by
 """
 scalar JSON
 
-"""Cards for a deck of a participant/entrant"""
+"""
+Cards for a deck of a participant/entrant
+"""
 type Card {
   id: ID
 
-  """The character id associated with this card."""
+  """
+  The character id associated with this card.
+  """
   characterId: Int
 
-  """The description of the card."""
+  """
+  The description of the card.
+  """
   description: String
 
-  """External ID from external source associated with this card."""
+  """
+  External ID from external source associated with this card.
+  """
   externalId: String
 
-  """External API from which the card is derived from."""
+  """
+  External API from which the card is derived from.
+  """
   externalSource: String
   images(type: String): [Image]
 
-  """Additional card information, such as type, cost, rarity, etc."""
+  """
+  Additional card information, such as type, cost, rarity, etc.
+  """
   metadata: JSON
 
-  """The name of the card."""
+  """
+  The name of the card.
+  """
   name: String
 }
 
-"""An image"""
+"""
+An image
+"""
 type Image {
   id: ID
   entity: String
@@ -330,7 +521,9 @@ type Image {
 input CardPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: CardPageFilter
@@ -358,7 +551,9 @@ type PageInfo {
   filter: JSON
 }
 
-"""Used to build the content sections of a profile"""
+"""
+Used to build the content sections of a profile
+"""
 type ProfileContentRow {
   id: ID
   contentColumns: [ProfileContentColumn]
@@ -368,34 +563,50 @@ type ProfileContentRow {
   rowNum: Int
 }
 
-"""Used to build the content section columns of a profile"""
+"""
+Used to build the content section columns of a profile
+"""
 interface ProfileContentColumn {
   colNum: Int
   contentType: String
 }
 
-"""A user"""
+"""
+A user
+"""
 type User {
   id: ID
   address: JSON @deprecated(reason: "Use User.location")
 
-  """Admin only fields that the user can toggle publishing on"""
+  """
+  Admin only fields that the user can toggle publishing on
+  """
   adminFields: UserAdminFields
 
-  """OAuth Clients"""
+  """
+  OAuth Clients
+  """
   authClients: [AuthClient]
 
-  """Access tokens for our api"""
+  """
+  Access tokens for our api
+  """
   authTokens(applicationType: AuthTokenApplicationType!): [AuthToken]
 
-  """Authorizations to external services (i.e. Twitch, Twitter)"""
+  """
+  Authorizations to external services (i.e. Twitch, Twitter)
+  """
   authorizations(types: [SocialConnectionType]): [ProfileAuthorization]
   bio: String
 
-  """Public facing user birthday that respects user publishing settings"""
+  """
+  Public facing user birthday that respects user publishing settings
+  """
   birthday: String
 
-  """Is this user allowed to set a fee for online events?"""
+  """
+  Is this user allowed to set a fee for online events?
+  """
   canUseOnlineFee: Boolean
   cookiesAccepted: Boolean
   createdAt: Timestamp
@@ -408,40 +619,60 @@ type User {
   dob: String
   email: String
 
-  """Formatted selections for email settings"""
+  """
+  Formatted selections for email settings
+  """
   emailSelections: JSON
 
-  """Events this user has competed in"""
+  """
+  Events this user has competed in
+  """
   events(query: UserEventsPaginationQuery): EventConnection
   genderPronoun: String
 
-  """Flag for if a user has already claimed a vote against an event today"""
+  """
+  Flag for if a user has already claimed a vote against an event today
+  """
   hasClaimedDailyVotes(tournamentId: ID): Boolean
 
-  """Is user linked to an external provider (MSA)"""
+  """
+  Is user linked to an external provider (MSA)
+  """
   hasExternal: Boolean
   hasPermission(permission: String, entityType: String, entityId: ID): Boolean
   images(type: String): [Image]
 
-  """Is user following a given profile"""
+  """
+  Is user following a given profile
+  """
   isFollowingProfile(profileType: String, profileId: ID): Boolean
   language: String
 
-  """Leagues this user has competed in"""
+  """
+  Leagues this user has competed in
+  """
   leagues(query: UserLeaguesPaginationQuery): LeagueConnection
 
-  """Public location info for this user"""
+  """
+  Public location info for this user
+  """
   location: Address
 
-  """Public facing user location that respects user publishing settings"""
+  """
+  Public facing user location that respects user publishing settings
+  """
   locationDisplay: String
 
-  """Public facing user name that respects user publishing settings"""
+  """
+  Public facing user name that respects user publishing settings
+  """
   name: String
   nameFirst: String @deprecated(reason: "Use User.adminFields.nameFirst")
   nameLast: String @deprecated(reason: "Use User.adminFields.nameLast")
 
-  """player for user"""
+  """
+  player for user
+  """
   player: Player
   playerId: Int @deprecated(reason: "Use User.player")
 
@@ -452,30 +683,44 @@ type User {
   publishingSettings: UserPublishingSettings
   registrationState: Int
 
-  """List of reports against the user"""
+  """
+  List of reports against the user
+  """
   reports: [UserPunishment]
 
-  """Active requested email address change, if any"""
+  """
+  Active requested email address change, if any
+  """
   requestedEmail: String
   requests(
-    """Requests in this direction"""
+    """
+    Requests in this direction
+    """
     direction: RequestDirection!
     query: UserRequestQuery
   ): ProfileRequestConnection
   slug: String
   teams(query: TeamPaginationQuery): TeamConnection
 
-  """Tournaments this user is organizing or competing in"""
+  """
+  Tournaments this user is organizing or competing in
+  """
   tournaments(query: UserTournamentsPaginationQuery): TournamentConnection
 
-  """Url for public user profile"""
+  """
+  Url for public user profile
+  """
   url: String
 
-  """User votes for this user"""
+  """
+  User votes for this user
+  """
   votes: [Votes]
 }
 
-"""Raw values for fields that the user can toggle publishing on"""
+"""
+Raw values for fields that the user can toggle publishing on
+"""
 type UserAdminFields {
   birthday: String
   location: Address
@@ -488,47 +733,66 @@ type UserAdminFields {
   profileAuthorization(type: AuthorizationType!): ProfileAuthorization
 }
 
-"""Represents the name of the third-party service (e.g Twitter) for OAuth"""
+"""
+Represents the name of the third-party service (e.g Twitter) for OAuth
+"""
 enum AuthorizationType {
-  """"""
+  """
+  """
   TWITTER
 
-  """"""
+  """
+  """
   TWITCH
 
-  """"""
+  """
+  """
   STEAM
 
-  """"""
+  """
+  """
   DISCORD
 
-  """"""
+  """
+  """
   XBOX
 
-  """"""
+  """
+  """
   EPIC
 
-  """"""
+  """
+  """
   BATTLENET
 
-  """"""
+  """
+  """
   RIOT
 
-  """"""
+  """
+  """
   MIXER
 }
 
-"""An OAuth ProfileAuthorization object"""
+"""
+An OAuth ProfileAuthorization object
+"""
 type ProfileAuthorization {
   id: ID
 
-  """The access token for this auth"""
+  """
+  The access token for this auth
+  """
   accessToken: String
 
-  """Unix timestamp for when the token expires"""
+  """
+  Unix timestamp for when the token expires
+  """
   expiresAt: Timestamp
 
-  """The id given by the external service"""
+  """
+  The id given by the external service
+  """
   externalId: String
 
   """
@@ -537,7 +801,9 @@ type ProfileAuthorization {
   externalUsername: String
   isValid: Boolean
 
-  """Service-specific metadata"""
+  """
+  Service-specific metadata
+  """
   metadata: JSON
   stream: Stream
 
@@ -548,17 +814,25 @@ type ProfileAuthorization {
   url: String
 }
 
-"""A Stream object"""
+"""
+A Stream object
+"""
 type Stream {
   id: ID
 
-  """The id given by the external stream service i.e. twitch channelId"""
+  """
+  The id given by the external stream service i.e. twitch channelId
+  """
   externalStreamId: String
 
-  """Whether the stream is currently live. May be slightly delayed."""
+  """
+  Whether the stream is currently live. May be slightly delayed.
+  """
   isOnline: Boolean
 
-  """The name of the stream"""
+  """
+  The name of the stream
+  """
   name: String
 
   """
@@ -567,19 +841,26 @@ type Stream {
   type: StreamType
 }
 
-"""Represents the type of stream service"""
+"""
+Represents the type of stream service
+"""
 enum StreamType {
-  """"""
+  """
+  """
   TWITCH
 
-  """"""
+  """
+  """
   MIXER
 
-  """"""
+  """
+  """
   YOUTUBE
 }
 
-"""An auth client"""
+"""
+An auth client
+"""
 type AuthClient {
   id: ID
   appUrl: String
@@ -595,14 +876,18 @@ type AuthClient {
 Represents what type of application is generating the token e.g. personal or third party
 """
 enum AuthTokenApplicationType {
-  """"""
+  """
+  """
   PERSONAL
 
-  """"""
+  """
+  """
   THIRD_PARTY
 }
 
-"""An auth token"""
+"""
+An auth token
+"""
 type AuthToken {
   id: ID
   apiVersion: String
@@ -616,35 +901,49 @@ type AuthToken {
   user: User
 }
 
-"""A role"""
+"""
+A role
+"""
 type Role {
   id: ID
   entityId: Int
 
-  """Name of the entity associated with this role"""
+  """
+  Name of the entity associated with this role
+  """
   entityName: String
   entityType: String
   roleName: String
 
-  """Status of if this role was accepted/rejected/pending/etc"""
+  """
+  Status of if this role was accepted/rejected/pending/etc
+  """
   status: RequestStatus
 
-  """User associated with this role"""
+  """
+  User associated with this role
+  """
   user: User
 }
 
-"""Status of a request"""
+"""
+Status of a request
+"""
 enum RequestStatus {
-  """"""
+  """
+  """
   PENDING
 
-  """"""
+  """
+  """
   ACCEPTED
 
-  """"""
+  """
+  """
   REJECTED
 
-  """"""
+  """
+  """
   HIDDEN
 }
 
@@ -652,26 +951,33 @@ enum RequestStatus {
 Represents the name of the third-party social service (e.g Twitter) for OAuth
 """
 enum SocialConnectionType {
-  """"""
+  """
+  """
   TWITTER
 
-  """"""
+  """
+  """
   TWITCH
 
-  """"""
+  """
+  """
   DISCORD
 
-  """"""
+  """
+  """
   MIXER
 
-  """"""
+  """
+  """
   XBOX
 }
 
 input UserEventsPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: UserEventsPaginationFilter
@@ -702,29 +1008,45 @@ type EventConnection {
   nodes: [Event]
 }
 
-"""An event in a tournament"""
+"""
+An event in a tournament
+"""
 type Event {
   id: ID
 
-  """true if brackets are published for this event"""
+  """
+  true if brackets are published for this event
+  """
   bracketsPublished: Boolean
 
-  """Can entrants edit teams in this event"""
+  """
+  Can entrants edit teams in this event
+  """
   canEditTeams: Boolean
 
-  """How long before the event start will the check-in end (in seconds)"""
+  """
+  How long before the event start will the check-in end (in seconds)
+  """
   checkInBuffer: Int
 
-  """How long the event check-in will last (in seconds)"""
+  """
+  How long the event check-in will last (in seconds)
+  """
   checkInDuration: Int
 
-  """Whether check-in is enabled for this event"""
+  """
+  Whether check-in is enabled for this event
+  """
   checkInEnabled: Boolean
   checkInGroupFirebasePath: String
 
-  """Circuit event links for this event"""
+  """
+  Circuit event links for this event
+  """
   circuitEventLinks(
-    """League id to filter event links on"""
+    """
+    League id to filter event links on
+    """
     leagueId: ID
   ): [CircuitEventLink]
 
@@ -733,67 +1055,107 @@ type Event {
   """
   competitionTier: Int
 
-  """When the event was created (unix timestamp)"""
+  """
+  When the event was created (unix timestamp)
+  """
   createdAt: Timestamp
 
-  """Last date attendees are able to create teams for team events"""
+  """
+  Last date attendees are able to create teams for team events
+  """
   deckSubmissionDeadline: Timestamp
 
-  """true if hasDecks and are published for this event"""
+  """
+  true if hasDecks and are published for this event
+  """
   decksPublished: Boolean
 
-  """Maximum number of participants each Entrant can have"""
+  """
+  Maximum number of participants each Entrant can have
+  """
   entrantSizeMax: Int @deprecated(reason: "Migrate to teamRosterSize")
 
-  """Minimum number of participants each Entrant can have"""
+  """
+  Minimum number of participants each Entrant can have
+  """
   entrantSizeMin: Int @deprecated(reason: "Migrate to teamRosterSize")
 
-  """The entrants that belong to an event, paginated by filter criteria"""
+  """
+  The entrants that belong to an event, paginated by filter criteria
+  """
   entrants(query: EventEntrantPageQuery): EntrantConnection
 
-  """How much it costs to enter this event"""
+  """
+  How much it costs to enter this event
+  """
   entryFee: Float
 
-  """event check in groups linked to the event"""
+  """
+  event check in groups linked to the event
+  """
   eventCheckInGroups: [EventCheckInGroup]
 
-  """Number of event seeds that have an error"""
+  """
+  Number of event seeds that have an error
+  """
   eventSeedErrorCount: Int
 
-  """Event seeds in the event"""
+  """
+  Event seeds in the event
+  """
   eventSeeds(query: EventSeedPageQuery): EventSeedConnection
   firebasePath: String
 
-  """When does the first round of the event start"""
+  """
+  When does the first round of the event start
+  """
   firstRoundTime: Timestamp
 
-  """Whether the event has decks"""
+  """
+  Whether the event has decks
+  """
   hasDecks: Boolean
 
-  """Whether or not this event has a Race bracket."""
+  """
+  Whether or not this event has a Race bracket.
+  """
   hasRace: Boolean
 
-  """Are player tasks enabled for this event"""
+  """
+  Are player tasks enabled for this event
+  """
   hasTasks: Boolean
   images(type: String): [Image]
 
-  """Whether or not the Event has been completed"""
+  """
+  Whether or not the Event has been completed
+  """
   isCompleted: Boolean
 
-  """Whether or not this is an FFA Event."""
+  """
+  Whether or not this is an FFA Event.
+  """
   isFFA: Boolean
 
-  """Whether the event is an online event or not"""
+  """
+  Whether the event is an online event or not
+  """
   isOnline: Boolean
   isRegistrationOpen: Boolean
 
-  """Whether or not this event is a single bracket event."""
+  """
+  Whether or not this event is a single bracket event.
+  """
   isSingleBracket: Boolean
 
-  """Indicates whether this event is a teams event."""
+  """
+  Indicates whether this event is a teams event.
+  """
   isTeams: Boolean
 
-  """Is this user registered for this event"""
+  """
+  Is this user registered for this event
+  """
   isUserRegistered(
     """
     User to get registration info for. Defaults to currently logged in user.
@@ -802,77 +1164,125 @@ type Event {
   ): Boolean
   league: League
 
-  """Max points this event is worth for a given league"""
-  leagueMaxPoints(leagueId: ID): Int @deprecated(reason: "Uses old LeagueBL::getMaxPointsByEvents function")
+  """
+  Max points this event is worth for a given league
+  """
+  leagueMaxPoints(leagueId: ID): Int
+    @deprecated(reason: "Uses old LeagueBL::getMaxPointsByEvents function")
 
-  """Request tier that this event is in for a given league"""
-  leagueTier(leagueId: ID): EventTier @deprecated(reason: "Uses old LeagueBL::getTiersForEvents function")
+  """
+  Request tier that this event is in for a given league
+  """
+  leagueTier(leagueId: ID): EventTier
+    @deprecated(reason: "Uses old LeagueBL::getTiersForEvents function")
 
-  """List of all leagues that this event is attached to"""
+  """
+  List of all leagues that this event is attached to
+  """
   leagues: [League]
 
-  """Relevant visible links for this event."""
+  """
+  Relevant visible links for this event.
+  """
   links: [ProfileNavFeature]
 
-  """Markdown field for match rules/instructions"""
+  """
+  Markdown field for match rules/instructions
+  """
   matchRulesMarkdown: String
 
-  """Title of event set by organizer"""
+  """
+  Title of event set by organizer
+  """
   name: String
 
-  """The Networks on which the Videogame will be played"""
+  """
+  The Networks on which the Videogame will be played
+  """
   networks: [Network]
 
-  """The earliest upcoming phase"""
+  """
+  The earliest upcoming phase
+  """
   nextUpcomingPhase: Phase
 
-  """Gets the number of entrants in this event"""
+  """
+  Gets the number of entrants in this event
+  """
   numEntrants: Int
 
-  """The phases that belong to an event, paginated by filter criteria"""
+  """
+  The phases that belong to an event, paginated by filter criteria
+  """
   paginatedPhaseGroups(query: EventPhaseGroupPageQuery): PhaseGroupConnection
 
-  """The phases that belong to an event, paginated by filter criteria"""
+  """
+  The phases that belong to an event, paginated by filter criteria
+  """
   paginatedPhases(query: EventPhasePageQuery): PhaseConnection
 
-  """Paginated sets on this event"""
+  """
+  Paginated sets on this event
+  """
   paginatedSets(
     page: Int
     perPage: Int
 
-    """How to sort these sets"""
+    """
+    How to sort these sets
+    """
     sortType: SetSortType
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection
 
-  """The phase groups that belong to an event."""
+  """
+  The phase groups that belong to an event.
+  """
   phaseGroups: [PhaseGroup]
 
-  """The phases that belong to an event."""
+  """
+  The phases that belong to an event.
+  """
   phases(
-    """Filter phases by state. If not specified will default to all phases"""
+    """
+    Filter phases by state. If not specified will default to all phases
+    """
     state: ActivityState
 
-    """Optionally only return results for this phase"""
+    """
+    Optionally only return results for this phase
+    """
     phaseId: ID
   ): [Phase]
 
-  """The Platforms on which the Event's Videogame will be played"""
+  """
+  The Platforms on which the Event's Videogame will be played
+  """
   platforms: [Platform]
 
-  """TO settings for prizing"""
+  """
+  TO settings for prizing
+  """
   prizingInfo: JSON
 
-  """Shop products given out as prizes"""
+  """
+  Shop products given out as prizes
+  """
   prizingProducts: [ShopProduct]
   publishing: JSON
 
-  """When does registration closed for this Event?"""
+  """
+  When does registration closed for this Event?
+  """
   registrationDeadline: Timestamp
 
-  """RegistrationOptions for this event."""
+  """
+  RegistrationOptions for this event.
+  """
   registrationOptions(
     """
     Filter RegistrationOptions by fieldType. Omitting this argument will return all matched RegistrationOptions.
@@ -880,7 +1290,9 @@ type Event {
     optionType: String
   ): [RegistrationOption]
   requests(
-    """Requests in this direction"""
+    """
+    Requests in this direction
+    """
     direction: RequestDirection!
     query: EventRequestQuery
   ): ProfileRequestConnection
@@ -895,48 +1307,74 @@ type Event {
   """
   restrictions: [EntityRestriction]
 
-  """Markdown field for event rules/instructions"""
+  """
+  Markdown field for event rules/instructions
+  """
   rulesMarkdown: String
 
-  """The ruleset for this event"""
+  """
+  The ruleset for this event
+  """
   ruleset: Ruleset
 
-  """Id of the event ruleset"""
+  """
+  Id of the event ruleset
+  """
   rulesetId: Int
 
-  """Settings pulled from the event ruleset, if one exists"""
+  """
+  Settings pulled from the event ruleset, if one exists
+  """
   rulesetSettings: JSON @deprecated(reason: "Use ruleset")
 
-  """true if seeding is published for this event"""
+  """
+  true if seeding is published for this event
+  """
   seedingPublished: Boolean
   seeds(query: SeedPaginationQuery!): SeedConnection
 
-  """Returns whether or not self-reporting is enabled for this event"""
+  """
+  Returns whether or not self-reporting is enabled for this event
+  """
   selfReportingEnabled: Boolean
 
-  """Paginated sets for this Event"""
+  """
+  Paginated sets for this Event
+  """
   sets(
     page: Int
     perPage: Int
 
-    """How to sort these sets"""
+    """
+    How to sort these sets
+    """
     sortType: SetSortType
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection
   slug: String
 
-  """Paginated list of standings"""
+  """
+  Paginated list of standings
+  """
   standings(query: StandingPaginationQuery!): StandingConnection
 
-  """When does this event start?"""
+  """
+  When does this event start?
+  """
   startAt: Timestamp
 
-  """The state of the Event."""
+  """
+  The state of the Event.
+  """
   state: ActivityState
 
-  """Paginated stations on this event"""
+  """
+  Paginated stations on this event
+  """
   stations(query: StationFilter): StationsConnection
 
   """
@@ -944,7 +1382,9 @@ type Event {
   """
   subleagues(leagueId: ID): [Tournament]
 
-  """Last date attendees are able to create teams for team events"""
+  """
+  Last date attendees are able to create teams for team events
+  """
   teamManagementDeadline: Timestamp
 
   """
@@ -952,7 +1392,9 @@ type Event {
   """
   teamNameAllowed: Boolean
 
-  """Team roster size requirements"""
+  """
+  Team roster size requirements
+  """
   teamRosterSize: TeamRosterSize
 
   """
@@ -976,12 +1418,18 @@ type Event {
   """
   type: Int
 
-  """When the event was last modified (unix timestamp)"""
+  """
+  When the event was last modified (unix timestamp)
+  """
   updatedAt: Timestamp
 
-  """URL for the Event. Optionally, build URL for resource under the Event"""
+  """
+  URL for the Event. Optionally, build URL for resource under the Event
+  """
   url(
-    """Event tab to build URL for"""
+    """
+    Event tab to build URL for
+    """
     tab: String
 
     """
@@ -990,12 +1438,18 @@ type Event {
     relative: Boolean = true
   ): String
 
-  """Whether the event uses the new EventSeeds for seeding"""
+  """
+  Whether the event uses the new EventSeeds for seeding
+  """
   useEventSeeds: Boolean
 
-  """The entrant (if applicable) for a given user in this event"""
+  """
+  The entrant (if applicable) for a given user in this event
+  """
   userEntrant(
-    """User to get entrant for. Defaults to currently logged in user."""
+    """
+    User to get entrant for. Defaults to currently logged in user.
+    """
     userId: ID
   ): Entrant
 
@@ -1004,119 +1458,192 @@ type Event {
   """
   userNextMatchTime: Timestamp
 
-  """Return list of Sets that the current user is participating in"""
+  """
+  Return list of Sets that the current user is participating in
+  """
   userSets(
-    """User to get sets for. Defaults to currently logged in user."""
+    """
+    User to get sets for. Defaults to currently logged in user.
+    """
     userId: ID
     sortType: SetSortType = MAGIC
     limit: Int = null
   ): [Set]
 
-  """The current user's tasks for this event"""
-  userTasks(allowFallbackTasks: Boolean = false, abortIfNotActive: Boolean = false, activeOnly: Boolean = true, excludeSystemIds: [ID] = null, limit: Int = null, shouldAggregate: Boolean = true, ctaMode: TaskCTAMode = STANDARD, viewFormat: TaskViewFormat = FULL_TASK): [Task]
+  """
+  The current user's tasks for this event
+  """
+  userTasks(
+    allowFallbackTasks: Boolean = false
+    abortIfNotActive: Boolean = false
+    activeOnly: Boolean = true
+    excludeSystemIds: [ID] = null
+    limit: Int = null
+    shouldAggregate: Boolean = true
+    ctaMode: TaskCTAMode = STANDARD
+    viewFormat: TaskViewFormat = FULL_TASK
+  ): [Task]
   videogame: Videogame
 
-  """Id of the videogame associated with this event"""
+  """
+  Id of the videogame associated with this event
+  """
   videogameId: Int @deprecated(reason: "Use videogame")
 
-  """The waves being used by the event"""
+  """
+  The waves being used by the event
+  """
   waves(
-    """Waves filtered by phaseId, returns all if not set."""
+    """
+    Waves filtered by phaseId, returns all if not set.
+    """
     phaseId: ID
   ): [Wave]
 
-  """The entrant that won this event"""
+  """
+  The entrant that won this event
+  """
   winnerEntrant: Entrant
 }
 
-"""Links an event to a circuit, and holds data about the relation"""
+"""
+Links an event to a circuit, and holds data about the relation
+"""
 type CircuitEventLink {
   id: ID
 
-  """Point mapping group"""
+  """
+  Point mapping group
+  """
   pointMappingGroup: PointMappingGroup
 
-  """Circuit Tier for this Event"""
+  """
+  Circuit Tier for this Event
+  """
   tier: EventTier
   unpublished: Boolean
 }
 
-"""A group of point mappings for a particular standing group"""
+"""
+A group of point mappings for a particular standing group
+"""
 type PointMappingGroup {
   id: ID
   name: String
 
-  """Number of events linked to this group"""
+  """
+  Number of events linked to this group
+  """
   numEvents: Int
 
-  """Point mappings for this group"""
+  """
+  Point mappings for this group
+  """
   pointMappings: [PointMapping]
 }
 
-"""Defines the mapping of a field, or stat, to Standing Points"""
+"""
+Defines the mapping of a field, or stat, to Standing Points
+"""
 type PointMapping {
   id: ID
   config: JSON
   field: String
 
-  """Range DSL string of point mapping's config"""
+  """
+  Range DSL string of point mapping's config
+  """
   rangeDSL: String
   type: String
 }
 
-"""Used for league application tiers"""
+"""
+Used for league application tiers
+"""
 type EventTier {
   id: ID
 
-  """Additional criteria of tier."""
+  """
+  Additional criteria of tier.
+  """
   additionalCriteria: Criteria
   description: String
   endAt: Timestamp
 
-  """Name of this tier"""
+  """
+  Name of this tier
+  """
   name: String
 
-  """Point mapping group"""
+  """
+  Point mapping group
+  """
   pointMappingGroup: PointMappingGroup
   startAt: Timestamp
 }
 
-"""Fields used in a Request Tier's additionalCriteria field"""
+"""
+Fields used in a Request Tier's additionalCriteria field
+"""
 type Criteria {
-  """End date for tier"""
+  """
+  End date for tier
+  """
   endAt: Timestamp
 
-  """Max entrant count of the tier"""
+  """
+  Max entrant count of the tier
+  """
   entrantCountMax: Int
 
-  """Min entrant count of the tier"""
+  """
+  Min entrant count of the tier
+  """
   entrantCountMin: Int
 
-  """Tier location filter on Latitude, Longitude, and Radius"""
+  """
+  Tier location filter on Latitude, Longitude, and Radius
+  """
   location: JSON
 
-  """Tier location filter on City"""
+  """
+  Tier location filter on City
+  """
   locationCity: String
 
-  """Tier location filter on Country"""
+  """
+  Tier location filter on Country
+  """
   locationCountry: String
 
-  """Tier location filter on State"""
+  """
+  Tier location filter on State
+  """
   locationState: String
 
-  """Filter on online, offline, or neither"""
+  """
+  Filter on online, offline, or neither
+  """
   online: Boolean
 
-  """IDs of Platform"""
+  """
+  IDs of Platform
+  """
   platformIds: [ID]
 
-  """Start date for tier"""
+  """
+  Start date for tier
+  """
   startAt: Timestamp
 
-  """Tier filter on event type"""
+  """
+  Tier filter on event type
+  """
   type: [Int]
 
-  """List of VideoGame ids"""
+  """
+  List of VideoGame ids
+  """
   videogameId: [ID]
 }
 
@@ -1136,11 +1663,15 @@ type EntrantConnection {
   nodes: [Entrant]
 }
 
-"""An entrant in an event"""
+"""
+An entrant in an event
+"""
 type Entrant {
   id: ID
 
-  """An entrant's first round seed associated with their event check-in"""
+  """
+  An entrant's first round seed associated with their event check-in
+  """
   checkInSeed: Seed
   decks: [Deck]
   event: Event
@@ -1153,13 +1684,17 @@ type Entrant {
   expandedName: EntrantExpandedName
   hasIncompleteDecks: Boolean
 
-  """Entrant's seed number in the first phase of the event."""
+  """
+  Entrant's seed number in the first phase of the event.
+  """
   initialSeedNum: Int
   isDisqualified: Boolean
   lastMatches: [Set]
   lostTo: JSON
 
-  """Gamertags of all members of entrant (only relevant for teams)"""
+  """
+  Gamertags of all members of entrant (only relevant for teams)
+  """
   memberNames: [String]
 
   """
@@ -1167,29 +1702,43 @@ type Entrant {
   """
   name: String
 
-  """Computed display name for Participant(s) from Network IDs"""
+  """
+  Computed display name for Participant(s) from Network IDs
+  """
   networkIdDisplayName: String
 
-  """Paginated sets for this entrant"""
+  """
+  Paginated sets for this entrant
+  """
   paginatedSets(
     page: Int
     perPage: Int
 
-    """How to sort these sets"""
+    """
+    How to sort these sets
+    """
     sortType: SetSortType
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection
   participants: [Participant]
 
-  """The phase groups this entrant is in"""
+  """
+  The phase groups this entrant is in
+  """
   phaseGroups: [PhaseGroup]
 
-  """Player tied to the entrant. This does not work for teams."""
+  """
+  Player tied to the entrant. This does not work for teams.
+  """
   players: [Player]
 
-  """The record of the entrant in the event"""
+  """
+  The record of the entrant in the event
+  """
   record: JSON
   seed(phaseId: ID, phaseGroupId: ID): Seed
   seeds: [Seed]
@@ -1201,17 +1750,26 @@ type Entrant {
   Standing for this entrant given an event. All entrants queried must be in the same event (for now).
   """
   standing: Standing
-  stream: Streams @deprecated(reason: "DEPRECATED. Use streams instead, which supports multiple stream types and teams.")
+  stream: Streams
+    @deprecated(
+      reason: "DEPRECATED. Use streams instead, which supports multiple stream types and teams."
+    )
   streams: [Streams]
 
-  """Team linked to this entrant, if one exists"""
+  """
+  Team linked to this entrant, if one exists
+  """
   team: Team
 
-  """Url for public entrant page"""
+  """
+  Url for public entrant page
+  """
   url: String
 }
 
-"""A seed for an entrant"""
+"""
+A seed for an entrant
+"""
 type Seed {
   id: ID
 
@@ -1220,12 +1778,16 @@ type Seed {
   """
   checkInState: SeedCheckInState
 
-  """Map of Participant ID to checked in boolean"""
+  """
+  Map of Participant ID to checked in boolean
+  """
   checkedInParticipants: JSON
   entrant: Entrant
   entrantId: Int @deprecated(reason: "Use Entrant")
 
-  """Set count and game count by this entrant"""
+  """
+  Set count and game count by this entrant
+  """
   gameAndSetCounts(phaseGroupId: ID!, eventId: ID): JSON
   groupSeedNum: Int
   isBye: Boolean
@@ -1239,17 +1801,25 @@ type Seed {
   placeholderName: String
   placement: Int
 
-  """The player(s) associated with this seed's entrant"""
+  """
+  The player(s) associated with this seed's entrant
+  """
   players: [Player]
 
-  """Destination progression information for this seed"""
+  """
+  Destination progression information for this seed
+  """
   progression: JSON
   progressionSeedId: Int
 
-  """Source progression information"""
+  """
+  Source progression information
+  """
   progressionSource: Progression
 
-  """Ladder entrant's current and highest stable rank recorded"""
+  """
+  Ladder entrant's current and highest stable rank recorded
+  """
   ranks(phaseGroupId: ID!): JSON
   seedNum: Int
 
@@ -1258,10 +1828,14 @@ type Seed {
   """
   setRecordWithoutByes(phaseGroupId: ID!): JSON
 
-  """Gets sets in this phaseGroup for this seed."""
+  """
+  Gets sets in this phaseGroup for this seed.
+  """
   sets(
-    """Filter which sets are returned by state."""
-    stateFilter: SetStateFilter = {type: "exclude", states: []}
+    """
+    Filter which sets are returned by state.
+    """
+    stateFilter: SetStateFilter = { type: "exclude", states: [] }
   ): [Set]
   standings(
     """
@@ -1270,123 +1844,198 @@ type Seed {
     containerType: String
   ): [Standing]
 
-  """Tiebreak information for this seed"""
+  """
+  Tiebreak information for this seed
+  """
   tiebreakInfo(phaseGroupId: ID!): JSON
 }
 
-"""Action to take when check-in ends"""
+"""
+Action to take when check-in ends
+"""
 enum SeedCheckInState {
-  """Will not have to checkin"""
+  """
+  Will not have to checkin
+  """
   NONE
 
-  """Will have to checkin"""
+  """
+  Will have to checkin
+  """
   REQUIRED
 
-  """Checked in but the deadline has not been reached yet"""
+  """
+  Checked in but the deadline has not been reached yet
+  """
   CHECKED_IN
 
-  """Checked in and the deadline has been reached"""
+  """
+  Checked in and the deadline has been reached
+  """
   MADE_IT
 
-  """Not checked in and the deadline has passed"""
+  """
+  Not checked in and the deadline has passed
+  """
   MISSED_IT
 
-  """"""
+  """
+  """
   IGNORE
 }
 
-"""A phase in an event"""
+"""
+A phase in an event
+"""
 type Phase {
   id: ID
 
-  """Bracket-type specific Phase configuration"""
+  """
+  Bracket-type specific Phase configuration
+  """
   bracketConfig: BracketConfig
 
-  """The bracket type of this phase."""
+  """
+  The bracket type of this phase.
+  """
   bracketType: BracketType
 
-  """true if brackets are published for this phase"""
+  """
+  true if brackets are published for this phase
+  """
   bracketsPublished: Boolean
 
-  """Whether the phase is eligible for check-in"""
+  """
+  Whether the phase is eligible for check-in
+  """
   canEnableCheckIn: Boolean
 
-  """Whether the phase has check-in enabled"""
+  """
+  Whether the phase has check-in enabled
+  """
   checkInEnabled: Boolean
   destPhaseLinks: [PhaseLink]
 
-  """A list of destination phases from this current phase"""
+  """
+  A list of destination phases from this current phase
+  """
   destPhases: [Phase]
 
-  """The Event that this phase belongs to"""
+  """
+  The Event that this phase belongs to
+  """
   event: Event
 
-  """Number of phase groups in this phase"""
+  """
+  Number of phase groups in this phase
+  """
   groupCount: Int
-  groupTypeId: Int @deprecated(reason: "Use bracketType instead. Leaving this in for backwards compatibility.")
+  groupTypeId: Int
+    @deprecated(reason: "Use bracketType instead. Leaving this in for backwards compatibility.")
 
-  """Whether or not a phase's group type is supported by event check-in."""
+  """
+  Whether or not a phase's group type is supported by event check-in.
+  """
   groupTypeSupportedByEventCheckIn: Boolean
 
-  """Whether or not a phase has progressions leading into it."""
+  """
+  Whether or not a phase has progressions leading into it.
+  """
   hasProgressionsIn: Boolean
 
-  """Whether the phase is the default phase or not."""
+  """
+  Whether the phase is the default phase or not.
+  """
   isDefault: Boolean
 
-  """Is the phase an exhibition or not."""
+  """
+  Is the phase an exhibition or not.
+  """
   isExhibition: Boolean
 
-  """Bracket-type specific Phase configuration for Matches"""
+  """
+  Bracket-type specific Phase configuration for Matches
+  """
   matchConfig: MatchConfig
 
-  """Name of phase e.g. Round 1 Pools"""
+  """
+  Name of phase e.g. Round 1 Pools
+  """
   name: String
 
-  """The number of seeds this phase contains."""
+  """
+  The number of seeds this phase contains.
+  """
   numSeeds: Int
 
-  """OLD, NEED TO REMOVE. unpaginated phase groups under this phase"""
+  """
+  OLD, NEED TO REMOVE. unpaginated phase groups under this phase
+  """
   oldPhaseGroups: [PhaseGroup]
-  paginatedSeeds(query: SeedPaginationQuery!, eventId: ID): SeedConnection @deprecated(reason: "Please use 'seeds' instead")
+  paginatedSeeds(query: SeedPaginationQuery!, eventId: ID): SeedConnection
+    @deprecated(reason: "Please use 'seeds' instead")
 
-  """Percentage of matches completed for this phase"""
+  """
+  Percentage of matches completed for this phase
+  """
   percentComplete: Int
 
-  """Phase groups under this phase, paginated"""
+  """
+  Phase groups under this phase, paginated
+  """
   phaseGroups(query: PhaseGroupPageQuery): PhaseGroupConnection
 
-  """The relative order of this phase within an event"""
+  """
+  The relative order of this phase within an event
+  """
   phaseOrder: Int
 
-  """Information about the progressions into this phase"""
+  """
+  Information about the progressions into this phase
+  """
   progressingInData: [ProgressionData]
 
-  """Information about the progressions into this phase"""
+  """
+  Information about the progressions into this phase
+  """
   progressionData: [ProgressionData]
 
-  """Information about the progressions out of this phase"""
+  """
+  Information about the progressions out of this phase
+  """
   progressions: [Progression]
 
-  """true if seeding is published for this phase"""
+  """
+  true if seeding is published for this phase
+  """
   seedingPublished: Boolean
 
-  """Paginated seeds for this phase"""
+  """
+  Paginated seeds for this phase
+  """
   seeds(query: SeedPaginationQuery!, eventId: ID): SeedConnection
 
-  """Paginated sets for this Phase"""
+  """
+  Paginated sets for this Phase
+  """
   sets(
     page: Int
     perPage: Int
 
-    """How to sort these sets"""
+    """
+    How to sort these sets
+    """
     sortType: SetSortType
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection
 
-  """Default standings configuration for this Phase"""
+  """
+  Default standings configuration for this Phase
+  """
   standingsConfig: StandingsConfig
 
   """
@@ -1394,112 +2043,166 @@ type Phase {
   """
   startAt: Timestamp
 
-  """State of the phase"""
+  """
+  State of the phase
+  """
   state: ActivityState
 
-  """Default stats configuration for this Phase"""
+  """
+  Default stats configuration for this Phase
+  """
   statsConfig: StatsConfig
 
-  """The current user's tasks for this phase"""
+  """
+  The current user's tasks for this phase
+  """
   userTasks: [Task]
   waves: [Wave]
 }
 
-"""Bracket-specific configuration"""
+"""
+Bracket-specific configuration
+"""
 interface BracketConfig {
   id: ID
   bracketType: BracketType
 }
 
-"""The type of Bracket format that a Phase is configured with."""
+"""
+The type of Bracket format that a Phase is configured with.
+"""
 enum BracketType {
-  """"""
+  """
+  """
   SINGLE_ELIMINATION
 
-  """"""
+  """
+  """
   DOUBLE_ELIMINATION
 
-  """"""
+  """
+  """
   ROUND_ROBIN
 
-  """"""
+  """
+  """
   SWISS
 
-  """"""
+  """
+  """
   EXHIBITION
 
-  """"""
+  """
+  """
   CUSTOM_SCHEDULE
 
-  """"""
+  """
+  """
   MATCHMAKING
 
-  """"""
+  """
+  """
   ELIMINATION_ROUNDS
 
-  """"""
+  """
+  """
   RACE
 
-  """"""
+  """
+  """
   CIRCUIT
 }
 
-"""A link which defines how players enter and progress from phases"""
+"""
+A link which defines how players enter and progress from phases
+"""
 type PhaseLink {
   id: ID
 
-  """Seed number that the seed phase link ends at (inclusive)"""
+  """
+  Seed number that the seed phase link ends at (inclusive)
+  """
   endSeed: Int
 
-  """The mode for a seed phase link"""
+  """
+  The mode for a seed phase link
+  """
   seedMode: String
 
-  """Seed number that the seed phase link starts at (inclusive)"""
+  """
+  Seed number that the seed phase link starts at (inclusive)
+  """
   startSeed: Int
 
-  """The type of this phase link"""
+  """
+  The type of this phase link
+  """
   type: PhaseLinkType
 }
 
-"""The type of the phase link. Different types have different behaviors"""
+"""
+The type of the phase link. Different types have different behaviors
+"""
 enum PhaseLinkType {
-  """Phase link for phase to phase progressions based on placement"""
+  """
+  Phase link for phase to phase progressions based on placement
+  """
   PLACEMENT
 
-  """Used for amateur brackets to progress remainder players"""
+  """
+  Used for amateur brackets to progress remainder players
+  """
   REMAINDER
 
-  """Directly added entrants"""
+  """
+  Directly added entrants
+  """
   DIRECT
 
-  """Event seed configuration definitions"""
+  """
+  Event seed configuration definitions
+  """
   SEED
 }
 
-"""Match-level configuration"""
+"""
+Match-level configuration
+"""
 interface MatchConfig {
   id: ID
   bracketType: BracketType
 }
 
-"""A group within a phase"""
+"""
+A group within a phase
+"""
 type PhaseGroup {
-  """The bracket type of this group's phase."""
+  """
+  The bracket type of this group's phase.
+  """
   bracketType: BracketType
   id: ID
 
-  """URL for this phase groups's bracket."""
+  """
+  URL for this phase groups's bracket.
+  """
   bracketUrl: String
   checkInFinalizeAction: String
   checkInState: String
 
-  """The sets of current round of a phase group"""
+  """
+  The sets of current round of a phase group
+  """
   currentRoundSets: [Set]
 
-  """Unique identifier for this group within the context of its phase"""
+  """
+  Unique identifier for this group within the context of its phase
+  """
   displayIdentifier: String
 
-  """Event check in groups that the phase group is linked to"""
+  """
+  Event check in groups that the phase group is linked to
+  """
   eventCheckInGroup: EventCheckInGroup
   firebasePath: String
 
@@ -1516,57 +2219,87 @@ type PhaseGroup {
   matchmakingSettings: JSON
   numRounds: Int
 
-  """The number of seeds for a phase group."""
+  """
+  The number of seeds for a phase group.
+  """
   numSeeds(checkInState: Int): Int
   oldSets(
-    """Limit to Sets in the current round"""
+    """
+    Limit to Sets in the current round
+    """
     currentRoundOnly: Boolean = false
   ): [Set]
-  paginatedSeeds(query: SeedPaginationQuery!, eventId: ID): SeedConnection @deprecated(reason: "Please use 'seeds', which is now paginated")
+  paginatedSeeds(query: SeedPaginationQuery!, eventId: ID): SeedConnection
+    @deprecated(reason: "Please use 'seeds', which is now paginated")
 
-  """Paginated sets on this phaseGroup"""
+  """
+  Paginated sets on this phaseGroup
+  """
   paginatedSets(
     page: Int
     perPage: Int
 
-    """How to sort these sets"""
+    """
+    How to sort these sets
+    """
     sortType: SetSortType
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection @deprecated(reason: "Please use 'sets', which is now paginated")
 
-  """Percentage of matches completed for this phase group"""
+  """
+  Percentage of matches completed for this phase group
+  """
   percentComplete: Int
 
-  """The phase associated with this phase group"""
+  """
+  The phase associated with this phase group
+  """
   phase: Phase
   phaseId: Int @deprecated(reason: "Use phase")
 
-  """The progressions out of this phase group"""
+  """
+  The progressions out of this phase group
+  """
   progressionsOut: [Progression]
   raceConfig: JSON
-  roundDisplayNames: JSON @deprecated(reason: "This is the wrong API for getting round titles. We need to put more work into the phaseGroup.rounds resolver to make it useful.")
+  roundDisplayNames: JSON
+    @deprecated(
+      reason: "This is the wrong API for getting round titles. We need to put more work into the phaseGroup.rounds resolver to make it useful."
+    )
   rounds: [Round]
   seedMap: JSON
 
-  """Paginated seeds for this phase group"""
+  """
+  Paginated seeds for this phase group
+  """
   seeds(query: SeedPaginationQuery!, eventId: ID): SeedConnection
 
-  """Paginated sets on this phaseGroup"""
+  """
+  Paginated sets on this phaseGroup
+  """
   sets(
     page: Int
     perPage: Int
 
-    """How to sort these sets"""
+    """
+    How to sort these sets
+    """
     sortType: SetSortType
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection
   standingGroup: StandingGroup
 
-  """Paginated list of standings"""
+  """
+  Paginated list of standings
+  """
   standings(query: StandingGroupStandingPageFilter): StandingConnection
 
   """
@@ -1575,7 +2308,9 @@ type PhaseGroup {
   startAt: Timestamp
   state: Int
 
-  """Paginated stations on this phaseGroup"""
+  """
+  Paginated stations on this phaseGroup
+  """
   stations(query: StationFilter): StationsConnection
   tiebreakOrder: JSON
   unpaginatedSeeds: [Seed]
@@ -1584,7 +2319,9 @@ type PhaseGroup {
   URL for the phase group. Optionally, build URL for resource under the phase group
   """
   url(
-    """Phase group (brackets) tab to build URL for"""
+    """
+    Phase group (brackets) tab to build URL for
+    """
     tab: String
 
     """
@@ -1598,71 +2335,105 @@ type PhaseGroup {
   be 0 or 1 seed. There might be weird cases where someone has more seeds
   """
   userSeeds(
-    """User ID to get sets for. If null, will default to current user."""
+    """
+    User ID to get sets for. If null, will default to current user.
+    """
     userId: ID
   ): [Seed]
 
-  """The current user's tasks for this phase group"""
+  """
+  The current user's tasks for this phase group
+  """
   userTasks: [Task]
   wave: Wave
   waveId: Int @deprecated(reason: "Use wave")
 }
 
-"""A set"""
+"""
+A set
+"""
 type Set {
   id: ID
 
-  """A list of games that could be reported via API for this set"""
+  """
+  A list of games that could be reported via API for this set
+  """
   apiGames: JSON
 
-  """The possible inputs to the external API for fetching results"""
+  """
+  The possible inputs to the external API for fetching results
+  """
   apiReportingInputOptions: JSON
   bracketLink: String
   bracketName: String
 
-  """Whether or not this set supports API reporting"""
+  """
+  Whether or not this set supports API reporting
+  """
   canApiReport: Boolean
   characters(mainEntrantId: ID): JSON
 
-  """The time this set was marked as completed"""
+  """
+  The time this set was marked as completed
+  """
   completedAt: Timestamp
 
-  """The time this set was created"""
+  """
+  The time this set was created
+  """
   createdAt: Timestamp
   currentUserSeedId: ID
   defaultStandingGroup: StandingGroup
   displayScore(mainEntrantId: ID): String
   entrant1Id: Int @deprecated(reason: "Deprecated field. Use slots instead.")
   entrant1Present: Boolean @deprecated(reason: "Do not use. Deprecated field.")
-  entrant1Score: Int @deprecated(reason: "Should eventually exist on Standing, deprecate when it does")
+  entrant1Score: Int
+    @deprecated(reason: "Should eventually exist on Standing, deprecate when it does")
 
-  """The source of the first entrant in this set"""
+  """
+  The source of the first entrant in this set
+  """
   entrant1Source: SetEntrantSource
   entrant2Id: Int @deprecated(reason: "Deprecated field. Use slots instead.")
   entrant2Present: Boolean @deprecated(reason: "Do not use. Deprecated field.")
-  entrant2Score: Int @deprecated(reason: "Should eventually exist on Standing, deprecate when it does")
+  entrant2Score: Int
+    @deprecated(reason: "Should eventually exist on Standing, deprecate when it does")
 
-  """The source of the second entrant in this set"""
+  """
+  The source of the second entrant in this set
+  """
   entrant2Source: SetEntrantSource
 
-  """Retrieves a single slot in a set, given an entrantId"""
+  """
+  Retrieves a single slot in a set, given an entrantId
+  """
   entrantSlot(entrantId: ID): SetSlot
 
-  """Event that this set belongs to."""
+  """
+  Event that this set belongs to.
+  """
   event: Event
 
-  """ID of the event this set belongs to"""
+  """
+  ID of the event this set belongs to
+  """
   eventId: Int @deprecated(reason: "Use event")
 
-  """The number of set slots that have been occupied by an Entrant"""
+  """
+  The number of set slots that have been occupied by an Entrant
+  """
   filledSlots: Int
 
-  """Full round text of this set."""
+  """
+  Full round text of this set.
+  """
   fullRoundText: String
   game(orderNum: Int!): Game
   games: [Game]
 
-  """Whether this set contains a placeholder entrant"""
+  """
+  Whether this set contains a placeholder entrant
+  """
   hasPlaceholder: Boolean
 
   """
@@ -1671,7 +2442,9 @@ type Set {
   identifier: String
   images(type: String): [Image]
 
-  """Whether or not the authenticated user is participating in this Set."""
+  """
+  Whether or not the authenticated user is participating in this Set.
+  """
   isCurrentUserParticipating: Boolean
 
   """
@@ -1703,10 +2476,14 @@ type Set {
   oldSetTasks: [OldSetTask] @deprecated(reason: "Being replaced with userTasks eventually.")
   opponentName(mainEntrantId: ID!): String
 
-  """Paginated list of slots in a set"""
+  """
+  Paginated list of slots in a set
+  """
   paginatedSlots(query: SlotPageFilter, includeByes: Boolean = false): SetSlotConnection
 
-  """Phase group that this Set belongs to."""
+  """
+  Phase group that this Set belongs to.
+  """
   phaseGroup: PhaseGroup
   phaseGroupId: Int @deprecated(reason: "Use phaseGroup")
 
@@ -1715,15 +2492,21 @@ type Set {
   """
   playerSlot(playerId: ID): SetSlot
 
-  """Tasks for the player, on the set"""
+  """
+  Tasks for the player, on the set
+  """
   playerTasks: [ProfileTask]
   pointCalcConfig: [PointSource]
 
-  """The sets that are affected from resetting this set"""
+  """
+  The sets that are affected from resetting this set
+  """
   resetAffectedData: ResetAffectedData
   resultText(mainEntrantId: ID!): String
 
-  """The round number of the set. Negative numbers are losers bracket"""
+  """
+  The round number of the set. Negative numbers are losers bracket
+  """
   round: Int
 
   """
@@ -1745,17 +2528,25 @@ type Set {
   startedAt: Timestamp
   state: Int
 
-  """Tournament event station for a set"""
+  """
+  Tournament event station for a set
+  """
   station: Stations
   stationId: Int @deprecated(reason: "Use station")
 
-  """Station number of this set."""
+  """
+  Station number of this set.
+  """
   stationNumber: Int
 
-  """The stats as computed by the UIMapping for this set."""
+  """
+  The stats as computed by the UIMapping for this set.
+  """
   stats(view: String = "setFinalization"): JSON
 
-  """Tournament event stream for a set"""
+  """
+  Tournament event stream for a set
+  """
   stream: Streams
   streamId: Int @deprecated(reason: "Use stream")
 
@@ -1764,14 +2555,20 @@ type Set {
   """
   totalGames: Int
 
-  """The total possible number of slots available for Entrants"""
+  """
+  The total possible number of slots available for Entrants
+  """
   totalSlots: Int
 
-  """Tournament that this set belongs to."""
+  """
+  Tournament that this set belongs to.
+  """
   tournament: Tournament
   uiMapping(view: String = "setFinalization"): UIMapping
 
-  """The time this set was last updated"""
+  """
+  The time this set was last updated
+  """
   updatedAt: Timestamp
 
   """
@@ -1779,10 +2576,20 @@ type Set {
   """
   updatedAtMicro: Float
 
-  """The current user's tasks for this set"""
-  userTasks(allowFallbackTasks: Boolean = false, ctaMode: TaskCTAMode = STANDARD, viewFormat: TaskViewFormat = FULL_TASK, limit: Int = null, activeOnly: Boolean = true): [Task]
+  """
+  The current user's tasks for this set
+  """
+  userTasks(
+    allowFallbackTasks: Boolean = false
+    ctaMode: TaskCTAMode = STANDARD
+    viewFormat: TaskViewFormat = FULL_TASK
+    limit: Int = null
+    activeOnly: Boolean = true
+  ): [Task]
 
-  """Url of a VOD for this set"""
+  """
+  Url of a VOD for this set
+  """
   vodUrl: String
   wPlacement: Int
   winnerId: Int
@@ -1800,30 +2607,42 @@ type StandingGroup {
   id: ID
   config: JSON
 
-  """Filters that can be applied to the paginated standings"""
+  """
+  Filters that can be applied to the paginated standings
+  """
   customFilters: [StandingGroupCustomFilterDefinition]
   isDefault: Boolean
   name: String
 
-  """Paginated standings for this standing group"""
+  """
+  Paginated standings for this standing group
+  """
   paginatedStandings(query: StandingGroupStandingsPaginationQuery): StandingConnection
 
-  """Point structures for a tier"""
+  """
+  Point structures for a tier
+  """
   pointStructures: JSON
   standings: [Standing]
 
-  """Standing for a given user"""
+  """
+  Standing for a given user
+  """
   userStanding(userId: ID): Standing
 }
 
-"""A filter that can be applied to the paginated standings"""
+"""
+A filter that can be applied to the paginated standings
+"""
 type StandingGroupCustomFilterDefinition {
   key: String
   displayName: String
   values: [StandingGroupCustomFilterValue]
 }
 
-"""A value of a filter that can be applied to the paginated standings"""
+"""
+A value of a filter that can be applied to the paginated standings
+"""
 type StandingGroupCustomFilterValue {
   value: String
   displayName: String
@@ -1832,7 +2651,9 @@ type StandingGroupCustomFilterValue {
 input StandingGroupStandingsPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: StandingGroupStandingsPageFilter
@@ -1854,7 +2675,9 @@ type StandingConnection {
   filterLocalPlacementStart: Int
 }
 
-"""A standing indicates the placement of something within a container."""
+"""
+A standing indicates the placement of something within a container.
+"""
 type Standing {
   id: ID
   additionalDisplayColumns: [AdditionalColumn]
@@ -1873,7 +2696,9 @@ type Standing {
   """
   entrant: Entrant
 
-  """The event this standing belongs to (if applicable)"""
+  """
+  The event this standing belongs to (if applicable)
+  """
   event: Event
   eventStandingPoints(entrantId: ID): StandingPoints
   isFinal: Boolean
@@ -1896,49 +2721,78 @@ type Standing {
   outOf: Int
   placement: Int
 
-  """The player(s) tied to this standing's entity"""
+  """
+  The player(s) tied to this standing's entity
+  """
   player: Player
   points: [StandingPoints]
   pointsFromGame(setId: ID!, gameIndex: Int!): [StandingPoints]
 
-  """The event level prizing this standing receives"""
+  """
+  The event level prizing this standing receives
+  """
   prizing: [EventPrizing]
 
-  """The event level prize/winnings that this standing receives"""
+  """
+  The event level prize/winnings that this standing receives
+  """
   prizingAmount: Float @deprecated(reason: "Deprecated in favor of `prizing` field")
 
-  """Entrant's win/loss record for this standing"""
+  """
+  Entrant's win/loss record for this standing
+  """
   setRecordWithoutByes: JSON
-  standing: Int @deprecated(reason: "The \"placement\" field is identical and will eventually replace \"standing\"")
+  standing: Int
+    @deprecated(
+      reason: "The \"placement\" field is identical and will eventually replace \"standing\""
+    )
   stats: StandingStats
 
-  """The team tied to this standing's entity"""
+  """
+  The team tied to this standing's entity
+  """
   team: Team
   totalPoints: Float
 }
 
-"""Describes a label and value to display along with a standing."""
+"""
+Describes a label and value to display along with a standing.
+"""
 type AdditionalColumn {
-  """The name of the label. Will show up as a column header."""
+  """
+  The name of the label. Will show up as a column header.
+  """
   label: String!
 
-  """The value to display."""
+  """
+  The value to display.
+  """
   value: String
 }
 
-"""The containing entity that this standing is for"""
+"""
+The containing entity that this standing is for
+"""
 union StandingContainer = Tournament | Event | PhaseGroup | Set
 
-"""A tournament"""
+"""
+A tournament
+"""
 type Tournament {
-  """Is there action required for this tournament to operate."""
+  """
+  Is there action required for this tournament to operate.
+  """
   actionRequired: Boolean
   id: ID
   addrState: String
 
-  """Build Tournament admin URL"""
+  """
+  Build Tournament admin URL
+  """
   adminUrl(
-    """Tournament admin tab to add to URL"""
+    """
+    Tournament admin tab to add to URL
+    """
     tab: String
 
     """
@@ -1947,14 +2801,20 @@ type Tournament {
     relative: Boolean = true
   ): String
 
-  """Admin-only view of admins for this tournament"""
+  """
+  Admin-only view of admins for this tournament
+  """
   admins(
-    """Which roles to show"""
+    """
+    Which roles to show
+    """
     roles: [String]
   ): [User]
   approved: Boolean
 
-  """Attendee requirements for this tournament"""
+  """
+  Attendee requirements for this tournament
+  """
   attendeeFieldConfig: JSON
   city: String
   contactEmail: String @deprecated(reason: "Use primaryContact fields")
@@ -1962,7 +2822,9 @@ type Tournament {
   contactTwitter: String @deprecated(reason: "Use primaryContact fields")
   countryCode: String
 
-  """When the tournament was created (unix timestamp)"""
+  """
+  When the tournament was created (unix timestamp)
+  """
   createdAt: Timestamp
   currency: String
   customMarkdown: JSON @deprecated(reason: "No longer used")
@@ -1972,13 +2834,19 @@ type Tournament {
   emailInstructions: String
   emailNote: String
 
-  """When the tournament ends"""
+  """
+  When the tournament ends
+  """
   endAt: Timestamp
 
-  """Get the groupings of events in this tournament."""
+  """
+  Get the groupings of events in this tournament.
+  """
   eventGroups: [EventGroup]
 
-  """When does event registration close"""
+  """
+  When does event registration close
+  """
   eventRegistrationClosesAt: Timestamp
 
   """
@@ -1991,22 +2859,30 @@ type Tournament {
   generatedTabs: JSON
   gettingThere: String @deprecated(reason: "No longer used")
 
-  """True if tournament has at least one offline event"""
+  """
+  True if tournament has at least one offline event
+  """
   hasOfflineEvents: Boolean
   hasOnlineEvents: Boolean
   hashtag: String
 
-  """Whether or not to hide the admins"""
+  """
+  Whether or not to hide the admins
+  """
   hideAdmins: Boolean
   images(type: String): [Image]
   includeQRCheckIn: Boolean
   includeQRCode: Boolean
   isCentralized: Boolean
 
-  """True if tournament has at least one online event"""
+  """
+  True if tournament has at least one online event
+  """
   isOnline: Boolean
 
-  """Is tournament registration open"""
+  """
+  Is tournament registration open
+  """
   isRegistrationOpen: Boolean
   lat: Float
   links: TournamentLinks
@@ -2015,24 +2891,36 @@ type Tournament {
   mapsPlaceId: String
   merchantConnectionId: Int
 
-  """The tournament name"""
+  """
+  The tournament name
+  """
   name: String
 
-  """Get nomination event linked to this tournament"""
+  """
+  Get nomination event linked to this tournament
+  """
   nominationEvent: NominationEvent
 
-  """Whether to send admin emails when a new person registers"""
+  """
+  Whether to send admin emails when a new person registers
+  """
   notifyAdmins: Boolean
 
-  """Number of attendees including spectators, if public"""
+  """
+  Number of attendees including spectators, if public
+  """
   numAttendees: Int
   onsitePaymentMode: String
 
-  """The user who created the tournament"""
+  """
+  The user who created the tournament
+  """
   owner: User
   ownerId: Int @deprecated(reason: "We should add an owner resolver if we need this")
 
-  """Paginated, queryable list of participants"""
+  """
+  Paginated, queryable list of participants
+  """
   participants(query: ParticipantPaginationQuery!, isAdmin: Boolean): ParticipantConnection
   paypalMode: String
   permissionType: String
@@ -2041,23 +2929,33 @@ type Tournament {
   primaryContactType: String
   prizes: String @deprecated(reason: "No longer used")
   profileLinks(
-    """Hub id to filter profile links on"""
+    """
+    Hub id to filter profile links on
+    """
     hubId: ID
   ): [ProfileLink]
 
-  """Publishing settings for this tournament"""
+  """
+  Publishing settings for this tournament
+  """
   publishing: JSON
   qrCodeRedirect: String
   qrCodeRedirectType: String
 
-  """The region of the tournament"""
+  """
+  The region of the tournament
+  """
   region: String @deprecated(reason: "No longer used")
   regionDisplayName: String
 
-  """When does registration for the tournament end"""
+  """
+  When does registration for the tournament end
+  """
   registrationClosesAt: Timestamp
 
-  """RegistrationOptions for this Tournament"""
+  """
+  RegistrationOptions for this Tournament
+  """
   registrationOptions(
     """
     Filter RegistrationOptions by fieldType. Omit this argument to return all RegistrationOptions.
@@ -2070,40 +2968,60 @@ type Tournament {
   """
   reminderInterval: Int
   requests(
-    """Requests in this direction"""
+    """
+    Requests in this direction
+    """
     direction: RequestDirection!
     query: TournamentRequestQuery
   ): ProfileRequestConnection
 
-  """Total user transaction revenue for this tournament"""
+  """
+  Total user transaction revenue for this tournament
+  """
   revenue: Float
   rules: String
 
-  """Returns a paginated list of Sets"""
+  """
+  Returns a paginated list of Sets
+  """
   sets(
     page: Int
     perPage: Int
 
-    """How to sort these sets"""
+    """
+    How to sort these sets
+    """
     sortType: SetSortType
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection
 
-  """Shop products attached to this tournament"""
+  """
+  Shop products attached to this tournament
+  """
   shopProducts(
-    """Supported shop product filters"""
+    """
+    Supported shop product filters
+    """
     filter: ShopProductFilter
   ): [ShopProduct]
 
-  """The short slug used to form the url"""
+  """
+  The short slug used to form the url
+  """
   shortSlug: String
 
-  """The slug used to form the url"""
+  """
+  The slug used to form the url
+  """
   slug: String
 
-  """When the tournament Starts"""
+  """
+  When the tournament Starts
+  """
   startAt: Timestamp
 
   """
@@ -2116,24 +3034,38 @@ type Tournament {
   stripeMode: String
   stripeUserId: String
 
-  """When is the team creation deadline"""
+  """
+  When is the team creation deadline
+  """
   teamCreationClosesAt: Timestamp
 
-  """Paginated, queryable list of teams"""
+  """
+  Paginated, queryable list of teams
+  """
   teams(query: TeamPaginationQuery!): TeamConnection
 
-  """The timezone of the tournament"""
+  """
+  The timezone of the tournament
+  """
   timezone: String
 
-  """The type of tournament from TournamentType"""
+  """
+  The type of tournament from TournamentType
+  """
   tournamentType: Int
 
-  """When the tournament was last modified (unix timestamp)"""
+  """
+  When the tournament was last modified (unix timestamp)
+  """
   updatedAt: Timestamp
 
-  """Build Tournament URL"""
+  """
+  Build Tournament URL
+  """
   url(
-    """Tournament tab to add to URL"""
+    """
+    Tournament tab to add to URL
+    """
     tab: String
 
     """
@@ -2148,18 +3080,26 @@ type Tournament {
   """
   userIsAdmin(userId: ID): Boolean
 
-  """Get a given user's participant for this tournament"""
+  """
+  Get a given user's participant for this tournament
+  """
   userParticipant(
-    """User ID to get participant for. If null, defaults to the current user."""
+    """
+    User ID to get participant for. If null, defaults to the current user.
+    """
     userId: ID = null
   ): Participant
 
-  """The current user's tasks for this tournament"""
+  """
+  The current user's tasks for this tournament
+  """
   userTasks(activeOnly: Boolean = true, limit: Int = null): [Task]
   venueAddress: String
   venueName: String
 
-  """List of all waves in this tournament"""
+  """
+  List of all waves in this tournament
+  """
   waves: [Wave]
 }
 
@@ -2175,15 +3115,20 @@ type EventGroup {
   tournamentId: ID
 }
 
-"""An event-level Team, in the context of some competition"""
+"""
+An event-level Team, in the context of some competition
+"""
 type EventTeam implements Team {
   id: ID
-  acceptedMembers: [TeamMember] @deprecated(reason: "Use the new members resolver with just accepted status")
+  acceptedMembers: [TeamMember]
+    @deprecated(reason: "Use the new members resolver with just accepted status")
   adminUrl(tab: String): String
   allowedActions: [ActionSummary]
   bio: String
 
-  """Does this team have a complete set of accepted members"""
+  """
+  Does this team have a complete set of accepted members
+  """
   complete: Boolean
 
   """
@@ -2203,7 +3148,9 @@ type EventTeam implements Team {
   inviteLink: String
   isCurrentUserAdmin: Boolean
 
-  """Are join requests allowed for the team?"""
+  """
+  Are join requests allowed for the team?
+  """
   joinRequestsAllowed: Boolean
   league: League
 
@@ -2218,10 +3165,14 @@ type EventTeam implements Team {
   Given an invite code, provide a user specific invite link. This is dependent on the user's registration status
   """
   registrationInviteLink(
-    """Invite code for the event team"""
+    """
+    Invite code for the event team
+    """
     inviteCode: String!
 
-    """User ID to get invite link for. If null, defaults to the current user."""
+    """
+    User ID to get invite link for. If null, defaults to the current user.
+    """
     userId: ID = null
   ): String
   restrictions: [EntityRestriction]
@@ -2230,21 +3181,28 @@ type EventTeam implements Team {
   type: Int
   url(tab: String): String
   userMember(
-    """User ID to get member for. If null, defaults to the current user."""
+    """
+    User ID to get member for. If null, defaults to the current user.
+    """
     userId: ID = null
   ): TeamMember
   verified: Boolean
   videogame: Videogame
 }
 
-"""A team, either at the global level or within the context of an event"""
+"""
+A team, either at the global level or within the context of an event
+"""
 interface Team {
   id: ID
-  acceptedMembers: [TeamMember] @deprecated(reason: "Use the new members resolver with just accepted status")
+  acceptedMembers: [TeamMember]
+    @deprecated(reason: "Use the new members resolver with just accepted status")
   adminUrl(tab: String): String
   bio: String
 
-  """Does this team have a complete set of accepted members"""
+  """
+  Does this team have a complete set of accepted members
+  """
   complete: Boolean
 
   """
@@ -2263,7 +3221,9 @@ interface Team {
   inviteLink: String
   isCurrentUserAdmin: Boolean
 
-  """Are join requests allowed for the team?"""
+  """
+  Are join requests allowed for the team?
+  """
   joinRequestsAllowed: Boolean
   members(status: [TeamMemberStatus]): [TeamMember]
   name: String
@@ -2271,14 +3231,18 @@ interface Team {
   type: Int
   url(tab: String): String
   userMember(
-    """User ID to get member for. If null, defaults to the current user."""
+    """
+    User ID to get member for. If null, defaults to the current user.
+    """
     userId: ID = null
   ): TeamMember
   verified: Boolean
   videogame: Videogame
 }
 
-"""A member of a team"""
+"""
+A member of a team
+"""
 type TeamMember {
   id: ID
   adminRole: Role
@@ -2289,55 +3253,83 @@ type TeamMember {
   isCoach: Boolean
   isStandIn: Boolean
 
-  """The type of the team member"""
+  """
+  The type of the team member
+  """
   memberType: TeamMemberType
   name: String
   participant: Participant
 
-  """The participantId of the team member"""
+  """
+  The participantId of the team member
+  """
   participantId: Int
   player: Player
 
-  """The status of the team member"""
+  """
+  The status of the team member
+  """
   status: TeamMemberStatus
   teamId: ID
 }
 
-"""Membership type of a team member"""
+"""
+Membership type of a team member
+"""
 enum TeamMemberType {
-  """"""
+  """
+  """
   PLAYER
 
-  """"""
+  """
+  """
   STAFF
 }
 
-"""A participant of a tournament; either a spectator or competitor"""
+"""
+A participant of a tournament; either a spectator or competitor
+"""
 type Participant {
   id: ID
 
-  """How this participant was added"""
+  """
+  How this participant was added
+  """
   addedByInfo: ParticipantAddedByInfo
 
-  """Admin only field - actions performed by admins"""
+  """
+  Admin only field - actions performed by admins
+  """
   adminActions: [AdminActions]
 
-  """Admin only field - notes written by admins"""
+  """
+  Admin only field - notes written by admins
+  """
   adminNotes: [Note]
 
-  """How much money this participant owes"""
+  """
+  How much money this participant owes
+  """
   balance: Float
 
-  """If this participant was checked-in by admin"""
+  """
+  If this participant was checked-in by admin
+  """
   checkedIn: Boolean
 
-  """The time this participant was checked-in by admin"""
+  """
+  The time this participant was checked-in by admin
+  """
   checkedInAt: Timestamp
 
-  """If this participant is claimed or not"""
+  """
+  If this participant is claimed or not
+  """
   claimed: Boolean
 
-  """Info for connected accounts to external services."""
+  """
+  Info for connected accounts to external services.
+  """
   connectedAccounts: JSON
 
   """
@@ -2348,16 +3340,24 @@ type Participant {
   """
   contactInfo: ContactInfo
 
-  """Unix time when participant was made"""
+  """
+  Unix time when participant was made
+  """
   createdAt: Timestamp
 
-  """Participant Decks for Card Games"""
+  """
+  Participant Decks for Card Games
+  """
   decks(
-    """Filter Decks to show only decks for a given Event ID."""
+    """
+    Filter Decks to show only decks for a given Event ID.
+    """
     eventId: ID
   ): [Deck]
 
-  """Visible display name for a participant. TO visible only."""
+  """
+  Visible display name for a participant. TO visible only.
+  """
   displayName: String @deprecated(reason: "Use User.name")
 
   """
@@ -2365,13 +3365,19 @@ type Participant {
   """
   email: String
 
-  """Entrants associated with this Participant, if applicable"""
+  """
+  Entrants associated with this Participant, if applicable
+  """
   entrants: [Entrant]
 
-  """Doubles partners for this participant, if applicable"""
+  """
+  Doubles partners for this participant, if applicable
+  """
   eventPartners: [ParticipantEventPartner]
 
-  """The events this participant registered for within a Tournament."""
+  """
+  The events this participant registered for within a Tournament.
+  """
   events: [Event]
 
   """
@@ -2379,24 +3385,39 @@ type Participant {
   """
   eventsInfo: [EventInfo]
 
-  """The tag that was used when the participant registered, e.g. Mang0"""
+  """
+  The tag that was used when the participant registered, e.g. Mang0
+  """
   gamerTag: String
   images(type: String): [Image]
 
-  """Phone number of participant"""
+  """
+  Phone number of participant
+  """
   phoneNumber: String
   player: Player
 
-  """Id of the Player"""
-  playerId: Int @deprecated(reason: "Use the player field to get the player ID instead. This field is no longer maintained.")
+  """
+  Id of the Player
+  """
+  playerId: Int
+    @deprecated(
+      reason: "Use the player field to get the player ID instead. This field is no longer maintained."
+    )
 
-  """The prefix that the user set for this Tournament, e.g. C9"""
+  """
+  The prefix that the user set for this Tournament, e.g. C9
+  """
   prefix: String
 
-  """Admin only field of which selections were made during registration."""
+  """
+  Admin only field of which selections were made during registration.
+  """
   registrationSelections: [RegistrationSelection]
 
-  """Current state of this participant's tournament registration"""
+  """
+  Current state of this participant's tournament registration
+  """
   registrationState: TournamentRegistrationState
 
   """
@@ -2404,29 +3425,48 @@ type Participant {
   """
   requiredConnections: [ProfileAuthorization]
 
-  """Streams associated with this Participant's tournament registration"""
+  """
+  Streams associated with this Participant's tournament registration
+  """
   streams: [Streams]
   teams: [Team]
 
-  """The tournament this participant is associated to."""
+  """
+  The tournament this participant is associated to.
+  """
   tournament: Tournament
 
-  """Admin only field of any transactions made during registration"""
+  """
+  Admin only field of any transactions made during registration
+  """
   transactions: [UserTransaction]
 
-  """Url for public attendee page"""
+  """
+  Url for public attendee page
+  """
   url: String
 
-  """The user this participant is associated to."""
+  """
+  The user this participant is associated to.
+  """
   user: User
 
-  """Id of user associated with this participant"""
-  userId: Int @deprecated(reason: "Use the user field to get the user ID properly. This field is no longer maintained.")
+  """
+  Id of user associated with this participant
+  """
+  userId: Int
+    @deprecated(
+      reason: "Use the user field to get the user ID properly. This field is no longer maintained."
+    )
 
-  """Venue pass selections for this participant."""
+  """
+  Venue pass selections for this participant.
+  """
   venuePasses: [RegistrationSelection]
 
-  """If this participant is verified as actually being in the tournament"""
+  """
+  If this participant is verified as actually being in the tournament
+  """
   verified: Boolean
 }
 
@@ -2442,77 +3482,116 @@ type AdminActions {
   paidByEmail: String
 }
 
-"""A message associated with some entity"""
+"""
+A message associated with some entity
+"""
 type Note {
   id: ID
 
-  """Note contents"""
+  """
+  Note contents
+  """
   content: String
 
-  """Timestamp of note creation"""
+  """
+  Timestamp of note creation
+  """
   createdAt: String
 
-  """User Id of user who created this note"""
+  """
+  User Id of user who created this note
+  """
   createdBy: ID
 
-  """Name of the user who created this note"""
+  """
+  Name of the user who created this note
+  """
   createdByName: String
 
-  """Entity id associated with this note"""
+  """
+  Entity id associated with this note
+  """
   entityId: ID
 
-  """Entity type associated with this note"""
+  """
+  Entity type associated with this note
+  """
   entityType: String
 
-  """Timestamp of note update"""
+  """
+  Timestamp of note update
+  """
   updatedAt: String
 }
 
-"""Name, address, etc"""
+"""
+Name, address, etc
+"""
 type ContactInfo {
   id: ID
 
-  """Participant City Name"""
+  """
+  Participant City Name
+  """
   city: String
 
-  """Participant Country Name"""
+  """
+  Participant Country Name
+  """
   country: String
 
-  """Participant Country (region) id"""
+  """
+  Participant Country (region) id
+  """
   countryId: Int
   name: String
 
-  """First Name"""
+  """
+  First Name
+  """
   nameFirst: String
 
-  """Last Name"""
+  """
+  Last Name
+  """
   nameLast: String
 
-  """Participant State Name"""
+  """
+  Participant State Name
+  """
   state: String
 
-  """Participant State (region) id"""
+  """
+  Participant State (region) id
+  """
   stateId: Int
 
-  """Zip or Postal Code"""
+  """
+  Zip or Postal Code
+  """
   zipcode: String
 }
 
-"""Deck of cards for a participant/entrant"""
+"""
+Deck of cards for a participant/entrant
+"""
 type Deck {
   id: ID
   cardIds: [ID]
   cards: [Card]
   characterIds: JSON
   characters: [Character]
-  connectedId: Int @deprecated(reason: "We should make an event / connectedEntity resolver if we want this")
+  connectedId: Int
+    @deprecated(reason: "We should make an event / connectedEntity resolver if we want this")
   connectedType: String @deprecated(reason: "Every single connectedType we have is event")
   createdAt: Timestamp
   entrantId: Int @deprecated(reason: "We should make an entrant resolver if we want this")
   externalLink: String
   images: [Image]
 
-  """True if the deck has no cards."""
+  """
+  True if the deck has no cards.
+  """
   isEmpty: Boolean
   isPrimary: Boolean
   name: String
@@ -2524,24 +3603,36 @@ type Deck {
   valid: Boolean
 }
 
-"""A character in a videogame"""
+"""
+A character in a videogame
+"""
 type Character {
   id: ID
   images(type: String): [Image]
 
-  """Name of Character"""
+  """
+  Name of Character
+  """
   name: String
 }
 
-"""Conveys the way that the contents of a deck are represented"""
+"""
+Conveys the way that the contents of a deck are represented
+"""
 enum DeckType {
-  """Decks are represented as a collection of cards"""
+  """
+  Decks are represented as a collection of cards
+  """
   CARD
 
-  """Decks are represented in one or more images"""
+  """
+  Decks are represented in one or more images
+  """
   IMAGE
 
-  """Decks are represented on another site and linked"""
+  """
+  Decks are represented on another site and linked
+  """
   EXTERNAL_LINK
 }
 
@@ -2550,34 +3641,53 @@ type ParticipantEventPartner {
   player: Player
 }
 
-"""A player"""
+"""
+A player
+"""
 type Player {
   id: ID
 
-  """Paginated, filterable list of ScheduleItems"""
-  adminSchedule(query: PlayerScheduleQuery): ScheduleItemConnection @deprecated(reason: "Use User.tournaments")
+  """
+  Paginated, filterable list of ScheduleItems
+  """
+  adminSchedule(query: PlayerScheduleQuery): ScheduleItemConnection
+    @deprecated(reason: "Use User.tournaments")
   color: String
 
-  """Player's country"""
+  """
+  Player's country
+  """
   country: String @deprecated(reason: "Use User.location")
   gamerTag: String
 
-  """Time of player's last gamertag change"""
+  """
+  Time of player's last gamertag change
+  """
   gamerTagChangedAt: Timestamp
 
-  """Player's images"""
+  """
+  Player's images
+  """
   images(type: String): [Image] @deprecated(reason: "Use User.images")
 
-  """Whether this Player is an attendee for X tournament"""
+  """
+  Whether this Player is an attendee for X tournament
+  """
   isInTournament(tournamentId: ID): Boolean
 
-  """The name of this player based on the player's display settings"""
+  """
+  The name of this player based on the player's display settings
+  """
   name: String @deprecated(reason: "Use User.name")
 
-  """Player's nameDisplay field"""
+  """
+  Player's nameDisplay field
+  """
   nameDisplay: Int @deprecated(reason: "Use User.publishingSettings.name")
 
-  """All participants for a player"""
+  """
+  All participants for a player
+  """
   participants: [Participant]
   prefix: String
 
@@ -2586,16 +3696,24 @@ type Player {
   """
   profileAuthorization(type: AuthorizationType!): ProfileAuthorization
 
-  """Most recent active & published rankings"""
+  """
+  Most recent active & published rankings
+  """
   rankings(limit: Int, videogameId: ID): [PlayerRank]
 
-  """Recent sets for this player."""
+  """
+  Recent sets for this player.
+  """
   recentSets(
-    """Use this to get H2H history between two players"""
+    """
+    Use this to get H2H history between two players
+    """
     opponentId: ID
   ): [Set] @deprecated(reason: "Use the sets field instead.")
 
-  """Recent standings"""
+  """
+  Recent standings
+  """
   recentStandings(
     videogameId: ID
 
@@ -2605,28 +3723,42 @@ type Player {
     limit: Int
   ): [Standing]
 
-  """Player's region"""
+  """
+  Player's region
+  """
   region: String @deprecated(reason: "Region no longer exists")
 
-  """Set history for this player."""
+  """
+  Set history for this player.
+  """
   sets(
     page: Int
     perPage: Int
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection
 
-  """Player's state or province"""
+  """
+  Player's state or province
+  """
   state: String @deprecated(reason: "Use User.location")
 
-  """Player's twitch stream"""
+  """
+  Player's twitch stream
+  """
   twitchStream: String @deprecated(reason: "Use User.profileAuthorizations")
 
-  """Player's twitter handle"""
+  """
+  Player's twitter handle
+  """
   twitterHandle: String @deprecated(reason: "Use User.profileAuthorizations")
 
-  """Url for public user profile if player is linked to user"""
+  """
+  Url for public user profile if player is linked to user
+  """
   url: String
   user: User
 }
@@ -2634,7 +3766,9 @@ type Player {
 input PlayerScheduleQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: PlayerSchedulePaginationFilter
@@ -2653,24 +3787,34 @@ type ScheduleItemConnection {
   nodes: [ScheduleItem]
 }
 
-"""An item that represents part of a schedule"""
+"""
+An item that represents part of a schedule
+"""
 type ScheduleItem {
   id: ID
 
-  """The end date of this schedule item in the format Y-m-d"""
+  """
+  The end date of this schedule item in the format Y-m-d
+  """
   endDate: String
   entity: ScheduleItemEntity
   name: String
 
-  """The start date of this schedule item in the format Y-m-d"""
+  """
+  The start date of this schedule item in the format Y-m-d
+  """
   startDate: String
   type: String
 }
 
-"""The entity that this ScheduleItem is for"""
+"""
+The entity that this ScheduleItem is for
+"""
 union ScheduleItemEntity = Tournament
 
-"""A player's ranks"""
+"""
+A player's ranks
+"""
 type PlayerRank {
   id: ID
   allRanksInSeries: [PlayerRank]
@@ -2679,24 +3823,32 @@ type PlayerRank {
   player: Player
   previousRank: Int
 
-  """The player's placement on the ranking"""
+  """
+  The player's placement on the ranking
+  """
   rank: Int
   title: String
   videogameId: ID
 }
 
-"""An iteration of a ranking series"""
+"""
+An iteration of a ranking series
+"""
 type RankingIteration {
   id: ID
   description: String
   images(type: String): [Image]
 
-  """Paginated, queryable list of player ranks"""
+  """
+  Paginated, queryable list of player ranks
+  """
   playerRanks(query: PlayerRankPaginationQuery!): PlayerRankConnection
   publishedAt: Timestamp
   series: RankingSeries
 
-  """URL for the ranking"""
+  """
+  URL for the ranking
+  """
   slug: String
   startAt: Timestamp
   title: String
@@ -2705,7 +3857,9 @@ type RankingIteration {
 input PlayerRankPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: PlayerRankPageFilter
@@ -2721,7 +3875,9 @@ type PlayerRankConnection {
   nodes: [PlayerRank]
 }
 
-"""A ranking series"""
+"""
+A ranking series
+"""
 type RankingSeries {
   id: ID
   images(type: String): [Image]
@@ -2735,41 +3891,57 @@ type RankingSeries {
   videogameId: Int
 }
 
-"""A videogame"""
+"""
+A videogame
+"""
 type Videogame {
   id: ID
   approvedForOnlineFee: Boolean
 
-  """All characters for this videogame"""
+  """
+  All characters for this videogame
+  """
   characters: [Character]
   displayName: String
 
-  """Tells whether this videogame has characters or not"""
+  """
+  Tells whether this videogame has characters or not
+  """
   hasCharacters: Boolean
   hasDeckSupport: Boolean
   images(type: String): [Image]
   name: String
 
-  """Platforms that this Videogame can be played on"""
+  """
+  Platforms that this Videogame can be played on
+  """
   platforms: [Platform]
   satoriId: String
   slug: String
 
-  """All stages for this videogame"""
+  """
+  All stages for this videogame
+  """
   stages: [Stage]
   summary: String
 }
 
-"""A Platform that Videogames can be played on."""
+"""
+A Platform that Videogames can be played on.
+"""
 type Platform {
   id: ID
   name: String
 
-  """Networks that a videogame can be played on through this platform"""
+  """
+  Networks that a videogame can be played on through this platform
+  """
   networks(videogameId: ID!): [Network]
 }
 
-"""A network through which a videogame can be played on a platform"""
+"""
+A network through which a videogame can be played on a platform
+"""
 type Network {
   id: ID
   connectName: String
@@ -2778,22 +3950,32 @@ type Network {
   updatedAt: Timestamp
 }
 
-"""Video Stage"""
+"""
+Video Stage
+"""
 type Stage {
   id: ID
 
-  """Abbreviation for the videogame"""
+  """
+  Abbreviation for the videogame
+  """
   abbrev: String
 
-  """Stage name"""
+  """
+  Stage name
+  """
   name: String
 
-  """Videogame ID"""
+  """
+  Videogame ID
+  """
   videogameId: Int
 }
 
 input SetFilters {
-  """Only return Sets for these Entrants"""
+  """
+  Only return Sets for these Entrants
+  """
   entrantIds: [ID]
 
   """
@@ -2801,7 +3983,9 @@ input SetFilters {
   """
   entrantSize: [Int]
 
-  """Only return Sets that have an attached VOD"""
+  """
+  Only return Sets that have an attached VOD
+  """
   hasVod: Boolean
 
   """
@@ -2809,7 +3993,9 @@ input SetFilters {
   """
   hideEmpty: Boolean
 
-  """Return sets that contain a bye"""
+  """
+  Return sets that contain a bye
+  """
   showByes: Boolean
 
   """
@@ -2817,46 +4003,74 @@ input SetFilters {
   """
   isEventOnline: Boolean
 
-  """Only return Sets in certain geographical areas."""
+  """
+  Only return Sets in certain geographical areas.
+  """
   location: SetFilterLocation
 
-  """Only return Sets for these Participants"""
+  """
+  Only return Sets for these Participants
+  """
   participantIds: [ID]
 
-  """Only return Sets in these PhaseGroups"""
+  """
+  Only return Sets in these PhaseGroups
+  """
   phaseGroupIds: [ID]
 
-  """Only return Sets in these Phases"""
+  """
+  Only return Sets in these Phases
+  """
   phaseIds: [ID]
 
-  """Only return Sets in these Events"""
+  """
+  Only return Sets in these Events
+  """
   eventIds: [ID]
 
-  """Only return Sets in these Tournaments"""
+  """
+  Only return Sets in these Tournaments
+  """
   tournamentIds: [ID]
 
-  """Only return Sets for these Players"""
+  """
+  Only return Sets for these Players
+  """
   playerIds: [ID]
 
-  """Only return Sets for these Rounds"""
+  """
+  Only return Sets for these Rounds
+  """
   roundNumber: Int
 
-  """Only returns Sets that are in these states"""
+  """
+  Only returns Sets that are in these states
+  """
   state: [Int]
 
-  """Only return Sets that are assigned to these Station IDs"""
+  """
+  Only return Sets that are assigned to these Station IDs
+  """
   stationIds: [ID]
 
-  """Only return Sets that are assigned to these Station numbers"""
+  """
+  Only return Sets that are assigned to these Station numbers
+  """
   stationNumbers: [Int]
 
-  """Only return sets created or updated since this timestamp"""
+  """
+  Only return sets created or updated since this timestamp
+  """
   updatedAfter: Timestamp
 }
 
-"""Filter Sets by geographical constraints."""
+"""
+Filter Sets by geographical constraints.
+"""
 input SetFilterLocation {
-  """Only return Sets in this state. Only applicable to US states"""
+  """
+  Only return Sets in this state. Only applicable to US states
+  """
   state: String
 
   """
@@ -2870,10 +4084,14 @@ input SetFilterLocation {
 Only return Sets that are a certain distance away from a specified point
 """
 input SetFilterLocationDistanceFrom {
-  """Point at which to perform distance calculation"""
+  """
+  Point at which to perform distance calculation
+  """
   point: SetFilterLocationDistanceFromPoint
 
-  """Distance from the point to include results in"""
+  """
+  Distance from the point to include results in
+  """
   radius: String
 }
 
@@ -2887,31 +4105,47 @@ type SetConnection {
   nodes: [Set]
 }
 
-"""Information describing the status of a participant in an event"""
+"""
+Information describing the status of a participant in an event
+"""
 type EventInfo {
-  """The entrantId of this entrant in this event."""
+  """
+  The entrantId of this entrant in this event.
+  """
   entrantId: ID
   id: ID
   eventId: ID
 
-  """Whether the event is unstarted, in-progress, or complete"""
+  """
+  Whether the event is unstarted, in-progress, or complete
+  """
   eventState: Int
 
-  """The name of this entrant in this event."""
+  """
+  The name of this entrant in this event.
+  """
   name: String
 
-  """Total number of entrants in this event."""
+  """
+  Total number of entrants in this event.
+  """
   numEntrants: Int
 
-  """Did this participant pay for this event"""
+  """
+  Did this participant pay for this event
+  """
   paid: Boolean
   placement: Int
 
-  """The event slug."""
+  """
+  The event slug.
+  """
   slug: String
 }
 
-"""A selection made during registration"""
+"""
+A selection made during registration
+"""
 type RegistrationSelection {
   id: ID
   additional: RegistrationSelectionAdditional
@@ -2922,12 +4156,16 @@ type RegistrationSelection {
   """
   optionType: String
 
-  """The registration value associated with this selection"""
+  """
+  The registration value associated with this selection
+  """
   regValue: RegistrationValue
   valueId: Int
 }
 
-union RegistrationSelectionAdditional = RegistrationSelectionAdditionalStandard | RegistrationSelectionAdditionalLeagueOfLegends
+union RegistrationSelectionAdditional =
+  | RegistrationSelectionAdditionalStandard
+  | RegistrationSelectionAdditionalLeagueOfLegends
 
 type RegistrationSelectionAdditionalStandard {
   value: String
@@ -2951,36 +4189,56 @@ type NetworkSelectionLeagueOfLegends {
   server: String
 }
 
-"""A possible choice for a registration option"""
+"""
+A possible choice for a registration option
+"""
 type RegistrationValue {
-  """If the RegistrationOption specifies a fee, this is the value"""
+  """
+  If the RegistrationOption specifies a fee, this is the value
+  """
   fee: Float
   id: ID
   additional: JSON
 
-  """If the RegistrationOption specifies an end time, this is the value"""
+  """
+  If the RegistrationOption specifies an end time, this is the value
+  """
   endAt: Timestamp
   name: String
 
-  """The ID of the RegistrationOption that this value is for"""
+  """
+  The ID of the RegistrationOption that this value is for
+  """
   optionId: ID
 
-  """The type of domain object that this value references"""
+  """
+  The type of domain object that this value references
+  """
   optionType: String
 
-  """The ID of the domain object that this value references"""
+  """
+  The ID of the domain object that this value references
+  """
   optionTypeId: ID
 
-  """Contains Entity Type and Entity ID"""
+  """
+  Contains Entity Type and Entity ID
+  """
   requires: [JSON]
 
-  """If the RegistrationOption specifies a start time, this is the value"""
+  """
+  If the RegistrationOption specifies a start time, this is the value
+  """
   startAt: Timestamp
 
-  """How many of this value have been selected by participants?"""
+  """
+  How many of this value have been selected by participants?
+  """
   valueConsumed: Int
 
-  """If the RegistrationOption specifies a limit, this is the value"""
+  """
+  If the RegistrationOption specifies a limit, this is the value
+  """
   valueLimit: Int
 
   """
@@ -2989,9 +4247,13 @@ type RegistrationValue {
   visible: Boolean
 }
 
-"""State of a user's registration for a tournament"""
+"""
+State of a user's registration for a tournament
+"""
 enum TournamentRegistrationState {
-  """User is not registered for tournament"""
+  """
+  User is not registered for tournament
+  """
   UNREGISTERED
 
   """
@@ -3004,11 +4266,15 @@ enum TournamentRegistrationState {
   """
   UNVERIFIED
 
-  """User is registered for tournament and has verified their participation"""
+  """
+  User is registered for tournament and has verified their participation
+  """
   VERIFIED
 }
 
-"""Tournament Stream"""
+"""
+Tournament Stream
+"""
 type Streams {
   id: ID
   enabled: Boolean
@@ -3028,32 +4294,50 @@ type Streams {
   streamType: Int
   streamTypeId: Int
 
-  """URL for stream, defaults to EMBED type."""
+  """
+  URL for stream, defaults to EMBED type.
+  """
   streamUrl(streamUrlType: StreamUrlType = EMBED): String
   tournamentId: Int @deprecated(reason: "We should add a tournament resolver if we want this")
 }
 
-"""Represents the source of a stream"""
+"""
+Represents the source of a stream
+"""
 enum StreamSource {
-  """Stream is on twitch.tv channel"""
+  """
+  Stream is on twitch.tv channel
+  """
   TWITCH
 
-  """Stream is on smashcast.tv channel"""
+  """
+  Stream is on smashcast.tv channel
+  """
   HITBOX
 
-  """Stream is on a stream.me channel"""
+  """
+  Stream is on a stream.me channel
+  """
   STREAMME
 
-  """Stream is on a mixer.com channel"""
+  """
+  Stream is on a mixer.com channel
+  """
   MIXER
 
-  """Stream is on a youtube.com channel"""
+  """
+  Stream is on a youtube.com channel
+  """
   YOUTUBE
 }
 
-"""Represents an embed vs page."""
+"""
+Represents an embed vs page.
+"""
 enum StreamUrlType {
-  """Direct link to Embed: player.twitch.tv/?channel=..."""
+  """
+  Direct link to Embed: player.twitch.tv/?channel=...
+  """
   EMBED
 
   """
@@ -3062,7 +4346,9 @@ enum StreamUrlType {
   PAGE
 }
 
-"""Information about a payment made by a user"""
+"""
+Information about a payment made by a user
+"""
 type UserTransaction {
   createdAt: Timestamp
   id: ID
@@ -3072,12 +4358,16 @@ type UserTransaction {
   lineItems: [LineItem]
   livemode: Boolean
 
-  """Total cost of all line items within the transaction"""
+  """
+  Total cost of all line items within the transaction
+  """
   totalCost: Float
   value: Float
 }
 
-"""Each individual item purchased during a transaction"""
+"""
+Each individual item purchased during a transaction
+"""
 type LineItem {
   id: ID
   cost: Float
@@ -3086,31 +4376,42 @@ type LineItem {
   type: String
 }
 
-"""Membership status of a team member"""
+"""
+Membership status of a team member
+"""
 enum TeamMemberStatus {
-  """"""
+  """
+  """
   UNKNOWN
 
-  """"""
+  """
+  """
   ACCEPTED
 
-  """"""
+  """
+  """
   INVITED
 
-  """"""
+  """
+  """
   REQUEST
 
-  """"""
+  """
+  """
   ALUM
 
-  """"""
+  """
+  """
   HIATUS
 
-  """"""
+  """
+  """
   OPEN_SPOT
 }
 
-"""A summary of an action taken by an entity"""
+"""
+A summary of an action taken by an entity
+"""
 type ActionSummary {
   allowedAt: Timestamp
   allowedUntil: Timestamp
@@ -3120,14 +4421,19 @@ type ActionSummary {
   used: Int
 }
 
-"""Global Team"""
+"""
+Global Team
+"""
 type GlobalTeam implements Team {
   id: ID
-  acceptedMembers: [TeamMember] @deprecated(reason: "Use the new members resolver with just accepted status")
+  acceptedMembers: [TeamMember]
+    @deprecated(reason: "Use the new members resolver with just accepted status")
   adminUrl(tab: String): String
   bio: String
 
-  """Does this team have a complete set of accepted members"""
+  """
+  Does this team have a complete set of accepted members
+  """
   complete: Boolean
 
   """
@@ -3147,24 +4453,34 @@ type GlobalTeam implements Team {
   inviteLink: String
   isCurrentUserAdmin: Boolean
 
-  """Are join requests allowed for the team?"""
+  """
+  Are join requests allowed for the team?
+  """
   joinRequestsAllowed: Boolean
 
-  """Leagues-level teams for leagues this team is competing in"""
+  """
+  Leagues-level teams for leagues this team is competing in
+  """
   leagueTeams(query: TeamPaginationQuery): EventTeamConnection
 
-  """Leagues this team is competing in"""
+  """
+  Leagues this team is competing in
+  """
   leagues(query: TeamPaginationQuery): LeagueConnection
   members(status: [TeamMemberStatus]): [TeamMember]
   name: String
   slug: String
 
-  """Tournaments this team is competing in"""
+  """
+  Tournaments this team is competing in
+  """
   tournaments(query: TeamTournamentsPaginationQuery): TournamentConnection
   type: Int
   url(tab: String): String
   userMember(
-    """User ID to get member for. If null, defaults to the current user."""
+    """
+    User ID to get member for. If null, defaults to the current user.
+    """
     userId: ID = null
   ): TeamMember
   verified: Boolean
@@ -3174,7 +4490,9 @@ type GlobalTeam implements Team {
 input TeamPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: TeamPaginationFilter
@@ -3199,27 +4517,43 @@ input TeamPaginationFilter {
   rosterIncomplete: Boolean
 }
 
-"""Represents the state of an activity"""
+"""
+Represents the state of an activity
+"""
 enum ActivityState {
-  """Activity is created"""
+  """
+  Activity is created
+  """
   CREATED
 
-  """Activity is active or in progress"""
+  """
+  Activity is active or in progress
+  """
   ACTIVE
 
-  """Activity is done"""
+  """
+  Activity is done
+  """
   COMPLETED
 
-  """Activity is ready to be started"""
+  """
+  Activity is ready to be started
+  """
   READY
 
-  """Activity is invalid"""
+  """
+  Activity is invalid
+  """
   INVALID
 
-  """Activity, like a set, has been called to start"""
+  """
+  Activity, like a set, has been called to start
+  """
   CALLED
 
-  """Activity is queued to run"""
+  """
+  Activity is queued to run
+  """
   QUEUED
 }
 
@@ -3233,14 +4567,20 @@ type LeagueConnection {
   nodes: [League]
 }
 
-"""A league"""
+"""
+A league
+"""
 type League {
   id: ID
   addrState: String
 
-  """Build Tournament admin URL"""
+  """
+  Build Tournament admin URL
+  """
   adminUrl(
-    """Tournament admin tab to add to URL"""
+    """
+    Tournament admin tab to add to URL
+    """
     tab: String
 
     """
@@ -3250,7 +4590,9 @@ type League {
   ): String
   approved: Boolean
 
-  """Attendee requirements for this tournament"""
+  """
+  Attendee requirements for this tournament
+  """
   attendeeFieldConfig: JSON
   circuitPhaseGroup: CircuitPhaseGroup
   city: String
@@ -3259,7 +4601,9 @@ type League {
   contactTwitter: String @deprecated(reason: "Use primaryContact fields")
   countryCode: String
 
-  """When the tournament was created (unix timestamp)"""
+  """
+  When the tournament was created (unix timestamp)
+  """
   createdAt: Timestamp
   currency: String
   customMarkdown: JSON @deprecated(reason: "No longer used")
@@ -3269,13 +4613,17 @@ type League {
   emailInstructions: String
   emailNote: String
 
-  """When the tournament ends"""
+  """
+  When the tournament ends
+  """
   endAt: Timestamp
   entrantCount: Int
   eventCount: Int
   eventOwners(query: EventOwnersQuery): EventOwnerConnection
 
-  """When does event registration close"""
+  """
+  When does event registration close
+  """
   eventRegistrationClosesAt: Timestamp
 
   """
@@ -3283,30 +4631,42 @@ type League {
   """
   eventTeams(globalTeamId: ID, playerId: ID): [EventTeam]
 
-  """Paginated list of events in a league"""
+  """
+  Paginated list of events in a league
+  """
   events(query: LeagueEventsQuery): EventConnection
   finalEvent: Event @deprecated(reason: "No longer used")
 
-  """Hacked "progression" into this final event"""
+  """
+  Hacked "progression" into this final event
+  """
   finalEventId: Int @deprecated(reason: "No longer used")
   generatedTabs: JSON
   gettingThere: String @deprecated(reason: "No longer used")
 
-  """True if tournament has at least one offline event"""
+  """
+  True if tournament has at least one offline event
+  """
   hasOfflineEvents: Boolean
   hasOnlineEvents: Boolean
   hashtag: String
 
-  """Whether or not to hide the admins"""
+  """
+  Whether or not to hide the admins
+  """
   hideAdmins: Boolean
   images(type: String): [Image]
   includeQRCheckIn: Boolean
   includeQRCode: Boolean
 
-  """Whether this league's events are all centralized by the admin"""
+  """
+  Whether this league's events are all centralized by the admin
+  """
   isCentralized: Boolean
 
-  """True if tournament has at least one online event"""
+  """
+  True if tournament has at least one online event
+  """
   isOnline: Boolean
   lat: Float
   links: TournamentLinks
@@ -3315,16 +4675,24 @@ type League {
   merchantConnectionId: Int
   minimumRequirements: JSON
 
-  """The tournament name"""
+  """
+  The tournament name
+  """
   name: String
 
-  """Get nomination event linked to this tournament"""
+  """
+  Get nomination event linked to this tournament
+  """
   nominationEvent: NominationEvent
 
-  """Whether to send admin emails when a new person registers"""
+  """
+  Whether to send admin emails when a new person registers
+  """
   notifyAdmins: Boolean
 
-  """Top X number of people in the standings who progress to final event"""
+  """
+  Top X number of people in the standings who progress to final event
+  """
   numProgressingToFinalEvent: Int @deprecated(reason: "No longer used")
   numUniquePlayers: Int
   onsitePaymentMode: String
@@ -3336,22 +4704,32 @@ type League {
   primaryContactType: String
   prizes: String @deprecated(reason: "No longer used")
   profileLinks(
-    """Hub id to filter profile links on"""
+    """
+    Hub id to filter profile links on
+    """
     hubId: ID
   ): [ProfileLink]
 
-  """Publishing settings for this tournament"""
+  """
+  Publishing settings for this tournament
+  """
   publishing: JSON
   qrCodeRedirect: String
   qrCodeRedirectType: String
 
-  """The region of the tournament"""
+  """
+  The region of the tournament
+  """
   region: String @deprecated(reason: "No longer used")
 
-  """When does registration for the tournament end"""
+  """
+  When does registration for the tournament end
+  """
   registrationClosesAt: Timestamp
 
-  """RegistrationOptions for this Tournament"""
+  """
+  RegistrationOptions for this Tournament
+  """
   registrationOptions(
     """
     Filter RegistrationOptions by fieldType. Omit this argument to return all RegistrationOptions.
@@ -3364,28 +4742,40 @@ type League {
   """
   reminderInterval: Int
   requests(
-    """Requests in this direction"""
+    """
+    Requests in this direction
+    """
     direction: RequestDirection!
     query: LeagueRequestQuery
   ): ProfileRequestConnection
   rules: String
 
-  """The short slug used to form the url"""
+  """
+  The short slug used to form the url
+  """
   shortSlug: String
 
-  """Whether standings for this league should be visible"""
+  """
+  Whether standings for this league should be visible
+  """
   showStandings: Boolean
   slug: String
   standing(
-    """Entrant in an event connected to this league"""
+    """
+    Entrant in an event connected to this league
+    """
     entrantId: ID!
   ): Standing
   standingGroup: StandingGroup
 
-  """Paginated list of standings"""
+  """
+  Paginated list of standings
+  """
   standings(query: StandingGroupStandingPageFilter): StandingConnection
 
-  """When the tournament Starts"""
+  """
+  When the tournament Starts
+  """
   startAt: Timestamp
 
   """
@@ -3396,22 +4786,34 @@ type League {
   stripeUserId: String
   subleagues: [League]
 
-  """When is the team creation deadline"""
+  """
+  When is the team creation deadline
+  """
   teamCreationClosesAt: Timestamp
   tiers: [EventTier]
 
-  """The timezone of the tournament"""
+  """
+  The timezone of the tournament
+  """
   timezone: String
 
-  """The type of tournament from TournamentType"""
+  """
+  The type of tournament from TournamentType
+  """
   tournamentType: Int
 
-  """When the tournament was last modified (unix timestamp)"""
+  """
+  When the tournament was last modified (unix timestamp)
+  """
   updatedAt: Timestamp
 
-  """Build Tournament URL"""
+  """
+  Build Tournament URL
+  """
   url(
-    """Tournament tab to add to URL"""
+    """
+    Tournament tab to add to URL
+    """
     tab: String
 
     """
@@ -3425,25 +4827,37 @@ type League {
   videogames: [Videogame]
 }
 
-"""A circuit type phase group"""
+"""
+A circuit type phase group
+"""
 type CircuitPhaseGroup {
   id: ID
 
-  """The bracket type of this group's phase."""
+  """
+  The bracket type of this group's phase.
+  """
   bracketType: BracketType
 
-  """URL for this phase groups's bracket."""
+  """
+  URL for this phase groups's bracket.
+  """
   bracketUrl: String
   checkInFinalizeAction: String
   checkInState: String
 
-  """The sets of current round of a phase group"""
+  """
+  The sets of current round of a phase group
+  """
   currentRoundSets: [Set]
 
-  """Unique identifier for this group within the context of its phase"""
+  """
+  Unique identifier for this group within the context of its phase
+  """
   displayIdentifier: String
 
-  """Event check in groups that the phase group is linked to"""
+  """
+  Event check in groups that the phase group is linked to
+  """
   eventCheckInGroup: EventCheckInGroup
   firebasePath: String
 
@@ -3460,58 +4874,88 @@ type CircuitPhaseGroup {
   matchmakingSettings: JSON
   numRounds: Int
 
-  """The number of seeds for a phase group."""
+  """
+  The number of seeds for a phase group.
+  """
   numSeeds(checkInState: Int): Int
   oldSets(
-    """Limit to Sets in the current round"""
+    """
+    Limit to Sets in the current round
+    """
     currentRoundOnly: Boolean = false
   ): [Set]
-  paginatedSeeds(query: SeedPaginationQuery!, eventId: ID): SeedConnection @deprecated(reason: "Please use 'seeds', which is now paginated")
+  paginatedSeeds(query: SeedPaginationQuery!, eventId: ID): SeedConnection
+    @deprecated(reason: "Please use 'seeds', which is now paginated")
 
-  """Paginated sets on this phaseGroup"""
+  """
+  Paginated sets on this phaseGroup
+  """
   paginatedSets(
     page: Int
     perPage: Int
 
-    """How to sort these sets"""
+    """
+    How to sort these sets
+    """
     sortType: SetSortType
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection @deprecated(reason: "Please use 'sets', which is now paginated")
 
-  """Percentage of matches completed for this phase group"""
+  """
+  Percentage of matches completed for this phase group
+  """
   percentComplete: Int
 
-  """The phase associated with this phase group"""
+  """
+  The phase associated with this phase group
+  """
   phase: Phase
   phaseId: Int @deprecated(reason: "Use phase")
   pointMappingGroups: [PointMappingGroup]
 
-  """The progressions out of this phase group"""
+  """
+  The progressions out of this phase group
+  """
   progressionsOut: [Progression]
   raceConfig: JSON
-  roundDisplayNames: JSON @deprecated(reason: "This is the wrong API for getting round titles. We need to put more work into the phaseGroup.rounds resolver to make it useful.")
+  roundDisplayNames: JSON
+    @deprecated(
+      reason: "This is the wrong API for getting round titles. We need to put more work into the phaseGroup.rounds resolver to make it useful."
+    )
   rounds: [Round]
   seedMap: JSON
 
-  """Paginated seeds for this phase group"""
+  """
+  Paginated seeds for this phase group
+  """
   seeds(query: SeedPaginationQuery!, eventId: ID): SeedConnection
 
-  """Paginated sets on this phaseGroup"""
+  """
+  Paginated sets on this phaseGroup
+  """
   sets(
     page: Int
     perPage: Int
 
-    """How to sort these sets"""
+    """
+    How to sort these sets
+    """
     sortType: SetSortType
 
-    """Supported filter options to filter down set results."""
+    """
+    Supported filter options to filter down set results.
+    """
     filters: SetFilters
   ): SetConnection
   standingGroup: StandingGroup
 
-  """List of StandingGroups, or Leaderboards, for this circuit"""
+  """
+  List of StandingGroups, or Leaderboards, for this circuit
+  """
   standingGroups: [StandingGroup]
 
   """
@@ -3519,7 +4963,9 @@ type CircuitPhaseGroup {
   """
   standingPoints(query: StandingPointsPaginationQuery): StandingPointsConnection
 
-  """Paginated list of standings"""
+  """
+  Paginated list of standings
+  """
   standings(query: StandingGroupStandingPageFilter): StandingConnection
 
   """
@@ -3528,7 +4974,9 @@ type CircuitPhaseGroup {
   startAt: Timestamp
   state: Int
 
-  """Paginated stations on this phaseGroup"""
+  """
+  Paginated stations on this phaseGroup
+  """
   stations(query: StationFilter): StationsConnection
   tiebreakOrder: JSON
   unpaginatedSeeds: [Seed]
@@ -3537,7 +4985,9 @@ type CircuitPhaseGroup {
   URL for the phase group. Optionally, build URL for resource under the phase group
   """
   url(
-    """Phase group (brackets) tab to build URL for"""
+    """
+    Phase group (brackets) tab to build URL for
+    """
     tab: String
 
     """
@@ -3551,29 +5001,39 @@ type CircuitPhaseGroup {
   be 0 or 1 seed. There might be weird cases where someone has more seeds
   """
   userSeeds(
-    """User ID to get sets for. If null, will default to current user."""
+    """
+    User ID to get sets for. If null, will default to current user.
+    """
     userId: ID
   ): [Seed]
 
-  """The current user's tasks for this phase group"""
+  """
+  The current user's tasks for this phase group
+  """
   userTasks: [Task]
   wave: Wave
   waveId: Int @deprecated(reason: "Use wave")
 }
 
-"""Group of check in enabled phase groups for a given start time"""
+"""
+Group of check in enabled phase groups for a given start time
+"""
 type EventCheckInGroup {
   id: ID
   checkInFinalized: Boolean
   createdAt: Timestamp
 
-  """The event the check in group is part of"""
+  """
+  The event the check in group is part of
+  """
   event: Event
   eventId: Int
   firebasePath: String
   firebasePrefix: String
 
-  """Number of phase groups linked to this check in group"""
+  """
+  Number of phase groups linked to this check in group
+  """
   numPhaseGroups: Int
   startAt: Timestamp
   updatedAt: Timestamp
@@ -3582,7 +5042,9 @@ type EventCheckInGroup {
 input SeedPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: SeedPageFilter
@@ -3604,9 +5066,13 @@ type SeedConnection {
   nodes: [Seed]
 }
 
-"""Different sort type configurations used when displaying multiple sets"""
+"""
+Different sort type configurations used when displaying multiple sets
+"""
 enum SetSortType {
-  """Sets will not be sorted."""
+  """
+  Sets will not be sorted.
+  """
   NONE
 
   """
@@ -3619,13 +5085,19 @@ enum SetSortType {
   """
   MAGIC
 
-  """Sets are sorted in the order that they were started."""
+  """
+  Sets are sorted in the order that they were started.
+  """
   RECENT
 
-  """Deprecated. This is equivalent to CALL_ORDER"""
+  """
+  Deprecated. This is equivalent to CALL_ORDER
+  """
   STANDARD
 
-  """Sets sorted by round and identifier"""
+  """
+  Sets sorted by round and identifier
+  """
   ROUND
 }
 
@@ -3641,7 +5113,9 @@ type Progression {
   placeholderName: String
 }
 
-"""A round within a phase group"""
+"""
+A round within a phase group
+"""
 type Round {
   id: ID
 
@@ -3651,17 +5125,23 @@ type Round {
   """
   bestOf: Int
 
-  """Indicates this round's order in the phase group"""
+  """
+  Indicates this round's order in the phase group
+  """
   number: Int
 
-  """The time that this round is scheduled to start at"""
+  """
+  The time that this round is scheduled to start at
+  """
   startAt: Timestamp
 }
 
 input StandingPointsPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: StandingPointsPageFilter
@@ -3678,15 +5158,21 @@ type StandingPointsConnection {
   nodes: [StandingPoints]
 }
 
-"""Points values that can belong to a standing."""
+"""
+Points values that can belong to a standing.
+"""
 type StandingPoints {
   id: ID
   description: String
 
-  """The entrant these points belong to (if applicable)"""
+  """
+  The entrant these points belong to (if applicable)
+  """
   entrant: Entrant
 
-  """The event these points belongs to (if applicable)"""
+  """
+  The event these points belongs to (if applicable)
+  """
   event: Event
   internalNotes: String
   isManual: Boolean
@@ -3697,7 +5183,9 @@ type StandingPoints {
   sourceType: String
   standing: Int
 
-  """One off node for FFA display tables"""
+  """
+  One off node for FFA display tables
+  """
   stats: JSON
 }
 
@@ -3717,7 +5205,9 @@ type StationsConnection {
   nodes: [Stations]
 }
 
-"""Stations, such as a stream setup, at an event"""
+"""
+Stations, such as a stream setup, at an event
+"""
 type Stations {
   id: ID
   canAutoAssign: Boolean
@@ -3737,7 +5227,9 @@ type Stations {
   queueDepth: Int
   state: Int
 
-  """Tournament event stream for a station"""
+  """
+  Tournament event stream for a station
+  """
   stream: Streams
   streamGame: String @deprecated(reason: "No longer used")
   streamId: Int @deprecated(reason: "Use stream")
@@ -3751,7 +5243,9 @@ type Stations {
   updatedAt: Timestamp
 }
 
-"""Represents a task for a user to complete for some entity"""
+"""
+Represents a task for a user to complete for some entity
+"""
 type Task {
   id: ID
   cta: JSON
@@ -3762,7 +5256,8 @@ type Task {
   entityType: String @deprecated(reason: "Use entity")
   featureId: ID @deprecated(reason: "Use systemId now")
   meta: JSON
-  player: Player @deprecated(reason: "Only works for sets. Use entity resolver instead to connect to a player")
+  player: Player
+    @deprecated(reason: "Only works for sets. Use entity resolver instead to connect to a player")
   prereqs: JSON
   priority: Int
   sortOrder: Int
@@ -3773,10 +5268,14 @@ type Task {
   type: String
 }
 
-"""The entity that generated this task"""
+"""
+The entity that generated this task
+"""
 union TaskEntity = Set | Event | PhaseGroup
 
-"""Represents a timer or deadline for a task to be acted on."""
+"""
+Represents a timer or deadline for a task to be acted on.
+"""
 type TaskTimer {
   description: String
   endAt: Timestamp
@@ -3784,21 +5283,29 @@ type TaskTimer {
   title: String
 }
 
-"""A wave in a tournament"""
+"""
+A wave in a tournament
+"""
 type Wave {
   id: ID
 
-  """The Wave Identifier"""
+  """
+  The Wave Identifier
+  """
   identifier: String
 
-  """Unix time the wave is scheduled to start."""
+  """
+  Unix time the wave is scheduled to start.
+  """
   startAt: Timestamp
 }
 
 input EventOwnersQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
 }
@@ -3808,7 +5315,9 @@ type EventOwnerConnection {
   nodes: [EventOwner]
 }
 
-"""Name and Gamertag of the owner of an event in a league"""
+"""
+Name and Gamertag of the owner of an event in a league
+"""
 type EventOwner {
   eventId: ID
   email: String
@@ -3819,7 +5328,9 @@ type EventOwner {
 input LeagueEventsQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: LeagueEventsFilter
@@ -3839,7 +5350,9 @@ type TournamentLinks {
   discord: String
 }
 
-"""A nomination event"""
+"""
+A nomination event
+"""
 type NominationEvent {
   id: ID
   endAt: Timestamp
@@ -3873,7 +5386,9 @@ type NominationSettings {
   type: String
 }
 
-"""Links an owner profile to the profile it owns."""
+"""
+Links an owner profile to the profile it owns.
+"""
 type ProfileLink {
   id: ID
   isFeatured: Boolean
@@ -3882,12 +5397,16 @@ type ProfileLink {
   ownerType: String
   profileId: Int
 
-  """Profile tags attached to this profile link."""
+  """
+  Profile tags attached to this profile link.
+  """
   profileTags: [ProfileTag]
   profileType: String
 }
 
-"""A tag owned by a profile. Currently only hubs can own tags"""
+"""
+A tag owned by a profile. Currently only hubs can own tags
+"""
 type ProfileTag {
   id: ID
   name: String
@@ -3911,24 +5430,32 @@ type RegistrationOption {
   required: Boolean
   updatedAt: Timestamp
 
-  """List of RegistrationValues for this option"""
+  """
+  List of RegistrationValues for this option
+  """
   values: [RegistrationValue]
   visible: Boolean
 }
 
-"""Incoming or Outgoing request"""
+"""
+Incoming or Outgoing request
+"""
 enum RequestDirection {
-  """"""
+  """
+  """
   INCOMING
 
-  """"""
+  """
+  """
   OUTGOING
 }
 
 input LeagueRequestQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: LeagueRequestFilter
@@ -3937,10 +5464,14 @@ input LeagueRequestQuery {
 input LeagueRequestFilter {
   status: [RequestStatus]
 
-  """Filter on the other type. i.e. requester/recipient"""
+  """
+  Filter on the other type. i.e. requester/recipient
+  """
   entityType: String
 
-  """Filter on the specific entity. Should also specify entityType"""
+  """
+  Filter on the specific entity. Should also specify entityType
+  """
   entityId: ID
   location: LocationFilterType
   search: PaginationSearchType
@@ -3951,39 +5482,61 @@ type ProfileRequestConnection {
   nodes: [ProfileRequest]
 }
 
-"""Request object for transactions between profile types"""
+"""
+Request object for transactions between profile types
+"""
 type ProfileRequest {
   id: ID
 
-  """Link that the user must follow in order to accept the request"""
+  """
+  Link that the user must follow in order to accept the request
+  """
   acceptUrl: String
 
-  """Connection entity associated with this request"""
+  """
+  Connection entity associated with this request
+  """
   connection: RequestConnection
 
-  """Unix time of when the request was created"""
+  """
+  Unix time of when the request was created
+  """
   createdAt: Timestamp
 
-  """Entity receiving this request"""
+  """
+  Entity receiving this request
+  """
   recipient: RequestEntity
   requestData: JSON
 
-  """User that created this request"""
+  """
+  User that created this request
+  """
   requestedByUser: User
 
-  """Entity creating this request"""
+  """
+  Entity creating this request
+  """
   requester: RequestEntity
 
-  """Profile type of object that initiated the request"""
+  """
+  Profile type of object that initiated the request
+  """
   requesterType: String
 
-  """Status of the request"""
+  """
+  Status of the request
+  """
   status: RequestStatus
 
-  """Type of profile request"""
+  """
+  Type of profile request
+  """
   type: Int
 
-  """Unix time of when the request was updated"""
+  """
+  Unix time of when the request was updated
+  """
   updatedAt: Timestamp
 }
 
@@ -3991,7 +5544,9 @@ union RequestConnection = Participant | EventTier | Role | TeamMember | GlobalTe
 
 union RequestEntity = Tournament | User | League | Event | Hub | GlobalTeam | EventTeam
 
-"""A profile that can contain other profiles within it"""
+"""
+A profile that can contain other profiles within it
+"""
 type Hub {
   id: ID
   adminUrl(tab: String): String
@@ -4000,14 +5555,18 @@ type Hub {
   countryCode: String
   createdAt: Timestamp
 
-  """Number of users following this hub"""
+  """
+  Number of users following this hub
+  """
   followerCount: Int
   fullAddress: String
   images(type: String): [Image]
   isCurrentUserAdmin: Boolean
   lat: Float
 
-  """Leagues linked to this hub"""
+  """
+  Leagues linked to this hub
+  """
   leagues(query: HubTournamentsPaginationQuery): LeagueConnection
   lng: Float
   mapsPlaceId: String
@@ -4016,31 +5575,43 @@ type Hub {
   primaryContact: String
   primaryContactType: String
 
-  """Profile links attached to this hub"""
+  """
+  Profile links attached to this hub
+  """
   profileLinks(tagName: [String]): [ProfileLink]
 
-  """Linked profile tags created for this hub."""
+  """
+  Linked profile tags created for this hub.
+  """
   profileTags: [ProfileTag]
   publishingSettings: HubPublishingSettings
 
-  """Get roles for this profile"""
+  """
+  Get roles for this profile
+  """
   roles(page: Int, perPage: Int, includeUnconfirmed: Boolean): RoleConnection
   slug: String
   state: String
 
-  """Tournaments linked to this hub"""
+  """
+  Tournaments linked to this hub
+  """
   tournaments(query: HubTournamentsPaginationQuery): TournamentConnection
   updatedAt: Timestamp
   url(tab: String): String
 
-  """Alias for fullAddress field."""
+  """
+  Alias for fullAddress field.
+  """
   venueAddress: String
 }
 
 input HubTournamentsPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: HubTournamentsPaginationFilter
@@ -4054,30 +5625,41 @@ input HubTournamentsPaginationFilter {
   videogameIds: [ID]
 }
 
-"""Publishing settings for a hub"""
+"""
+Publishing settings for a hub
+"""
 type HubPublishingSettings {
   followerCount: FollowerCountPublishingState
   publishing: ProfilePublishingState
 }
 
-"""Publishing settings for a hub's follower count"""
+"""
+Publishing settings for a hub's follower count
+"""
 enum FollowerCountPublishingState {
-  """"""
+  """
+  """
   PRIVATE
 
-  """"""
+  """
+  """
   PUBLIC
 }
 
-"""Publishing state for the profile"""
+"""
+Publishing state for the profile
+"""
 enum ProfilePublishingState {
-  """"""
+  """
+  """
   PRIVATE
 
-  """"""
+  """
+  """
   LINK_ONLY
 
-  """"""
+  """
+  """
   PUBLIC
 }
 
@@ -4102,7 +5684,9 @@ type UserEligibleEvents {
 input TeamTournamentsPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: TeamTournamentsPaginationFilter
@@ -4119,7 +5703,9 @@ A set of restrictions for an entity (i.e. team) in order to be a member of a con
 """
 type EntityRestriction {
   actionWindows(
-    """Only return action windows in this state"""
+    """
+    Only return action windows in this state
+    """
     state: ActionWindowState
   ): [ActionWindow]
   id: ID
@@ -4130,19 +5716,26 @@ type EntityRestriction {
   state: Int
 }
 
-"""A state representing whether actions can currently be made"""
+"""
+A state representing whether actions can currently be made
+"""
 enum ActionWindowState {
-  """"""
+  """
+  """
   UPCOMING
 
-  """"""
+  """
+  """
   OPEN
 
-  """"""
+  """
+  """
   CLOSED
 }
 
-"""A window of time that an ActionSet can be taken"""
+"""
+A window of time that an ActionSet can be taken
+"""
 type ActionWindow {
   id: ID
   actionSet: ActionSet
@@ -4151,23 +5744,31 @@ type ActionWindow {
   state: ActionWindowState
 }
 
-"""A set of actions available for an entity to take"""
+"""
+A set of actions available for an entity to take
+"""
 interface ActionSet {
   id: ID
   actions(isAllowed: Boolean): [Action]
 }
 
-"""A restricted action definition"""
+"""
+A restricted action definition
+"""
 type Action {
   isAllowed: Boolean
   limit: Int
   name: String
 }
 
-"""The object imposing a restriction on other entities"""
+"""
+The object imposing a restriction on other entities
+"""
 union RestrictionContainer = Event
 
-"""Team roster size requirements"""
+"""
+Team roster size requirements
+"""
 type TeamRosterSize {
   maxAlternates: Int
   maxPlayers: Int
@@ -4189,7 +5790,9 @@ input EventFilter {
 input ParticipantPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: ParticipantPageFilter
@@ -4216,7 +5819,9 @@ type ParticipantConnection {
 input TournamentRequestQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: TournamentRequestFilter
@@ -4225,10 +5830,14 @@ input TournamentRequestQuery {
 input TournamentRequestFilter {
   status: [RequestStatus]
 
-  """Filter on the other type. i.e. requester/recipient"""
+  """
+  Filter on the other type. i.e. requester/recipient
+  """
   entityType: String
 
-  """Filter on the specific entity. Should also specify entityType"""
+  """
+  Filter on the specific entity. Should also specify entityType
+  """
   entityId: ID
   location: LocationFilterType
   search: PaginationSearchType
@@ -4240,7 +5849,9 @@ input ShopProductFilter {
   hasVariants: Boolean
 }
 
-"""Shop Product"""
+"""
+Shop Product
+"""
 type ShopProduct {
   id: ID
   description: String
@@ -4250,7 +5861,9 @@ type ShopProduct {
   type: Int
 }
 
-"""A shop"""
+"""
+A shop
+"""
 type Shop {
   id: ID
   levels(query: ShopLevelsQuery): ShopLevelConnection
@@ -4263,7 +5876,9 @@ type Shop {
 input ShopLevelsQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
 }
@@ -4273,7 +5888,9 @@ type ShopLevelConnection {
   nodes: [ShopLevel]
 }
 
-"""A shop level"""
+"""
+A shop level
+"""
 type ShopLevel {
   id: ID
   currAmount: Float
@@ -4286,7 +5903,9 @@ type ShopLevel {
   votingValues: [ShopVotingOptionValue]
 }
 
-"""A shop level voting option config"""
+"""
+A shop level voting option config
+"""
 type ShopVotingOptionConfig {
   id: ID
   currAmount: Float
@@ -4297,7 +5916,9 @@ type ShopVotingOptionConfig {
   voteRatio: Float
 }
 
-"""A shop level voting option value"""
+"""
+A shop level voting option value
+"""
 type ShopVotingOptionValue {
   id: ID
   name: String
@@ -4307,7 +5928,9 @@ type ShopVotingOptionValue {
 input ShopOrderMessagesQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
 }
@@ -4317,34 +5940,52 @@ type ShopOrderMessageConnection {
   nodes: [ShopOrderMessage]
 }
 
-"""The message and player info for a shop order"""
+"""
+The message and player info for a shop order
+"""
 type ShopOrderMessage {
   id: ID
 
-  """The player's gamertag. Returns null if anonymous message type"""
+  """
+  The player's gamertag. Returns null if anonymous message type
+  """
   gamertag: String
 
-  """The order message"""
+  """
+  The order message
+  """
   message: String
 
-  """The player's name. Returns null unless name & tag display is selected"""
+  """
+  The player's name. Returns null unless name & tag display is selected
+  """
   name: String
 
-  """The player who left the comment"""
+  """
+  The player who left the comment
+  """
   player: Player
 
-  """The total order amount"""
+  """
+  The total order amount
+  """
   total: Float
 }
 
-"""A Stream queue object"""
+"""
+A Stream queue object
+"""
 type StreamQueue {
   id: String
 
-  """The sets on the stream"""
+  """
+  The sets on the stream
+  """
   sets: [Set]
 
-  """The stream on the queue"""
+  """
+  The stream on the queue
+  """
   stream: Streams
 }
 
@@ -4353,24 +5994,32 @@ type TeamConnection {
   nodes: [Team]
 }
 
-"""Event Prizing"""
+"""
+Event Prizing
+"""
 interface EventPrizing {
   id: ID
   prizingType: PrizingType
 }
 
-"""Type of prizing"""
+"""
+Type of prizing
+"""
 enum PrizingType {
-  """"""
+  """
+  """
   PERCENTAGE
 
-  """"""
+  """
+  """
   FIXED_AMOUNT
 
-  """"""
+  """
+  """
   PRODUCT
 
-  """"""
+  """
+  """
   DEFAULT_PRIZING
 }
 
@@ -4391,7 +6040,9 @@ type Score {
   """
   label: String
 
-  """The raw score value"""
+  """
+  The raw score value
+  """
   value: Float
 
   """
@@ -4405,13 +6056,19 @@ Describes a source for an entrant in a set. Generally the source is either from
 a winner/loser of a set in this phase group, or a seed if this is a progression
 """
 type SetEntrantSource {
-  """The type of this source. e.g. set, seed"""
+  """
+  The type of this source. e.g. set, seed
+  """
   type: String!
 
-  """The ID of the type of this source. e.g. set ID, seed ID, etc."""
+  """
+  The ID of the type of this source. e.g. set ID, seed ID, etc.
+  """
   typeId: ID
 
-  """The condition of this source. e.g. winner, loser, etc."""
+  """
+  The condition of this source. e.g. winner, loser, etc.
+  """
   condition: String
 
   """
@@ -4429,12 +6086,16 @@ type SetSlot {
   entrant: Entrant
   isFilled: Boolean
 
-  """true if this slot progressed from the given setId"""
+  """
+  true if this slot progressed from the given setId
+  """
   isFromSet(setId: ID): Boolean
   originProgression: Progression
   originSet: Set
 
-  """Pairs with prereqType, is the ID of the prereq."""
+  """
+  Pairs with prereqType, is the ID of the prereq.
+  """
   prereqId: String
 
   """
@@ -4442,7 +6103,9 @@ type SetSlot {
   """
   prereqPlacement: Int
 
-  """Describes where the entity in this slot comes from."""
+  """
+  Describes where the entity in this slot comes from.
+  """
   prereqType: String
   seed: Seed
 
@@ -4453,7 +6116,9 @@ type SetSlot {
   set: Set
   setId: ID @deprecated(reason: "Use set")
 
-  """The index of the slot. Unique per set."""
+  """
+  The index of the slot. Unique per set.
+  """
   slotIndex: Int
 
   """
@@ -4462,48 +6127,72 @@ type SetSlot {
   standing: Standing
 }
 
-"""A game represents a single game within a set."""
+"""
+A game represents a single game within a set.
+"""
 type Game {
   id: ID
 
-  """Gets the users self reported stats for this game"""
+  """
+  Gets the users self reported stats for this game
+  """
   currentUserReportedStats: JSON
 
-  """Score of entrant 1. For smash, this is equivalent to stocks remaining."""
+  """
+  Score of entrant 1. For smash, this is equivalent to stocks remaining.
+  """
   entrant1Score: Int
 
-  """Score of entrant 2. For smash, this is equivalent to stocks remaining."""
+  """
+  Score of entrant 2. For smash, this is equivalent to stocks remaining.
+  """
   entrant2Score: Int
 
-  """Aggregates self reported stats for all entrants in this game"""
+  """
+  Aggregates self reported stats for all entrants in this game
+  """
   entrantReportedStats: JSON
   images(type: String): [Image]
 
-  """The API Game that this was game was linked to if any"""
+  """
+  The API Game that this was game was linked to if any
+  """
   linkedApiGame: JSON
   orderNum: Int
 
-  """Selections for this game such as character, etc."""
+  """
+  Selections for this game such as character, etc.
+  """
   selections: [GameSelection]
   setId: Int @deprecated(reason: "We should add a set resolver if we need this")
 
-  """The stage that this game was played on (if applicable)"""
+  """
+  The stage that this game was played on (if applicable)
+  """
   stage: Stage
   state: Int
 
-  """The stats as computed by the UIMapping for this game."""
+  """
+  The stats as computed by the UIMapping for this game.
+  """
   stats: JSON
   uiMapping: UIMapping
   winnerId: Int
 }
 
-"""A selection for this game. i.e. character/stage selection, etc"""
+"""
+A selection for this game. i.e. character/stage selection, etc
+"""
 type GameSelection {
-  """The entrant who this selection is for"""
+  """
+  The entrant who this selection is for
+  """
   entrant: Entrant
   id: ID
 
-  """If this is a character selection, returns the selected character."""
+  """
+  If this is a character selection, returns the selected character.
+  """
   character: Character
   entrantId: Int @deprecated(reason: "We should add an entrant resolver if we need this")
   orderNum: Int
@@ -4518,9 +6207,13 @@ type GameSelection {
   selectionValue: Int
 }
 
-"""The type of selection i.e. is it for a character or something else"""
+"""
+The type of selection i.e. is it for a character or something else
+"""
 enum GameSelectionType {
-  """Character selection"""
+  """
+  Character selection
+  """
   CHARACTER
 }
 
@@ -4544,20 +6237,30 @@ type UIMapping {
   viewType: String
 }
 
-"""Defines a single component and where it maps to in the schema."""
+"""
+Defines a single component and where it maps to in the schema.
+"""
 type UIMappingEntry {
   component: Component
 
-  """The key of this entry. Should be unique within its hierarchy."""
+  """
+  The key of this entry. Should be unique within its hierarchy.
+  """
   key: String
 
-  """The name of this entry. Can be used as a column name, for example."""
+  """
+  The name of this entry. Can be used as a column name, for example.
+  """
   name: String
 }
 
-"""Defines everything required to show a dynamic UI element."""
+"""
+Defines everything required to show a dynamic UI element.
+"""
 type Component {
-  """The name of component to render"""
+  """
+  The name of component to render
+  """
   componentName: String
 
   """
@@ -4567,7 +6270,9 @@ type Component {
   props: JSON
 }
 
-"""[DEPRECATED] An action to do for a match"""
+"""
+[DEPRECATED] An action to do for a match
+"""
 type OldSetTask {
   id: ID
   action: String
@@ -4592,7 +6297,9 @@ type SetSlotConnection {
   nodes: [SetSlot]
 }
 
-"""A Profile Task"""
+"""
+A Profile Task
+"""
 type ProfileTask {
   cta: JSON
   id: ID
@@ -4608,15 +6315,23 @@ type ProfileTask {
   title: String
 }
 
-"""Describes a source for points for a set"""
+"""
+Describes a source for points for a set
+"""
 type PointSource {
-  """The type of this source."""
+  """
+  The type of this source.
+  """
   type: ID!
 
-  """The field this source acts on"""
+  """
+  The field this source acts on
+  """
   field: String!
 
-  """The config used to help calculate. Depends on type."""
+  """
+  The config used to help calculate. Depends on type.
+  """
   config: JSON
 }
 
@@ -4626,9 +6341,13 @@ type ResetAffectedData {
   affectedPhaseGroupCount: Int
 }
 
-"""Configure whether a task's CTA should be converted to a page link"""
+"""
+Configure whether a task's CTA should be converted to a page link
+"""
 enum TaskCTAMode {
-  """Show the standard CTA for this task, if there is one."""
+  """
+  Show the standard CTA for this task, if there is one.
+  """
   STANDARD
 
   """
@@ -4637,12 +6356,18 @@ enum TaskCTAMode {
   PAGE_LINK
 }
 
-"""DEPRECATED. Use TaskCTAMode instead"""
+"""
+DEPRECATED. Use TaskCTAMode instead
+"""
 enum TaskViewFormat {
-  """TODO"""
+  """
+  TODO
+  """
   FULL_TASK
 
-  """TODO"""
+  """
+  TODO
+  """
   LINKS_ONLY
 }
 
@@ -4664,53 +6389,77 @@ type PhaseGroupConnection {
   nodes: [PhaseGroup]
 }
 
-"""Data on phase progression, keyed on destination PhaseId"""
+"""
+Data on phase progression, keyed on destination PhaseId
+"""
 type ProgressionData {
-  """Origin phase ID that is the source of this progression."""
+  """
+  Origin phase ID that is the source of this progression.
+  """
   origin: Int
 
-  """Amount of seeds per phase group that are progressing."""
+  """
+  Amount of seeds per phase group that are progressing.
+  """
   numProgressing: Int
 }
 
-"""Standings Configuration"""
+"""
+Standings Configuration
+"""
 type StandingsConfig {
   id: ID
 
-  """The sorts, or tiebreakers, used to generate standings"""
+  """
+  The sorts, or tiebreakers, used to generate standings
+  """
   standingsSorts: [StandingsSort!]!
 }
 
-"""Defines a sort, or tiebreaker, for standings"""
+"""
+Defines a sort, or tiebreaker, for standings
+"""
 type StandingsSort {
   id: ID
   orderNum: Int
   sortDirection: StandingsSortDirection
   sortType: StandingsSortType
 
-  """StatDefinition of this StandingsSort"""
+  """
+  StatDefinition of this StandingsSort
+  """
   statDefinition: StatDefinition
 }
 
-"""StandingsSort SortDirection, if required by its SortType"""
+"""
+StandingsSort SortDirection, if required by its SortType
+"""
 enum StandingsSortDirection {
-  """"""
+  """
+  """
   ASC
 
-  """"""
+  """
+  """
   DESC
 }
 
-"""StandingsSort SortType, or tiebreaker type"""
+"""
+StandingsSort SortType, or tiebreaker type
+"""
 enum StandingsSortType {
-  """"""
+  """
+  """
   STAT
 
-  """"""
+  """
+  """
   COMPLETION_TIME
 }
 
-"""Definition of a stat"""
+"""
+Definition of a stat
+"""
 type StatDefinition {
   id: ID
   abbreviation: String
@@ -4726,47 +6475,65 @@ type StatDefinition {
 The method in which stats are aggregated upwards, ie. from the Game to Set level
 """
 enum StatAggregationMethod {
-  """"""
+  """
+  """
   SUM
 
-  """"""
+  """
+  """
   MIN
 
-  """"""
+  """
+  """
   MAX
 
-  """"""
+  """
+  """
   AVG
 }
 
-"""The ValueType attributed to a StatDefinition"""
+"""
+The ValueType attributed to a StatDefinition
+"""
 enum StatValueType {
-  """"""
+  """
+  """
   NUMBER
 
-  """"""
+  """
+  """
   DURATION
 
-  """"""
+  """
+  """
   TEXT
 
-  """"""
+  """
+  """
   BOOLEAN
 }
 
-"""Stats Configuration"""
+"""
+Stats Configuration
+"""
 type StatsConfig {
   id: ID
 
-  """Stat definitions"""
+  """
+  Stat definitions
+  """
   statDefinitions: [StatDefinition]
 }
 
 input SetStateFilter {
-  """Type of filter for state, supports values of "exclude" and "include"."""
+  """
+  Type of filter for state, supports values of "exclude" and "include".
+  """
   type: String!
 
-  """List of states to exclude or include depending on the type setting."""
+  """
+  List of states to exclude or include depending on the type setting.
+  """
   states: [ActivityState]
 }
 
@@ -4791,16 +6558,24 @@ type EventSeedConnection {
   nodes: [EventSeed]
 }
 
-"""An event seed in a event"""
+"""
+An event seed in a event
+"""
 type EventSeed {
-  """The entrant for this event seed"""
+  """
+  The entrant for this event seed
+  """
   entrant: Entrant
   id: ID
 
-  """Non-zero error code if an error occurred processing this seed"""
+  """
+  Non-zero error code if an error occurred processing this seed
+  """
   errorCode: EventSeedErrorCode
 
-  """If true, this seed should not be moved"""
+  """
+  If true, this seed should not be moved
+  """
   isLocked: Boolean
 
   """
@@ -4808,35 +6583,50 @@ type EventSeed {
   """
   isPendingPhaseSeed: Boolean
 
-  """True if this event seed has been removed from the event"""
+  """
+  True if this event seed has been removed from the event
+  """
   isRemoved: Boolean
 
-  """The phase seed where this event seed starts"""
+  """
+  The phase seed where this event seed starts
+  """
   originPhaseSeed: Seed
 
-  """The seedNum for this event seed"""
+  """
+  The seedNum for this event seed
+  """
   seedNum: Int
 }
 
-"""The error code associated with an EventSeed"""
+"""
+The error code associated with an EventSeed
+"""
 enum EventSeedErrorCode {
-  """"""
+  """
+  """
   NO_ERROR
 
-  """"""
+  """
+  """
   GROUP_SEED_NUM_UNAVAILABLE
 
-  """"""
+  """
+  """
   SEED_RANGE_FULL
 
-  """"""
+  """
+  """
   GROUP_SEED_NUM_OUTSIDE_RANGE
 
-  """"""
+  """
+  """
   GROUP_ALREADY_STARTED
 }
 
-"""Used to build the frontend navbar for profile navigation"""
+"""
+Used to build the frontend navbar for profile navigation
+"""
 type ProfileNavFeature {
   activeState: Int
   badge: Int
@@ -4865,7 +6655,9 @@ input EventPhaseGroupPageQuery {
 input EventPhaseGroupPageQueryFilter {
   displayIdentifier: String
 
-  """Array of phaseIds to include in search results"""
+  """
+  Array of phaseIds to include in search results
+  """
   phaseId: [ID] = null
   state: [Int]
 }
@@ -4880,7 +6672,9 @@ input EventPhasePageQuery {
 input EventPhasePageQueryFilter {
   name: String
 
-  """Array of phaseIds to include in search results"""
+  """
+  Array of phaseIds to include in search results
+  """
   phaseIds: [ID] = null
   state: [Int]
 }
@@ -4893,7 +6687,9 @@ type PhaseConnection {
 input EventRequestQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: EventRequestFilter
@@ -4902,72 +6698,112 @@ input EventRequestQuery {
 input EventRequestFilter {
   status: [RequestStatus]
 
-  """Filter on the other type. i.e. requester/recipient"""
+  """
+  Filter on the other type. i.e. requester/recipient
+  """
   entityType: String
 
-  """Filter on the specific entity. Should also specify entityType"""
+  """
+  Filter on the specific entity. Should also specify entityType
+  """
   entityId: ID
   location: LocationFilterType
   search: PaginationSearchType
 }
 
-"""A ruleset for a videogame"""
+"""
+A ruleset for a videogame
+"""
 type Ruleset {
   id: ID
 
-  """Whether or not duplicate characters are allowed in decks"""
+  """
+  Whether or not duplicate characters are allowed in decks
+  """
   allowCharacterDupes: Boolean
 
-  """Maximum number of duplicates allowed for any given card in a deck"""
+  """
+  Maximum number of duplicates allowed for any given card in a deck
+  """
   cardDupeLimit: Int
 
-  """Maximum number of cards allowed in a deck"""
+  """
+  Maximum number of cards allowed in a deck
+  """
   cardLimit: Int
 
-  """Number of classes a player needs to select"""
+  """
+  Number of classes a player needs to select
+  """
   classSelectionCount: Int
 
-  """Maximum number of decks allowed per player"""
+  """
+  Maximum number of decks allowed per player
+  """
   deckLimit: Int
 
-  """Number of decks per class"""
+  """
+  Number of decks per class
+  """
   decksPerClass: Int
 
-  """Description of the Ruleset"""
+  """
+  Description of the Ruleset
+  """
   description: String
 
-  """Ruleset GameMode enumeration"""
+  """
+  Ruleset GameMode enumeration
+  """
   gameMode: Int
 
-  """Whether or not the Ruleset is the default Ruleset of a Videogame"""
+  """
+  Whether or not the Ruleset is the default Ruleset of a Videogame
+  """
   isDefault: Boolean
 
-  """Maximum number of cards allowed to overlap with other decks"""
+  """
+  Maximum number of cards allowed to overlap with other decks
+  """
   maxOverlap: Int
 
-  """Minimum number of cards required to overlap with primary deck"""
+  """
+  Minimum number of cards required to overlap with primary deck
+  """
   minOverlapWithPrimary: Int
 
-  """Name of the Ruleset"""
+  """
+  Name of the Ruleset
+  """
   name: String
 
-  """Whether a primary deck is required or not"""
+  """
+  Whether a primary deck is required or not
+  """
   requirePrimaryDeck: Boolean
 
-  """Additional Ruleset settings configuration"""
+  """
+  Additional Ruleset settings configuration
+  """
   settings: JSON
 
-  """Ruleset type"""
+  """
+  Ruleset type
+  """
   type: String
 
-  """Id of the Videogame associated with this Ruleset"""
+  """
+  Id of the Videogame associated with this Ruleset
+  """
   videogameId: Int
 }
 
 input StandingPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: StandingPageFilter
@@ -4982,7 +6818,9 @@ input StandingPageFilter {
 input UserLeaguesPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: UserLeaguesPaginationFilter
@@ -4995,7 +6833,9 @@ input UserLeaguesPaginationFilter {
   search: PaginationSearchType
 }
 
-"""Publishing settings for a user"""
+"""
+Publishing settings for a user
+"""
 type UserPublishingSettings {
   birthday: UserBirthdayPublishingState
   location: UserLocationPublishingState
@@ -5004,43 +6844,60 @@ type UserPublishingSettings {
   publishing: ProfilePublishingState
 }
 
-"""Publishing settings for a user's birthday"""
+"""
+Publishing settings for a user's birthday
+"""
 enum UserBirthdayPublishingState {
-  """"""
+  """
+  """
   PRIVATE
 
-  """"""
+  """
+  """
   MONTH_DAY_ONLY
 
-  """"""
+  """
+  """
   PUBLIC
 }
 
-"""Publishing settings for a user's location"""
+"""
+Publishing settings for a user's location
+"""
 enum UserLocationPublishingState {
-  """"""
+  """
+  """
   PRIVATE
 
-  """"""
+  """
+  """
   COUNTRY_ONLY
 
-  """"""
+  """
+  """
   PUBLIC
 }
 
-"""Publishing settings for a user's name"""
+"""
+Publishing settings for a user's name
+"""
 enum UserNamePublishingState {
-  """"""
+  """
+  """
   PRIVATE
 
-  """"""
+  """
+  """
   FIRST_NAME_LAST_INITIAL
 
-  """"""
+  """
+  """
   PUBLIC
 }
 
-"""Publishing settings for a user's profile authorizations"""
+"""
+Publishing settings for a user's profile authorizations
+"""
 type UserProfileAuthorizationPublishingSettings {
   discord: UserProfileAuthorizationPublishState
   displayFirst: AuthorizationType
@@ -5050,27 +6907,37 @@ type UserProfileAuthorizationPublishingSettings {
   xbox: UserProfileAuthorizationPublishState
 }
 
-"""Publishing state for a user's profile authorization"""
+"""
+Publishing state for a user's profile authorization
+"""
 enum UserProfileAuthorizationPublishState {
-  """"""
+  """
+  """
   PRIVATE
 
-  """"""
+  """
+  """
   PUBLIC
 }
 
-"""A ban or warning as a result of malicious actions"""
+"""
+A ban or warning as a result of malicious actions
+"""
 type UserPunishment {
   id: ID
   createdAt: Timestamp
 
-  """Employee that created this punishment"""
+  """
+  Employee that created this punishment
+  """
   createdByUser: User
   expiresAt: Timestamp
   externalNotes: String
   internalNotes: String
 
-  """User getting punished"""
+  """
+  User getting punished
+  """
   punishedUser: User
   type: Int
   updatedAt: Timestamp
@@ -5079,7 +6946,9 @@ type UserPunishment {
 input UserRequestQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: UserRequestFilter
@@ -5088,10 +6957,14 @@ input UserRequestQuery {
 input UserRequestFilter {
   status: [RequestStatus]
 
-  """Filter on the other type. i.e. requester/recipient"""
+  """
+  Filter on the other type. i.e. requester/recipient
+  """
   entityType: String
 
-  """Filter on the specific entity. Should also specify entityType"""
+  """
+  Filter on the specific entity. Should also specify entityType
+  """
   entityId: ID
   location: LocationFilterType
   search: PaginationSearchType
@@ -5100,7 +6973,9 @@ input UserRequestFilter {
 input UserTournamentsPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: UserTournamentsPaginationFilter
@@ -5115,19 +6990,25 @@ input UserTournamentsPaginationFilter {
   excludeId: [ID]
 }
 
-"""A user's votes"""
+"""
+A user's votes
+"""
 type Votes {
   createdAt: Timestamp
   id: ID
   qty: Int
 
-  """Vote selection"""
+  """
+  Vote selection
+  """
   selection: VoteSelection
   selectionId: Int
   sourceId: Int
   sourceType: Int
 
-  """Tournament vote belongs to"""
+  """
+  Tournament vote belongs to
+  """
   tournament: Tournament
   tournamentId: Int
   updatedAt: Timestamp
@@ -5135,25 +7016,33 @@ type Votes {
   votingEventId: Int
 }
 
-"""A vote selection"""
+"""
+A vote selection
+"""
 type VoteSelection {
   id: ID
   entityId: Int
   entityType: String
   numVotes: Int
 
-  """Player if entityType is player otherwise null"""
+  """
+  Player if entityType is player otherwise null
+  """
   player: Player
 }
 
-"""An email category (announcements, registration, etc.)"""
+"""
+An email category (announcements, registration, etc.)
+"""
 type EmailCategory {
   id: ID
   description: String
   name: String
 }
 
-"""An email type (registration, team invite, marketing, etc.)"""
+"""
+An email type (registration, team invite, marketing, etc.)
+"""
 type EmailType {
   id: ID
   categoryId: Int
@@ -5163,7 +7052,9 @@ type EmailType {
 input EntrantPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: EntrantPageFilter
@@ -5183,20 +7074,28 @@ input EntrantPageFilter {
   eventIds: [ID]
 }
 
-"""Defines paging and filter for Games"""
+"""
+Defines paging and filter for Games
+"""
 input PaginatedGamesQuery {
   page: Int
   perPage: Int
 
-  """Supported filter options to filter down Game results"""
+  """
+  Supported filter options to filter down Game results
+  """
   filter: GameFilterType!
 }
 
 input GameFilterType {
-  """Only return Games for the given Set"""
+  """
+  Only return Games for the given Set
+  """
   setId: ID
 
-  """Only return Games for the given externalId"""
+  """
+  Only return Games for the given externalId
+  """
   externalId: String
 }
 
@@ -5208,7 +7107,9 @@ type GameConnection {
 input HubPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: HubPaginationFilter
@@ -5228,7 +7129,9 @@ type HubConnection {
 input LeagueQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: LeaguePageFilter
@@ -5239,7 +7142,9 @@ input LeaguePageFilter {
   id: ID
   ids: [ID]
 
-  """ID of the user that owns this league."""
+  """
+  ID of the user that owns this league.
+  """
   ownerId: ID
   afterDate: Timestamp
   beforeDate: Timestamp
@@ -5256,27 +7161,35 @@ input LeaguePageFilter {
 }
 
 enum TournamentPaginationSort {
-  """"""
+  """
+  """
   startAt
 
-  """"""
+  """
+  """
   endAt
 
-  """"""
+  """
+  """
   eventRegistrationClosesAt
 
-  """"""
+  """
+  """
   computedUpdatedAt
 }
 
-"""A scope that can be requested by an OAuth client/application"""
+"""
+A scope that can be requested by an OAuth client/application
+"""
 type AuthScope {
   id: ID
   description: String
   developerDescription: String
 }
 
-"""An entity option"""
+"""
+An entity option
+"""
 type Option {
   createdAt: Timestamp
   id: ID
@@ -5293,7 +7206,9 @@ type Option {
 input PlayerQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: PlayerPageFilter
@@ -5312,7 +7227,8 @@ input PlayerPageFilter {
 }
 
 enum PlayerPaginationSort {
-  """"""
+  """
+  """
   id
 }
 
@@ -5321,7 +7237,9 @@ type PlayerConnection {
   nodes: [Player]
 }
 
-"""Normalized profile information."""
+"""
+Normalized profile information.
+"""
 type Profile {
   id: ID
   slug: String
@@ -5333,21 +7251,33 @@ type Profile {
   primaryContact: String
   primaryContactType: String
 
-  """Get people in this Profile, filtered by role"""
+  """
+  Get people in this Profile, filtered by role
+  """
   people(
-    """Which roles to show"""
+    """
+    Which roles to show
+    """
     roles: [String]
 
-    """Entity type of profile (defaults to tournament)"""
+    """
+    Entity type of profile (defaults to tournament)
+    """
     profileType: String
   ): [User]
 
-  """Get roles for this profile"""
+  """
+  Get roles for this profile
+  """
   roles(page: Int, perPage: Int, includeUnconfirmed: Boolean): RoleConnection
 
-  """Build Profile URL"""
+  """
+  Build Profile URL
+  """
   url(
-    """tab to add to URL"""
+    """
+    tab to add to URL
+    """
     tab: String
 
     """
@@ -5356,12 +7286,18 @@ type Profile {
     relative: Boolean = true
   ): String
 
-  """Tasks for the current user for this profile"""
+  """
+  Tasks for the current user for this profile
+  """
   userTasks(activeOnly: Boolean = true, limit: Int = null): [Task]
 
-  """Build Profile admin URL"""
+  """
+  Build Profile admin URL
+  """
   adminUrl(
-    """Profile admin tab to add to URL"""
+    """
+    Profile admin tab to add to URL
+    """
     tab: String
 
     """
@@ -5389,7 +7325,9 @@ type ProfileNav {
   countryCode: String
 }
 
-"""Used to build the frontend navbar for profile navigation"""
+"""
+Used to build the frontend navbar for profile navigation
+"""
 type ProfileNavFeatureGroup {
   navFeatures: [ProfileNavFeature]
   title: String
@@ -5400,7 +7338,9 @@ type EventDetails {
   total: Int
 }
 
-"""layout of widgets on a profile page"""
+"""
+layout of widgets on a profile page
+"""
 type ProfileWidgetPageLayout {
   id: String
   config: JSON
@@ -5409,7 +7349,9 @@ type ProfileWidgetPageLayout {
   version: Int
 }
 
-"""A region"""
+"""
+A region
+"""
 type Region {
   id: ID
   continent: String
@@ -5425,7 +7367,9 @@ type Region {
 input ScheduleQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: SchedulePaginationFilter
@@ -5452,10 +7396,12 @@ input DateRangeFilterType {
 }
 
 enum SchedulePaginationSort {
-  """"""
+  """
+  """
   startAt
 
-  """"""
+  """
+  """
   endAt
 }
 
@@ -5464,7 +7410,9 @@ type LegacyScheduleItemConnection {
   nodes: [LegacyScheduleItem]
 }
 
-"""An interface for a type of schedule item"""
+"""
+An interface for a type of schedule item
+"""
 interface LegacyScheduleItem {
   name: String
   date: Timestamp
@@ -5474,12 +7422,16 @@ interface LegacyScheduleItem {
   type: String
 }
 
-"""An entity option selection"""
+"""
+An entity option selection
+"""
 type Selection {
   id: ID
   createdAt: Timestamp
 
-  """emailTypes for selections"""
+  """
+  emailTypes for selections
+  """
   emailTypes: EmailType
   optionId: Int
   selectedByEntity: String
@@ -5487,11 +7439,15 @@ type Selection {
   updatedAt: Timestamp
   valueId: Int
 
-  """values for selections"""
+  """
+  values for selections
+  """
   values: Value
 }
 
-"""An entity option value"""
+"""
+An entity option value
+"""
 type Value {
   createdAt: Timestamp
   enabled: Boolean
@@ -5514,36 +7470,58 @@ type SlugAvailability {
   ownedTournament: Tournament
 }
 
-"""Slug availability with regards to ownership"""
+"""
+Slug availability with regards to ownership
+"""
 enum SlugState {
-  """Short slug is available"""
+  """
+  Short slug is available
+  """
   AVAILABLE
 
-  """Short Slug is unavailable"""
+  """
+  Short Slug is unavailable
+  """
   UNAVAILABLE
 
-  """Short slug can be overwritten by current user"""
+  """
+  Short slug can be overwritten by current user
+  """
   CAN_OVERWRITE
 
-  """Short slug is the same"""
+  """
+  Short slug is the same
+  """
   NO_CHANGE
 
-  """Short slug is unavailable"""
+  """
+  Short slug is unavailable
+  """
   UNAVAILABLE_UNPUBLISHED
 
-  """Short slug is an invalid string"""
+  """
+  Short slug is an invalid string
+  """
   INVALID
 }
 
-"""Reason for invalid short slug"""
+"""
+Reason for invalid short slug
+"""
 enum InvalidSlugReason {
-  """Short slug is numerically equal to zero"""
+  """
+  Short slug is numerically equal to zero
+  """
   EQUALS_ZERO
 
-  """Short slug contains whitespace"""
+  """
+  Short slug contains whitespace
+  """
   HAS_WHITESPACE
 
-  """Short slug contains special characters"""
+  """
+  Short slug contains special characters
+  """
   HAS_SPECIAL_CHARS
 
   """
@@ -5552,32 +7530,48 @@ enum InvalidSlugReason {
   """
   INVALID_DASHES
 
-  """Short slug is empty"""
+  """
+  Short slug is empty
+  """
   EMPTY_SLUG
 }
 
-"""CSV Configuration"""
+"""
+CSV Configuration
+"""
 type CSVConfig {
-  """CSV Column Header Info"""
+  """
+  CSV Column Header Info
+  """
   columnInfo: [CSVColumnInfo]
 }
 
-"""CSV Column Info"""
+"""
+CSV Column Info
+"""
 type CSVColumnInfo {
-  """Column description"""
+  """
+  Column description
+  """
   description: String
 
-  """Column required status"""
+  """
+  Column required status
+  """
   isRequired: Boolean
 
-  """Column name"""
+  """
+  Column name
+  """
   name: String
 }
 
 input TeamsPaginationQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: TeamsPageFilter
@@ -5597,33 +7591,48 @@ input TeamsPageFilter {
   rosterIncomplete: Boolean
 }
 
-"""The type of the team (event or global)"""
+"""
+The type of the team (event or global)
+"""
 enum TeamType {
-  """"""
+  """
+  """
   UNKNOWN
 
-  """"""
+  """
+  """
   EVENT
 
-  """"""
+  """
+  """
   OVERALL
 
-  """"""
+  """
+  """
   EXACT
 
-  """"""
+  """
+  """
   GLOBAL
 }
 
-"""Test"""
+"""
+Test
+"""
 type Test {
-  """ID"""
+  """
+  ID
+  """
   id: ID
 
-  """Private Var"""
+  """
+  Private Var
+  """
   privateVar: String
 
-  """Semi-Private Var"""
+  """
+  Semi-Private Var
+  """
   semiPrivateVar: String
 }
 
@@ -5637,7 +7646,9 @@ type TopLevelNav {
 input TournamentQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: TournamentPageFilter
@@ -5648,7 +7659,9 @@ input TournamentPageFilter {
   id: ID
   ids: [ID]
 
-  """ID of the user that owns this tournament."""
+  """
+  ID of the user that owns this tournament.
+  """
   ownerId: ID
 
   """
@@ -5680,10 +7693,14 @@ input TournamentPageFilter {
 }
 
 input TournamentLocationFilter {
-  """Latitude, Longitude"""
+  """
+  Latitude, Longitude
+  """
   distanceFrom: String
 
-  """e.g. 50mi"""
+  """
+  e.g. 50mi
+  """
   distance: String
 }
 
@@ -5697,7 +7714,9 @@ input TopGameFilter {
 input VideogameQuery {
   page: Int = 1
 
-  """How many nodes to return for the page. Maximum value of 512"""
+  """
+  How many nodes to return for the page. Maximum value of 512
+  """
   perPage: Int = 25
   sortBy: String
   filter: VideogamePageFilter
@@ -5715,59 +7734,102 @@ type VideogameConnection {
 }
 
 type Mutation {
-  acceptAccountInvite(userToken: String, userId: ID, regParams: regParams, updatePlayerParams: updatePlayerParams, msaUserParams: msaUserParams, contactInfoParams: contactInfoParams): User
+  acceptAccountInvite(
+    userToken: String
+    userId: ID
+    regParams: regParams
+    updatePlayerParams: updatePlayerParams
+    msaUserParams: msaUserParams
+    contactInfoParams: contactInfoParams
+  ): User
 
-  """Completes a User Confirmation."""
+  """
+  Completes a User Confirmation.
+  """
   confirmUserConfirmation(value: String!, email: String!): UserConfirmation
 
-  """Create an xbox profile authorization given an MSA id token and nonce"""
+  """
+  Create an xbox profile authorization given an MSA id token and nonce
+  """
   connectXboxAccount(idToken: String!, nonce: String!): ProfileAuthorization
 
-  """Create a new oauth application"""
+  """
+  Create a new oauth application
+  """
   createAuthClient(data: AuthClientUpdate!): AuthClient
 
-  """Create a new User"""
+  """
+  Create a new User
+  """
   createUser(request: createUserRequest!): User
 
-  """Delete an oauth application"""
+  """
+  Delete an oauth application
+  """
   deleteAuthClient(id: ID!): Boolean
 
-  """Regenerate an oauth application's secret"""
+  """
+  Regenerate an oauth application's secret
+  """
   regenerateAuthClientSecret(id: ID!): String
 
-  """Reset the password of a user"""
+  """
+  Reset the password of a user
+  """
   resetPassword(id: ID, token: String, confirmationId: ID, fields: resetPassword!): User
 
-  """Start the process of making a payment."""
+  """
+  Start the process of making a payment.
+  """
   startStripePayment(
-    """The type of entity the user is paying for."""
+    """
+    The type of entity the user is paying for.
+    """
     entityType: String!
 
-    """The ID of the entity the user is paying for."""
+    """
+    The ID of the entity the user is paying for.
+    """
     entityId: ID!
 
-    """The amount of the payment in the currency's smallest unit."""
+    """
+    The amount of the payment in the currency's smallest unit.
+    """
     amount: Int!
 
-    """The three-letter ISO code of the currency of the payment."""
+    """
+    The three-letter ISO code of the currency of the payment.
+    """
     currency: String!
 
-    """Client session UUID used to uniquely identify checkout session"""
+    """
+    Client session UUID used to uniquely identify checkout session
+    """
     sessionId: String!
   ): PaymentIntent
 
-  """Update an oauth application"""
+  """
+  Update an oauth application
+  """
   updateAuthClient(id: ID!, data: AuthClientUpdate!): AuthClient
 
-  """Update a profile request status"""
+  """
+  Update a profile request status
+  """
   updateRequestStatus(id: ID, status: RequestStatus!, hash: String): ProfileRequest
 
-  """Update the amount being charged in a payment intent."""
+  """
+  Update the amount being charged in a payment intent.
+  """
   updateStripePayment(
-    """The type of entity the user is paying for."""
+    """
+    The type of entity the user is paying for.
+    """
     entityType: String!
 
-    """The ID of the entity the user is paying for."""
+    """
+    The ID of the entity the user is paying for.
+    """
     entityId: ID!
 
     """
@@ -5775,14 +7837,27 @@ type Mutation {
     """
     externalId: String!
 
-    """The amount of the payment in the currency's smallest unit."""
+    """
+    The amount of the payment in the currency's smallest unit.
+    """
     amount: Int!
   ): PaymentIntent
 
-  """Upload image"""
-  uploadPlayerImage(entityId: ID!, entityType: String!, imageType: String!, file: Upload!, userHash: String, tournamentId: ID): Player
+  """
+  Upload image
+  """
+  uploadPlayerImage(
+    entityId: ID!
+    entityType: String!
+    imageType: String!
+    file: Upload!
+    userHash: String
+    tournamentId: ID
+  ): Player
 
-  """Validate user shipping information"""
+  """
+  Validate user shipping information
+  """
   validateShippingAddress(fields: ShippingAddress!, shopId: ID!): Address
 }
 
@@ -5819,7 +7894,9 @@ input contactInfoParams {
   zipcode: String
 }
 
-"""An action that requires user confirmation before being taken."""
+"""
+An action that requires user confirmation before being taken.
+"""
 type UserConfirmation {
   id: ID
   state: UserConfirmationState
@@ -5827,18 +7904,28 @@ type UserConfirmation {
   value: String
 }
 
-"""The state of a UserConfirmation"""
+"""
+The state of a UserConfirmation
+"""
 enum UserConfirmationState {
-  """Confirmation has not been verified yet"""
+  """
+  Confirmation has not been verified yet
+  """
   UNVERIFIED
 
-  """Confirmation has been verified"""
+  """
+  Confirmation has been verified
+  """
   VERIFIED
 
-  """Confirmation was canceled by user"""
+  """
+  Confirmation was canceled by user
+  """
   CANCELED
 
-  """Confirmation has expired"""
+  """
+  Confirmation has expired
+  """
   EXPIRED
 }
 
@@ -5870,12 +7957,18 @@ input resetPassword {
   captcha: String
 }
 
-"""The information needed to make a payment."""
+"""
+The information needed to make a payment.
+"""
 type PaymentIntent {
-  """The ID of the payment intent at the third-party service."""
+  """
+  The ID of the payment intent at the third-party service.
+  """
   externalId: String
 
-  """A client secret, if needed to complete payment."""
+  """
+  A client secret, if needed to complete payment.
+  """
   clientSecret: String
 }
 
@@ -5896,25 +7989,34 @@ input ShippingAddress {
   country: String
 }
 
-"""Comparison operator"""
+"""
+Comparison operator
+"""
 enum Comparator {
-  """"""
+  """
+  """
   GREATER_THAN
 
-  """"""
+  """
+  """
   GREATER_THAN_OR_EQUAL
 
-  """"""
+  """
+  """
   EQUAL
 
-  """"""
+  """
+  """
   LESS_THAN_OR_EQUAL
 
-  """"""
+  """
+  """
   LESS_THAN
 }
 
-"""Content column for image"""
+"""
+Content column for image
+"""
 type ImageContentColumn implements ProfileContentColumn {
   caption: String
   colNum: Int
@@ -5923,24 +8025,34 @@ type ImageContentColumn implements ProfileContentColumn {
   valueLink: String
 }
 
-"""A schedule Item for leagues"""
+"""
+A schedule Item for leagues
+"""
 type LeagueEventScheduleItem implements LegacyScheduleItem {
-  """Call to action for a schedule league event"""
+  """
+  Call to action for a schedule league event
+  """
   cta: LeagueEventScheduleItemCallToAction
   date: Timestamp
   endAt: Timestamp
   event: Event
 
-  """Max Points for an event"""
+  """
+  Max Points for an event
+  """
   maxPoints: Int
   name: String
 
-  """Total Entrants for an event"""
+  """
+  Total Entrants for an event
+  """
   numEntrants: Int
   startAt: Timestamp
   state: ActivityState
 
-  """Tier this event is part of"""
+  """
+  Tier this event is part of
+  """
   tier: EventTier
   type: String
 }
@@ -5950,7 +8062,9 @@ type LeagueEventScheduleItemCallToAction {
   url: String
 }
 
-"""Content column for markdown"""
+"""
+Content column for markdown
+"""
 type MarkdownContentColumn implements ProfileContentColumn {
   colNum: Int
   contentType: String
@@ -5961,30 +8075,39 @@ type MarkdownContentColumn implements ProfileContentColumn {
 Different options available for verifying player-reported match results
 """
 enum MatchConfigVerificationMethod {
-  """"""
+  """
+  """
   TWITCH
 
-  """"""
+  """
+  """
   STREAM_ME
 
-  """"""
+  """
+  """
   ANY
 
-  """"""
+  """
+  """
   MIXER
 
-  """"""
+  """
+  """
   YOUTUBE
 }
 
-"""Monetary prizing information"""
+"""
+Monetary prizing information
+"""
 type MonetaryPrizing implements EventPrizing {
   id: ID
   amount: Float
   prizingType: PrizingType
 }
 
-"""A schedule item for a phase"""
+"""
+A schedule item for a phase
+"""
 type PhaseScheduleItem implements LegacyScheduleItem {
   date: Timestamp
   endAt: Timestamp
@@ -5996,7 +8119,9 @@ type PhaseScheduleItem implements LegacyScheduleItem {
   type: String
 }
 
-"""Product prizing information"""
+"""
+Product prizing information
+"""
 type ProductPrizing implements EventPrizing {
   id: ID
   claimed: Boolean
@@ -6005,7 +8130,9 @@ type ProductPrizing implements EventPrizing {
   shopProduct: ShopProduct
 }
 
-"""Race specific bracket configuration"""
+"""
+Race specific bracket configuration
+"""
 type RaceBracketConfig implements BracketConfig {
   automaticEndTime: Timestamp
   id: ID
@@ -6018,43 +8145,62 @@ type RaceBracketConfig implements BracketConfig {
   raceType: RaceType
 }
 
-"""Enforces limits on the amount of allowable Race submissions"""
+"""
+Enforces limits on the amount of allowable Race submissions
+"""
 enum RaceLimitMode {
-  """"""
+  """
+  """
   BEST_ALL
 
-  """"""
+  """
+  """
   FIRST_ALL
 
-  """"""
+  """
+  """
   PLAYTIME
 }
 
-"""Race type"""
+"""
+Race type
+"""
 enum RaceType {
-  """"""
+  """
+  """
   GOALS
 
-  """"""
+  """
+  """
   TIMED
 }
 
-"""Race specific match configuration"""
+"""
+Race specific match configuration
+"""
 type RaceMatchConfig implements MatchConfig {
   id: ID
   bracketType: BracketType
 
-  """Can players report results?"""
+  """
+  Can players report results?
+  """
   playerReportingEnabled: Boolean
 
-  """Accepted methods of verification that players can use"""
+  """
+  Accepted methods of verification that players can use
+  """
   verificationMethods: [MatchConfigVerificationMethod]
 
-  """Are players required to submit verification of their reported results?"""
+  """
+  Are players required to submit verification of their reported results?
+  """
   verificationRequired: Boolean
 }
 
-"""Content column for schedule"""
+"""
+Content column for schedule
+"""
 type ScheduleContentColumn implements ProfileContentColumn {
   colNum: Int
   contentType: String
@@ -6062,7 +8208,9 @@ type ScheduleContentColumn implements ProfileContentColumn {
   label: String
 }
 
-"""A set of actions available for a team to take"""
+"""
+A set of actions available for a team to take
+"""
 type TeamActionSet implements ActionSet {
   id: ID
   actions(isAllowed: Boolean): [Action]
@@ -6072,7 +8220,9 @@ type TeamActionSet implements ActionSet {
   removePlayer: Action
 }
 
-"""Content column for video"""
+"""
+Content column for video
+"""
 type VideoContentColumn implements ProfileContentColumn {
   caption: JSON
   colNum: Int

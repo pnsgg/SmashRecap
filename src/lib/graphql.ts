@@ -2,7 +2,7 @@ import { initGraphQLTada } from 'gql.tada';
 import type { introspection } from '../graphql-env';
 
 export const graphql = initGraphQLTada<{
-	introspection: introspection;
+  introspection: introspection;
 }>();
 
 export { readFragment } from 'gql.tada';

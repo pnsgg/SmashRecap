@@ -12,29 +12,29 @@ import { print } from 'graphql';
  * @returns A promise that resolves to an object containing the `data` from the GraphQL response.
  */
 export async function fetchStartGG<Result, Variables>(
-	document: TadaDocumentNode<Result, Variables>,
-	variables: Variables,
-	init?: RequestInit
+  document: TadaDocumentNode<Result, Variables>,
+  variables: Variables,
+  init?: RequestInit
 ) {
-	const query = print(document);
-	const url = `https://www.start.gg/api/-/gql?query=${encodeURIComponent(query)}&variables=${encodeURIComponent(
-		JSON.stringify(variables)
-	)}`;
-	const response = await fetch(url, {
-		method: 'GET',
-		credentials: 'omit',
-		mode: 'cors',
-		...init
-	});
+  const query = print(document);
+  const url = `https://www.start.gg/api/-/gql?query=${encodeURIComponent(query)}&variables=${encodeURIComponent(
+    JSON.stringify(variables)
+  )}`;
+  const response = await fetch(url, {
+    method: 'GET',
+    credentials: 'omit',
+    mode: 'cors',
+    ...init
+  });
 
-	if (!response.ok) {
-		const errorText = await response.text();
-		throw new Error(`Start.gg API Error: ${response.status} - ${errorText}`);
-	}
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Start.gg API Error: ${response.status} - ${errorText}`);
+  }
 
-	const result = await response.json();
+  const result = await response.json();
 
-	return result as {
-		data: Result;
-	};
+  return result as {
+    data: Result;
+  };
 }
