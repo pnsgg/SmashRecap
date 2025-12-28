@@ -24,6 +24,7 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    min-height: 100svh;
 
     padding: 2rem 1.25rem;
 
@@ -32,7 +33,6 @@
 
       margin: 0 auto;
       max-width: 1400px;
-      min-height: 100svh;
       align-items: center;
       justify-content: space-between;
     }
