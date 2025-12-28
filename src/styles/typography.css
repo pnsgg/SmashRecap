@@ -1,6 +1,8 @@
 @font-face {
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: 'Instrument Sans';
   src: url('/fonts/InstrumentSans-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 400 900;
+  font-display: swap;
 }
 
 .heading {
