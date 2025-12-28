@@ -112,16 +112,16 @@
 
     &[data-variant='primary'] {
       --bg: var(--red-pns);
-      --bg-hover: var(--red-pns-variant);
-      --text: var(--white);
-      --focus-ring: 2px solid var(--red-pns-variant);
+      --bg-hover: var(--red-pns-75);
+      --text: var(--really-white);
+      --focus-ring: 2px solid var(--red-pns-75);
     }
 
     &[data-variant='secondary'] {
-      --bg: var(--black-variant);
-      --bg-hover: var(--black-variant);
-      --text: var(--white);
-      --focus-ring: 2px solid var(--black-variant);
+      --bg: #493344;
+      --bg-hover: #493344;
+      --text: var(--really-white);
+      --focus-ring: 2px solid #493344;
     }
 
     background-color: var(--bg);

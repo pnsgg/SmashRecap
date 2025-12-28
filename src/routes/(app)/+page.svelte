@@ -90,7 +90,7 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        color: var(--white);
+        color: var(--really-white);
 
         hr {
           width: 100%;
@@ -108,7 +108,7 @@
 
     p.small-text {
       color: var(--black);
-      background-color: var(--white);
+      background-color: var(--really-white);
       padding: 0.5rem 1rem;
       text-transform: uppercase;
       text-align: center;
@@ -117,7 +117,7 @@
     .render {
       width: 100%;
       aspect-ratio: 1 / 1;
-      border: 2px solid var(--white);
+      border: 2px solid var(--really-white);
     }
   }
 </style>

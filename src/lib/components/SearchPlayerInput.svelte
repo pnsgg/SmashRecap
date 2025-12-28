@@ -31,6 +31,6 @@
 
     height: var(--height);
     padding: var(--padding);
-    color: var(--white);
+    color: var(--really-white);
   }
 </style>
