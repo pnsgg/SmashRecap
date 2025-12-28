@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'Roboto';
-  src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+  font-family: 'Instrument Sans', sans-serif;
+  src: url('/fonts/InstrumentSans-VariableFont_wdth,wght.ttf') format('truetype');
 }
 
 .heading {
@@ -13,6 +13,7 @@
 h1,
 .heading1 {
   font-size: 2.75rem; /* 44px */
+  font-variation-settings: 'wdth' 75;
   line-height: 1.1;
   font-weight: 600;
 }
@@ -20,6 +21,7 @@ h1,
 h2,
 .heading2 {
   font-size: 2rem; /* 32px */
+  font-variation-settings: 'wdth' 80;
   line-height: 1.1;
   font-weight: 600;
 }
@@ -27,6 +29,7 @@ h2,
 h3,
 .heading3 {
   font-size: 1.75rem; /* 28px */
+  font-variation-settings: 'wdth' 85;
   line-height: 1.1;
   font-weight: 500;
 }
@@ -45,6 +48,7 @@ h4,
 
 .subtitle {
   font-size: 1.25rem; /* 20px */
+  font-variation-settings: 'wdth' 85;
   line-height: 1.6;
   font-weight: 600;
 }
