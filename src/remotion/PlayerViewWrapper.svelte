@@ -3,12 +3,15 @@
   import React from 'react';
   import { createRoot, type Root } from 'react-dom/client';
   import { onDestroy, onMount } from 'svelte';
-  import { type PlayerSchema, PlayerView } from './PlayerView';
+  import { type PlayerSchema, PlayerView } from './player-view';
 
-  let { data, player = $bindable<PlayerRef>() } = $props<{
+  type Props = {
     data: PlayerSchema;
     player?: PlayerRef;
-  }>();
+  };
+
+  let { data, player = $bindable<PlayerRef>() }: Props = $props();
+
   let containerRef: HTMLDivElement;
   let root: Root;
 
@@ -41,4 +44,10 @@
   });
 </script>
 
-<div bind:this={containerRef}></div>
+<div bind:this={containerRef} id="remotion-root"></div>
+
+<style lang="scss">
+  div {
+    user-select: none;
+  }
+</style>

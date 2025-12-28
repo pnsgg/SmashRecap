@@ -2,6 +2,8 @@
   import Button from '$lib/components/Button.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { createBlueSkyIntent, createXIntent } from '$lib/socialIntents';
+  import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
+  import type { PlayerRef } from '@remotion/player';
 
   let { data } = $props();
 
@@ -17,11 +19,29 @@
   });
 
   const mobile = new IsMobile();
+
+  let player = $state<PlayerRef | undefined>();
 </script>
 
 <div class="my-recap">
-  <div class="preview">
-    <img src="/images/preview.png" alt="User Preview" />
+  <div id="remotion-root">
+    <PlayerViewWrapper
+      bind:player
+      data={{
+        background: true,
+        year: 2025,
+        user: {
+          gamerTag: 'RouxChov',
+          image: 'https://github.com/gerald-lbn.png',
+          country: 'France',
+          prefix: 'PNS',
+          pronouns: 'He/Him',
+          socialMedias: {
+            x: 'le_grld'
+          }
+        }
+      }}
+    />
   </div>
 
   <div class="instructions">
@@ -75,6 +95,8 @@
       min-height: auto;
 
       margin: 0 auto;
+      width: 100%;
+      max-width: 1000px;
       padding: 2rem;
 
       border: 2px solid var(--really-white);
@@ -82,18 +104,13 @@
       background-color: var(--nearly-black);
     }
 
-    .preview {
+    #remotion-root {
+      width: 100%;
+      aspect-ratio: 1 / 1;
       border: 2px solid var(--really-white);
 
       @media screen and (min-width: 768px) {
         border: none;
-      }
-
-      img {
-        aspect-ratio: 1 / 1;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
       }
     }
 

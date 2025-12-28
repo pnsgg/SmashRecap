@@ -1,6 +1,7 @@
 @import url('reset.css');
 @import url('typography.css');
 @import url('variables.css');
+@import url('../remotion/styles/remotion.css');
 
 body {
   font-family: var(--font-family);

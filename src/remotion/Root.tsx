@@ -47,11 +47,14 @@ export const RemotionRoot: React.FC = () => {
           background: true,
           year: 2025,
           user: {
+            image: 'https://github.com/gerald-lbn.png',
             prefix: 'PNS',
             gamerTag: 'RouxChov',
             country: 'France',
             pronouns: 'He/Him',
-            socialMedias: {}
+            socialMedias: {
+              x: 'le_grld'
+            }
           }
         }}
       />

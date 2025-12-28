@@ -4,10 +4,13 @@
   import PNS from '$lib/components/icons/PNS.svelte';
   import StartggIcon from '$lib/components/icons/StartggIcon.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
+  import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
+  import type { PlayerRef } from '@remotion/player';
 
   const mobile = new IsMobile();
 
   const year = new Date().getFullYear();
+  let player = $state<PlayerRef | undefined>();
 </script>
 
 <div class="info">
@@ -16,7 +19,7 @@
       <PNS />
       <span>#SmashRecap</span>
     </div>
-    <h1 class:heading1={!mobile.current} class:heading2={mobile.current}>
+    <h1 class:heading={!mobile.current} class:heading2={mobile.current}>
       Your {year} Smash Bros. Ultimate year in review
     </h1>
   </div>
@@ -45,7 +48,26 @@
 </div>
 <div class="preview">
   <p class="small-text">+10,000 recaps generated</p>
-  <img src="/images/preview.png" alt="Preview of the 2025 SmashRecap" class="render" />
+  <!-- <img src="/images/preview.png" alt="Preview of the 2025 SmashRecap" class="render" /> -->
+  <div id="remotion-root">
+    <PlayerViewWrapper
+      bind:player
+      data={{
+        background: true,
+        year: 2025,
+        user: {
+          gamerTag: 'RouxChov',
+          image: 'https://github.com/gerald-lbn.png',
+          country: 'France',
+          prefix: 'PNS',
+          pronouns: 'He/Him',
+          socialMedias: {
+            x: 'le_grld'
+          }
+        }
+      }}
+    />
+  </div>
 </div>
 
 <style lang="scss">
@@ -114,7 +136,7 @@
       text-align: center;
     }
 
-    .render {
+    #remotion-root {
       width: 100%;
       aspect-ratio: 1 / 1;
       border: 2px solid var(--really-white);
