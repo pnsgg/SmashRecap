@@ -107,7 +107,7 @@
     width: 100%;
 
     p.small-text {
-      color: var(--black);
+      color: var(--nearly-black);
       background-color: var(--really-white);
       padding: 0.5rem 1rem;
       text-transform: uppercase;
