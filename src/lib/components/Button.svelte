@@ -4,7 +4,7 @@
 
   type Props = {
     href?: string;
-    variant?: 'primary' | 'secondary';
+    variant?: 'primary' | 'secondary' | 'tertiary';
     size?: 'small' | 'medium';
     icon?: Component<Partial<SVGAttributes<SVGSVGElement>>>;
     disabled?: boolean;
@@ -73,6 +73,7 @@
 
     user-select: none;
     text-decoration: none;
+    cursor: pointer;
 
     font-weight: 600;
 
@@ -118,6 +119,13 @@
     }
 
     &[data-variant='secondary'] {
+      --bg: var(--red-pns-10);
+      --bg-hover: var(--red-pns-25);
+      --text: var(--nearly-black);
+      --focus-ring: 2px solid var(--red-pns-25);
+    }
+
+    &[data-variant='tertiary'] {
       --bg: #493344;
       --bg-hover: #493344;
       --text: var(--really-white);
