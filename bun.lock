@@ -6,6 +6,7 @@
       "name": "smash-recap",
       "dependencies": {
         "@remotion/cli": "^4.0.396",
+        "@remotion/fonts": "^4.0.396",
         "@remotion/player": "^4.0.396",
         "gql.tada": "^1.9.0",
         "react": "^19.2.3",
@@ -186,6 +187,8 @@
     "@remotion/compositor-linux-x64-musl": ["@remotion/compositor-linux-x64-musl@4.0.396", "", { "os": "linux", "cpu": "x64" }, "sha512-UL/BoR3zkxEF6CHWZzPn34VaK6RXaL/WSYf9UufZmDTaEFRXWPBNL4JXPaJS3KENSSkeZGXLBfOxvgegiAHrWQ=="],
 
     "@remotion/compositor-win32-x64-msvc": ["@remotion/compositor-win32-x64-msvc@4.0.396", "", { "os": "win32", "cpu": "x64" }, "sha512-wVEJ4MOx0q6+m9gN1/HtUzDOhQio5prq8I6UjOvHibWcIjQSTMPaVRQdadek0bYP5A0qFcvTApNGpSfET2aasA=="],
+
+    "@remotion/fonts": ["@remotion/fonts@4.0.396", "", { "dependencies": { "remotion": "4.0.396" } }, "sha512-Y00ahM1AorgR2gOb2E/iBkZjFcM6tI21OIwmuOyHVY1zalU3yG/Q4NBDhu6uZvmquRGoRQLycdQ1YBHfJP/spQ=="],
 
     "@remotion/licensing": ["@remotion/licensing@4.0.396", "", {}, "sha512-k9jNW7N1b3el9dPPzEw4t0FSBYU5v067Y+EwR7JuUblmhb8vld2Slw0T5oCR1CURZR0Bh563ilHdFq7vadLKxQ=="],
 
