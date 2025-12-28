@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
+  import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { createBlueSkyIntent, createXIntent } from '$lib/socialIntents';
 
   let { data } = $props();
@@ -14,6 +15,8 @@
     text: intentText,
     isMobile: data.userAgentInfo.isMobile
   });
+
+  const mobile = new IsMobile();
 </script>
 
 <div class="my-recap">
@@ -23,19 +26,37 @@
 
   <div class="instructions">
     <div class="actions">
-      <Button extended size="small" onclick={() => alert('Download your video')}>
+      <Button
+        extended
+        size={mobile.current ? 'small' : 'medium'}
+        onclick={() => alert('Download your video')}
+      >
         Download your video
       </Button>
       <div class="posts">
-        <Button extended target="_blank" href={xIntent} variant="secondary" size="small">
+        <Button
+          extended
+          target="_blank"
+          href={xIntent}
+          variant="secondary"
+          size={mobile.current ? 'small' : 'medium'}
+        >
           Post #SmashRecap on X
         </Button>
-        <Button extended target="_blank" href={blueSkyIntent} variant="secondary" size="small">
+        <Button
+          extended
+          target="_blank"
+          href={blueSkyIntent}
+          variant="secondary"
+          size={mobile.current ? 'small' : 'medium'}
+        >
           Post #SmashRecap on BlueSky
         </Button>
       </div>
     </div>
-    <Button extended size="small" variant="tertiary">Recap another user</Button>
+    <Button extended size={mobile.current ? 'small' : 'medium'} variant="tertiary">
+      Recap another user
+    </Button>
   </div>
 </div>
 
