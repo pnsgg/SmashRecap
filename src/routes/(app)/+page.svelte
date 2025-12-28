@@ -37,7 +37,7 @@
       extended
       icon={MagnifyingGlass}
       size={mobile.current ? 'small' : 'medium'}
-      variant="secondary"
+      variant="tertiary"
     >
       Search for a player
     </Button>
