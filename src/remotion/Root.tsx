@@ -4,6 +4,7 @@ import { Composition, staticFile } from 'remotion';
 import { Main } from './Main';
 import { FPS, MAIN_COMPOSITION_HEIGHT, MAIN_COMPOSITION_WIDTH } from './config';
 
+import { EndCard } from './EndCard';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 
 import { typography } from './styles';
@@ -44,7 +45,6 @@ export const RemotionRoot: React.FC = () => {
         height={MAIN_COMPOSITION_HEIGHT}
         fps={FPS}
         defaultProps={{
-          background: true,
           year: 2025,
           user: {
             image: 'https://github.com/gerald-lbn.png',
@@ -57,6 +57,14 @@ export const RemotionRoot: React.FC = () => {
             }
           }
         }}
+      />
+      <Composition
+        id="EndCard"
+        component={EndCard}
+        durationInFrames={FPS * 3}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
       />
     </>
   );

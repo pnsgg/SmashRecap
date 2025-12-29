@@ -6,7 +6,6 @@ import { Stocks } from './components/Stocks';
 import { colors, typography } from './styles';
 
 export const thisIsMyRecapSchema = z.object({
-  background: z.boolean().default(false),
   year: z.number().min(1),
   user: z.object({
     image: z.string().url(),
@@ -23,18 +22,18 @@ export const thisIsMyRecapSchema = z.object({
 export type ThisIsMyRecapProps = z.infer<typeof thisIsMyRecapSchema>;
 
 export const ThisIsMyRecap: React.FC<ThisIsMyRecapProps> = ({
-  background,
   year,
   user
 }: z.infer<typeof thisIsMyRecapSchema>) => {
   return (
     <AbsoluteFill
+      id="remotion-root"
       style={{
         backgroundColor: colors.nearlyBlack,
         fontFamily: typography.fontFamily
       }}
     >
-      {background && <Stocks />}
+      <Stocks />
 
       <AbsoluteFill style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
         <PlayerCard
