@@ -15,7 +15,7 @@ export const typography = {
 
   heading: {
     fontSize: '4rem',
-    fontVariationSettings: "'wdth' 75",
+    fontVariationSettings: "'wdth' 75, 'wght' 700",
     lineHeight: 1,
     fontWeight: 700
   },
