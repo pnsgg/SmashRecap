@@ -41,6 +41,7 @@
     "@remotion/fonts": "^4.0.396",
     "@remotion/lambda": "4.0.396",
     "@remotion/player": "^4.0.396",
+    "dotenv": "^17.2.3",
     "gql.tada": "^1.9.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",

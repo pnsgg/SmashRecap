@@ -1,8 +1,6 @@
-<script lang="ts">
-  import type { Component } from 'svelte';
-  import type { HTMLAnchorAttributes, HTMLButtonAttributes, SVGAttributes } from 'svelte/elements';
-
-  type Props = {
+<script lang="ts" module>
+  export type Props = {
+    ref?: HTMLAnchorElement | HTMLButtonElement;
     href?: string;
     variant?: 'primary' | 'secondary' | 'tertiary';
     size?: 'small' | 'medium';
@@ -10,8 +8,14 @@
     disabled?: boolean;
     extended?: boolean;
   } & (HTMLButtonAttributes | HTMLAnchorAttributes);
+</script>
+
+<script lang="ts">
+  import type { Component } from 'svelte';
+  import type { HTMLAnchorAttributes, HTMLButtonAttributes, SVGAttributes } from 'svelte/elements';
 
   let {
+    ref = $bindable(),
     href,
     children,
     variant = 'primary',
@@ -27,6 +31,7 @@
 
 {#if href && !disabled}
   <a
+    bind:this={ref}
     data-variant={variant}
     data-size={size}
     data-extended={extended}
@@ -45,6 +50,7 @@
   </a>
 {:else}
   <button
+    bind:this={ref}
     data-variant={variant}
     data-size={size}
     data-extended={extended}

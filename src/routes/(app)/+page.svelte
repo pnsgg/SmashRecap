@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Button from '$lib/components/Button.svelte';
+  import { Button } from '$lib/components/Button';
   import MagnifyingGlass from '$lib/components/icons/MagnifyingGlass.svelte';
   import PNS from '$lib/components/icons/PNS.svelte';
   import StartggIcon from '$lib/components/icons/StartggIcon.svelte';
