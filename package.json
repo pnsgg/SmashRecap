@@ -39,6 +39,7 @@
   "dependencies": {
     "@remotion/cli": "^4.0.396",
     "@remotion/fonts": "^4.0.396",
+    "@remotion/lambda": "4.0.396",
     "@remotion/player": "^4.0.396",
     "gql.tada": "^1.9.0",
     "react": "^19.2.3",
