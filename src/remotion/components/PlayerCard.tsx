@@ -1,4 +1,5 @@
 import React from 'react';
+import { Img } from 'remotion';
 import { colors } from '../styles';
 
 export type PlayerCardProps = {
@@ -61,7 +62,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
           marginRight: -12
         }}
       >
-        <img
+        <Img
           src={image}
           style={{
             transform: 'rotate(15deg)',
