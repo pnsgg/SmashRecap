@@ -52,6 +52,7 @@
   <div id="remotion-root">
     <PlayerViewWrapper
       bind:player
+      autoPlay={false}
       data={{
         year: 2025,
         user: {

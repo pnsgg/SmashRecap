@@ -1,26 +1,14 @@
-import { bundle } from '@remotion/bundler';
+import { REMOTION_BUNDLE_LOCATION } from '$env/static/private';
 import { renderMedia, selectComposition } from '@remotion/renderer';
 import type { RequestHandler } from '@sveltejs/kit';
-import path from 'path';
 
-export const POST: RequestHandler = async ({ request, params }) => {
+export const POST: RequestHandler = async ({ request }) => {
   // TODO: Implement authorization check
   const authorization = request.headers.get('Authorization');
   console.log('Authorization:', authorization);
 
-  const { userId } = params;
-
   // The composition you want to render
   const compositionId = 'ThisIsMyRecap';
-
-  // You only have to create a bundle once, and you may reuse it
-  // for multiple renders that you can parametrize using input props.
-  const bundleLocation = await bundle({
-    entryPoint: path.resolve('./src/remotion/index.ts'),
-    // If you have a webpack override in remotion.config.ts, pass it here as well.
-    webpackOverride: (config) => config,
-    publicDir: path.resolve('static')
-  });
 
   const inputProps = {
     year: 2025,
@@ -39,15 +27,20 @@ export const POST: RequestHandler = async ({ request, params }) => {
   // Get the composition you want to render. Pass `inputProps` if you
   // want to customize the duration or other metadata.
   const composition = await selectComposition({
-    serveUrl: bundleLocation,
+    serveUrl: REMOTION_BUNDLE_LOCATION,
     id: compositionId,
     inputProps
   });
 
   await renderMedia({
     composition,
-    serveUrl: bundleLocation,
+    serveUrl: REMOTION_BUNDLE_LOCATION,
     codec: 'h264',
+    imageFormat: 'png',
+    crf: 1,
+    pixelFormat: 'yuv420p',
+    colorSpace: 'bt709',
+    muted: true,
     outputLocation: `out/${compositionId}.mp4`,
     inputProps
   });

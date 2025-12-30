@@ -27,3 +27,5 @@ vite.config.ts.timestamp-*
 
 # Remotion ouput
 out
+
+remotion-bundle

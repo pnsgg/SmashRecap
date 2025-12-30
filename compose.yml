@@ -7,9 +7,11 @@ services:
     env_file:
       - .secrets/server_env
     environment:
-      - ORIGIN=http://localhost:3000
+      - ORIGIN=http://localhost:3001
+    volumes:
+      - ./out:/out
     ports:
-      - '3000:3000'
+      - '3001:3000'
 
 secrets:
   server_env:
