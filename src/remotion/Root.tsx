@@ -2,7 +2,12 @@ import { loadFont } from '@remotion/fonts';
 import React from 'react';
 import { Composition, staticFile } from 'remotion';
 import { Main } from './Main';
-import { FPS, MAIN_COMPOSITION_HEIGHT, MAIN_COMPOSITION_WIDTH } from './config';
+import {
+  FPS,
+  MAIN_COMPOSITION_HEIGHT,
+  MAIN_COMPOSITION_WIDTH,
+  THIS_IS_MY_RECAP_DURATION
+} from './config';
 
 import { EndCard } from './EndCard';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
@@ -40,14 +45,15 @@ export const RemotionRoot: React.FC = () => {
         id="ThisIsMyRecap"
         component={ThisIsMyRecap}
         schema={thisIsMyRecapSchema}
-        durationInFrames={FPS}
+        durationInFrames={THIS_IS_MY_RECAP_DURATION}
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
         fps={FPS}
         defaultProps={{
           year: 2025,
           user: {
-            image: 'https://github.com/gerald-lbn.png',
+            image:
+              'https://images.start.gg/images/user/2858645/image-714398e1a693c64afc42d008a7a514c1.jpg',
             prefix: 'PNS',
             gamerTag: 'RouxChov',
             country: 'France',

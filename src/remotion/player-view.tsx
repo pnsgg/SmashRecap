@@ -1,6 +1,7 @@
 import { Player, type PlayerRef } from '@remotion/player';
 import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 import { ThisIsMyRecap, type ThisIsMyRecapProps } from './ThisIsMyRecap';
+import { totalDuration } from './config';
 
 export type PlayerSchema = ThisIsMyRecapProps;
 
@@ -31,7 +32,7 @@ export const PlayerView = forwardRef((props: PlayerViewProps, ref) => {
     <Player
       ref={playerRef}
       component={ThisIsMyRecap}
-      durationInFrames={120}
+      durationInFrames={totalDuration}
       fps={30}
       compositionHeight={600}
       compositionWidth={600}
@@ -44,6 +45,7 @@ export const PlayerView = forwardRef((props: PlayerViewProps, ref) => {
       doubleClickToFullscreen={false}
       style={{ width: '100%' }}
       initiallyMuted={false}
+      moveToBeginningWhenEnded={false}
     />
   );
 });
