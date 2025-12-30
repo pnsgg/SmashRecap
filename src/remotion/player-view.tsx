@@ -8,6 +8,7 @@ export type PlayerSchema = ThisIsMyRecapProps;
 export type PlayerViewProps = {
   data: PlayerSchema;
   onPaused?: () => void;
+  autoPlay?: boolean;
 };
 
 export const PlayerView = forwardRef((props: PlayerViewProps, ref) => {
@@ -38,7 +39,7 @@ export const PlayerView = forwardRef((props: PlayerViewProps, ref) => {
       compositionWidth={600}
       inputProps={props.data}
       acknowledgeRemotionLicense
-      autoPlay
+      autoPlay={props.autoPlay}
       controls={true}
       showVolumeControls={false}
       allowFullscreen={false}

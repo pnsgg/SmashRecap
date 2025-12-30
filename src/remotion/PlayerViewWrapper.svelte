@@ -8,9 +8,10 @@
   type Props = {
     data: PlayerSchema;
     player?: PlayerRef;
+    autoPlay?: boolean;
   };
 
-  let { data, player = $bindable<PlayerRef>() }: Props = $props();
+  let { data, player = $bindable<PlayerRef>(), autoPlay = false }: Props = $props();
 
   let containerRef: HTMLDivElement;
   let root: Root;
@@ -29,7 +30,8 @@
           // @ts-expect-error - React thing
           player = ref?.playerRef;
         },
-        data
+        data,
+        autoPlay
       })
     );
   }
