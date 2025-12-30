@@ -104,11 +104,10 @@
     <PlayerViewWrapper
       bind:player
       data={{
-        background: true,
         year: 2025,
         user: {
           gamerTag: 'RouxChov',
-          image: 'https://github.com/gerald-lbn.png',
+          image: '/images/rouxchov.jpg',
           country: 'France',
           prefix: 'PNS',
           pronouns: 'He/Him',
