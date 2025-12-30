@@ -24,3 +24,6 @@ vite.config.ts.timestamp-*
 
 # Secrets
 .secrets/*
+
+# Remotion ouput
+out
