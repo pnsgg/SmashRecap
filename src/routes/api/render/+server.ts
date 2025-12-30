@@ -1,13 +1,7 @@
-import {
-  REMOTION_AWS_ACCESS_KEY_ID,
-  REMOTION_AWS_SECRET_ACCESS_KEY,
-  REMOTION_AWS_SERVE_URL
-} from '$env/static/private';
-import { renderMediaOnLambda, speculateFunctionName } from '@remotion/lambda/client';
+import { bundle } from '@remotion/bundler';
+import { renderMedia, selectComposition } from '@remotion/renderer';
 import type { RequestHandler } from '@sveltejs/kit';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import path from 'path';
 
 export const POST: RequestHandler = async ({ request, params }) => {
   // TODO: Implement authorization check
@@ -16,34 +10,52 @@ export const POST: RequestHandler = async ({ request, params }) => {
 
   const { userId } = params;
 
-  const functionName = speculateFunctionName({
-    diskSizeInMb: 2048,
-    memorySizeInMb: 2048,
-    timeoutInSeconds: 120
+  // The composition you want to render
+  const compositionId = 'ThisIsMyRecap';
+
+  // You only have to create a bundle once, and you may reuse it
+  // for multiple renders that you can parametrize using input props.
+  const bundleLocation = await bundle({
+    entryPoint: path.resolve('./src/remotion/index.ts'),
+    // If you have a webpack override in remotion.config.ts, pass it here as well.
+    webpackOverride: (config) => config,
+    publicDir: path.resolve('static')
   });
 
-  const { renderId, bucketName } = await renderMediaOnLambda({
-    region: 'us-east-1',
-    functionName,
-    serveUrl: REMOTION_AWS_SERVE_URL,
-    apiKey: REMOTION_AWS_ACCESS_KEY_ID,
-    envVariables: {
-      REMOTION_AWS_ACCESS_KEY_ID,
-      REMOTION_AWS_SECRET_ACCESS_KEY
-    },
-    composition: 'ThisIsMyRecap',
-    inputProps: {},
+  const inputProps = {
+    year: 2025,
+    user: {
+      gamerTag: 'RouxChov',
+      image: 'images/rouxchov.jpg',
+      country: 'France',
+      prefix: 'PNS',
+      pronouns: 'He/Him',
+      socialMedias: {
+        x: 'le_grld'
+      }
+    }
+  };
+
+  // Get the composition you want to render. Pass `inputProps` if you
+  // want to customize the duration or other metadata.
+  const composition = await selectComposition({
+    serveUrl: bundleLocation,
+    id: compositionId,
+    inputProps
+  });
+
+  await renderMedia({
+    composition,
+    serveUrl: bundleLocation,
     codec: 'h264',
-    imageFormat: 'png',
-    maxRetries: 1,
-    framesPerLambda: 30,
-    privacy: 'public'
+    outputLocation: `out/${compositionId}.mp4`,
+    inputProps
   });
 
   return new Response(
     JSON.stringify({
-      renderId,
-      bucketName
+      success: true,
+      message: 'Render completed successfully'
     })
   );
 };

@@ -25,42 +25,6 @@
   let isDownloading = $state(false);
   let downloadButtonProps = $state<ButtonProps>();
 
-  type RenderProgress =
-    | {
-        type: 'progress';
-        progress: number;
-      }
-    | {
-        type: 'done';
-        url: string;
-        size: number;
-      }
-    | {
-        type: 'error';
-        message: string;
-      };
-
-  let renderProgress = $state<RenderProgress>();
-  let renderProgressPercentage = $derived.by(() => {
-    if (renderProgress?.type === 'progress') {
-      return Math.round(renderProgress.progress * 100);
-    }
-    return undefined;
-  });
-
-  const getRenderProgress = async (renderId: string, bucketName: string) => {
-    const req = await fetch(`/api/progress`, {
-      headers: {
-        Authorization: `Bearer ${'coucou'}`,
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({ renderId, bucketName })
-    });
-    const json = await req.json();
-    return json as RenderProgress;
-  };
-
   const renderRecap = async () => {
     isDownloading = true;
 
@@ -71,32 +35,14 @@
       method: 'POST',
       body: JSON.stringify({ userId: '123' })
     });
-    const json = await req.json();
-    const { renderId, bucketName } = json as { renderId: string; bucketName: string };
 
-    while (renderProgress?.type !== 'done' && renderProgress?.type !== 'error') {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const progress = await getRenderProgress(renderId, bucketName);
-      renderProgress = progress;
-    }
+    const res = await req.json();
+    console.log(res);
 
-    isDownloading = false;
-
-    if (renderProgress.type === 'error') {
-      alert('An error occurred while rendering the recap.');
-      return;
+    if (res.success === true) {
+      isDownloading = false;
     }
   };
-
-  $effect(() => {
-    if (renderProgress?.type === 'done') {
-      downloadButtonProps = {
-        href: renderProgress.url,
-        download: 'my-recap'
-      };
-      downloadButton?.click();
-    }
-  });
 </script>
 
 <div class="my-recap">
@@ -130,10 +76,8 @@
         disabled={isDownloading}
         {...downloadButtonProps}
       >
-        {#if isDownloading && renderProgress === undefined}
+        {#if isDownloading}
           Downloading...
-        {:else if isDownloading && renderProgress?.type === 'progress'}
-          {renderProgressPercentage}% done
         {:else}
           Download Video
         {/if}
