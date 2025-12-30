@@ -37,14 +37,14 @@
     "vite": "^7.2.6"
   },
   "dependencies": {
-    "@remotion/cli": "^4.0.396",
-    "@remotion/fonts": "^4.0.396",
-    "@remotion/lambda": "4.0.396",
-    "@remotion/player": "^4.0.396",
+    "@remotion/cli": "4.0.397",
+    "@remotion/fonts": "4.0.397",
+    "@remotion/lambda": "4.0.397",
+    "@remotion/player": "4.0.397",
     "dotenv": "^17.2.3",
     "gql.tada": "^1.9.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "remotion": "^4.0.396"
+    "remotion": "4.0.397"
   }
 }
