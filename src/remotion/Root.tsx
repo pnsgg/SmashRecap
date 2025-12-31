@@ -8,6 +8,7 @@ import {
   MAIN_COMPOSITION_HEIGHT,
   MAIN_COMPOSITION_WIDTH,
   THIS_IS_MY_RECAP_DURATION,
+  totalDuration,
   TOURNAMENTS_DURATION
 } from './config';
 
@@ -38,7 +39,7 @@ export const RemotionRoot: React.FC = () => {
         // npx remotion render HelloWorld
         id="Main"
         component={Main}
-        durationInFrames={150}
+        durationInFrames={totalDuration}
         fps={FPS}
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
