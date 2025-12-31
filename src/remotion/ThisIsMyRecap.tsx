@@ -40,11 +40,6 @@ export const ThisIsMyRecap: React.FC<ThisIsMyRecapProps> = ({
   const titleTranslateY = interpolate(entrance, [0, 1], [-height, 0]);
   const cardTranslateY = interpolate(entrance, [0, 1], [height, height * 0.3]);
 
-  const opacity = interpolate(frame, [120, 140], [0.125, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp'
-  });
-
   return (
     <AbsoluteFill
       id="remotion-root"
@@ -53,7 +48,7 @@ export const ThisIsMyRecap: React.FC<ThisIsMyRecapProps> = ({
         fontFamily: typography.fontFamily
       }}
     >
-      <Stocks opacity={opacity} />
+      <Stocks />
 
       <>
         <AbsoluteFill
