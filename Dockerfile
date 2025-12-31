@@ -1,4 +1,4 @@
-FROM node:22-bookworm-slim
+FROM oven/bun:debian AS base
 
 # Install Chrome Dependencies
 RUN apt update && apt install -y \
@@ -18,17 +18,37 @@ RUN apt update && apt install -y \
     libatk-bridge2.0-0 && \
     rm -rf /var/lib/apt/lists/*
 
+# Install dependencies
+FROM base AS deps
+WORKDIR /app
+COPY package.json bun.lock ./
+RUN bun ci
+
+# Build the app wth secrets
+FROM base AS builder
+WORKDIR /app
 COPY . .
-RUN npm ci
-
-# Install Chrome
-RUN npx remotion browser ensure
-
+COPY --from=deps /app/node_modules /app/node_modules
 RUN --mount=type=secret,id=server_env \
     cp /run/secrets/server_env .env && \
-    npm run build
-RUN node deploy.mjs
-VOLUME [ "/out" ]
+    bun run build
+
+# Bundle remotion project
+FROM base AS remotion-bundler
+WORKDIR /app
+COPY --from=deps /app/node_modules /app/node_modules
+COPY --from=deps /app/package.json package.json
+COPY . .
+RUN bun run remotion:bundle
+
+# Run the app
+FROM base AS runner
+WORKDIR /app
+COPY --from=builder --chown=bun:bun /app/build build/
+COPY --from=builder --chown=bun:bun /app/node_modules node_modules/
+COPY --from=remotion-bundler --chown=bun:bun /app/remotion-bundle /app/remotion-bundle
+RUN bunx remotion browser ensure
+VOLUME [ "/app/out" ]
 EXPOSE 3000
 ENV NODE_ENV=production
-CMD ["node", "./build"]
+CMD ["bun", "./build"]
