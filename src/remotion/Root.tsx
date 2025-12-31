@@ -4,6 +4,7 @@ import { Composition, staticFile } from 'remotion';
 import { Main } from './Main';
 import {
   END_CARD_DURATION,
+  FAVOURITE_CHARACTER_DURATION,
   FPS,
   MAIN_COMPOSITION_HEIGHT,
   MAIN_COMPOSITION_WIDTH,
@@ -18,7 +19,8 @@ import { MyPerformances, myPerformancesSchema } from './MyPerformances';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
 
-import { ATTENDANCE, ME, PERFORMANCES, YEAR } from './mock';
+import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
+import { ATTENDANCE, FAVOURITE_CHARACTERS, ME, PERFORMANCES, YEAR } from './mock';
 import { typography } from './styles';
 import './styles/remotion.css';
 
@@ -45,8 +47,8 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
+      // You can override these props for each render:
+      // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Composition
         id="ThisIsMyRecap"
@@ -84,6 +86,18 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         defaultProps={{
           performances: PERFORMANCES
+        }}
+      />
+      <Composition
+        id="FavouriteCharacters"
+        component={FavouriteCharacters}
+        schema={favouriteCharactersSchema}
+        durationInFrames={FAVOURITE_CHARACTER_DURATION}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
+        defaultProps={{
+          characters: FAVOURITE_CHARACTERS
         }}
       />
       <Composition

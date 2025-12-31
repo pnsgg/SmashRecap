@@ -122,6 +122,13 @@ export const PERFORMANCES: MyPerformance[] = [
     }
   }
 ];
+
+export const FAVOURITE_CHARACTERS = [
+  { name: 'Marth', count: 120, image: '/images/chara_1/marth.png' },
+  { name: 'Fox', count: 95, image: '/images/chara_1/fox.png' },
+  { name: 'Falco', count: 80, image: '/images/chara_1/falco.png' }
+];
+
 export const END_CARD = {
   image: 'https://images.start.gg/images/user/2858645/image-714398e1a693c64afc42d008a7a514c1.jpg',
   prefix: 'PNS',
