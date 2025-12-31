@@ -1,9 +1,12 @@
 import { Player, type PlayerRef } from '@remotion/player';
 import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
-import { ThisIsMyRecap, type ThisIsMyRecapProps } from './ThisIsMyRecap';
+import { Main } from './Main';
 import { totalDuration } from './config';
 
-export type PlayerSchema = ThisIsMyRecapProps;
+// TODO: Define PlayerSchema type
+export type PlayerSchema = {
+  prop?: string;
+};
 
 export type PlayerViewProps = {
   data: PlayerSchema;
@@ -32,7 +35,7 @@ export const PlayerView = forwardRef((props: PlayerViewProps, ref) => {
   return (
     <Player
       ref={playerRef}
-      component={ThisIsMyRecap}
+      component={Main}
       durationInFrames={totalDuration}
       fps={30}
       compositionHeight={600}
