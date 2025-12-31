@@ -2,6 +2,7 @@
   import { Button, type ButtonProps } from '$lib/components/Button';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { createBlueSkyIntent, createXIntent } from '$lib/socialIntents';
+  import { ME, YEAR } from '$remotion/mock';
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
   import type { PlayerRef } from '@remotion/player';
 
@@ -50,17 +51,8 @@
     <PlayerViewWrapper
       bind:player
       data={{
-        year: 2025,
-        user: {
-          gamerTag: 'RouxChov',
-          image: '/images/rouxchov.jpg',
-          country: 'France',
-          prefix: 'PNS',
-          pronouns: 'He/Him',
-          socialMedias: {
-            x: 'le_grld'
-          }
-        }
+        year: YEAR,
+        user: ME
       }}
     />
   </div>

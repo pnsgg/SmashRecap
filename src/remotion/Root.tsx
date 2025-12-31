@@ -15,6 +15,7 @@ import { EndCard } from './EndCard';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
 
+import { ATTENDANCE, ME, YEAR } from './mock';
 import { typography } from './styles';
 import './styles/remotion.css';
 
@@ -53,18 +54,8 @@ export const RemotionRoot: React.FC = () => {
         height={MAIN_COMPOSITION_HEIGHT}
         fps={FPS}
         defaultProps={{
-          year: 2025,
-          user: {
-            image:
-              'https://images.start.gg/images/user/2858645/image-714398e1a693c64afc42d008a7a514c1.jpg',
-            prefix: 'PNS',
-            gamerTag: 'RouxChov',
-            country: 'France',
-            pronouns: 'He/Him',
-            socialMedias: {
-              x: 'le_grld'
-            }
-          }
+          year: YEAR,
+          user: ME
         }}
       />
       <Composition
@@ -76,57 +67,8 @@ export const RemotionRoot: React.FC = () => {
         height={MAIN_COMPOSITION_HEIGHT}
         fps={FPS}
         defaultProps={{
-          year: new Date().getFullYear(),
-          attendance: [
-            {
-              month: 'Jan',
-              attendance: 4
-            },
-            {
-              month: 'Feb',
-              attendance: 6
-            },
-            {
-              month: 'Mar',
-              attendance: 8
-            },
-            {
-              month: 'Apr',
-              attendance: 24
-            },
-            {
-              month: 'May',
-              attendance: 0
-            },
-            {
-              month: 'Jun',
-              attendance: 10
-            },
-            {
-              month: 'Jul',
-              attendance: 12
-            },
-            {
-              month: 'Aug',
-              attendance: 14
-            },
-            {
-              month: 'Sep',
-              attendance: 16
-            },
-            {
-              month: 'Oct',
-              attendance: 18
-            },
-            {
-              month: 'Nov',
-              attendance: 20
-            },
-            {
-              month: 'Dec',
-              attendance: 22
-            }
-          ]
+          year: YEAR,
+          attendance: ATTENDANCE
         }}
       />
       <Composition

@@ -4,6 +4,7 @@
   import PNS from '$lib/components/icons/PNS.svelte';
   import StartggIcon from '$lib/components/icons/StartggIcon.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
+  import { ME, YEAR } from '$remotion/mock';
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
   import type { PlayerRef } from '@remotion/player';
 
@@ -54,17 +55,8 @@
       bind:player
       autoPlay={false}
       data={{
-        year: 2025,
-        user: {
-          gamerTag: 'RouxChov',
-          image: '/images/rouxchov.jpg',
-          country: 'France',
-          prefix: 'PNS',
-          pronouns: 'He/Him',
-          socialMedias: {
-            x: 'le_grld'
-          }
-        }
+        year: YEAR,
+        user: ME
       }}
     />
   </div>
