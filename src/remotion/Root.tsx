@@ -3,14 +3,17 @@ import React from 'react';
 import { Composition, staticFile } from 'remotion';
 import { Main } from './Main';
 import {
+  END_CARD_DURATION,
   FPS,
   MAIN_COMPOSITION_HEIGHT,
   MAIN_COMPOSITION_WIDTH,
-  THIS_IS_MY_RECAP_DURATION
+  THIS_IS_MY_RECAP_DURATION,
+  TOURNAMENTS_DURATION
 } from './config';
 
 import { EndCard } from './EndCard';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
+import { Tournaments, tournamentsSchema } from './Tournaments';
 
 import { typography } from './styles';
 import './styles/remotion.css';
@@ -65,9 +68,71 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
+        id="Tournaments"
+        component={Tournaments}
+        schema={tournamentsSchema}
+        durationInFrames={TOURNAMENTS_DURATION}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
+        defaultProps={{
+          year: new Date().getFullYear(),
+          attendance: [
+            {
+              month: 'Jan',
+              attendance: 4
+            },
+            {
+              month: 'Feb',
+              attendance: 6
+            },
+            {
+              month: 'Mar',
+              attendance: 8
+            },
+            {
+              month: 'Apr',
+              attendance: 24
+            },
+            {
+              month: 'May',
+              attendance: 0
+            },
+            {
+              month: 'Jun',
+              attendance: 10
+            },
+            {
+              month: 'Jul',
+              attendance: 12
+            },
+            {
+              month: 'Aug',
+              attendance: 14
+            },
+            {
+              month: 'Sep',
+              attendance: 16
+            },
+            {
+              month: 'Oct',
+              attendance: 18
+            },
+            {
+              month: 'Nov',
+              attendance: 20
+            },
+            {
+              month: 'Dec',
+              attendance: 22
+            }
+          ]
+        }}
+      />
+      <Composition
         id="EndCard"
         component={EndCard}
-        durationInFrames={FPS * 3}
+        durationInFrames={END_CARD_DURATION}
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
         fps={FPS}
