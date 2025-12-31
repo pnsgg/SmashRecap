@@ -2,6 +2,7 @@ import React from 'react';
 import { AbsoluteFill } from 'remotion';
 import { z } from 'zod';
 import { Bar } from './components/Bar';
+import { Stocks } from './components/Stocks';
 import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const tournamentsSchema = z.object({
@@ -34,6 +35,8 @@ export const Tournaments: React.FC<TournamentsProps> = ({ year, attendance }) =>
         color: colors.nearlyBlack
       }}
     >
+      {<Stocks opacity={0.04} />}
+
       <h1
         style={{
           fontSize: 54,
