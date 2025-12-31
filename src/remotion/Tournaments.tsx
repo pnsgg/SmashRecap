@@ -2,7 +2,7 @@ import React from 'react';
 import { AbsoluteFill } from 'remotion';
 import { z } from 'zod';
 import { Bar } from './components/Bar';
-import { colors, typography } from './styles';
+import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const tournamentsSchema = z.object({
   year: z.number().min(0),
@@ -38,7 +38,10 @@ export const Tournaments: React.FC<TournamentsProps> = ({ year, attendance }) =>
         style={{
           fontSize: 54,
           lineHeight: 0.9,
-          fontVariationSettings: "'wdth' 75, 'wght' 700",
+          fontVariationSettings: makeFontVariationSettings({
+            width: 75,
+            weight: 700
+          }),
           width: '100%',
           transform: 'translateY(32px)'
         }}

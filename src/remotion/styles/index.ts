@@ -7,7 +7,31 @@ export const colors = {
   redPns90: '#7d001b',
   nearlyBlack: '#1b0015',
   blueBuvette: '#1cc1ff',
-  violetPop: '#cb1cff'
+  violetPop: '#cb1cff',
+  gold: '#ffe078',
+  silver: '#d0d0d0',
+  bronze: '#cd7f32',
+  success: '#00d51d',
+  error: '#f50000'
+};
+
+export const makeFontVariationSettings = ({
+  width,
+  weight
+}: {
+  width?: number;
+  weight?: number;
+}) => {
+  if (!width && !weight) {
+    return undefined;
+  }
+  if (!width) {
+    return `'wght' ${weight}`;
+  }
+  if (!weight) {
+    return `'wdth' ${width}`;
+  }
+  return `'wdth' ${width}, 'wght' ${weight}`;
 };
 
 export const typography = {
@@ -15,27 +39,23 @@ export const typography = {
 
   heading: {
     fontSize: '4rem',
-    fontVariationSettings: "'wdth' 75, 'wght' 700",
-    lineHeight: 1,
-    fontWeight: 700
+    fontVariationSettings: makeFontVariationSettings({ width: 75, weight: 700 }),
+    lineHeight: 1
   },
   heading1: {
     fontSize: '2.75rem',
-    fontVariationSettings: "'wdth' 75",
-    lineHeight: 1.1,
-    fontWeight: 600
+    fontVariationSettings: makeFontVariationSettings({ width: 75, weight: 600 }),
+    lineHeight: 1.1
   },
   heading2: {
     fontSize: '2rem',
-    fontVariationSettings: "'wdth' 80",
-    lineHeight: 1.1,
-    fontWeight: 600
+    fontVariationSettings: makeFontVariationSettings({ width: 80, weight: 600 }),
+    lineHeight: 1.1
   },
   heading3: {
     fontSize: '1.75rem',
-    fontVariationSettings: "'wdth' 85",
-    lineHeight: 1.1,
-    fontWeight: 500
+    fontVariationSettings: makeFontVariationSettings({ width: 85, weight: 500 }),
+    lineHeight: 1.1
   },
   heading4: {
     fontSize: '1.5rem',
@@ -48,9 +68,8 @@ export const typography = {
   },
   subtitle: {
     fontSize: '1.25rem',
-    fontVariationSettings: "'wdth' 85",
-    lineHeight: 1.6,
-    fontWeight: 600
+    fontVariationSettings: makeFontVariationSettings({ width: 85, weight: 600 }),
+    lineHeight: 1.6
   },
   paragraph: {
     fontSize: '1.125rem',

@@ -5,7 +5,7 @@ import { BreathingYear } from './components/BreathingYear';
 import { PlayerCard } from './components/PlayerCard';
 import { Stocks } from './components/Stocks';
 
-import { colors, typography } from './styles';
+import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const thisIsMyRecapSchema = z.object({
   year: z.number().min(1),
@@ -103,7 +103,10 @@ export const ThisIsMyRecap: React.FC<ThisIsMyRecapProps> = ({
               style={{
                 fontSize: '105px',
                 lineHeight: 0.9,
-                fontVariationSettings: "'wdth' 75, 'wght' 700",
+                fontVariationSettings: makeFontVariationSettings({
+                  width: 75,
+                  weight: 700
+                }),
                 color: colors.reallyWhite,
                 maxWidth: 550
               }}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Img } from 'remotion';
-import { colors } from '../styles';
+import { colors, makeFontVariationSettings } from '../styles';
 
 export type PlayerCardProps = {
   image: string;
@@ -20,7 +20,10 @@ const Badge = ({ children }: { children: React.ReactNode }) => (
       padding: '0.5rem 0.75rem',
       backgroundColor: colors.redPns,
       color: colors.reallyWhite,
-      fontVariationSettings: '"wght" 700, "wdth" 75',
+      fontVariationSettings: makeFontVariationSettings({
+        weight: 700,
+        width: 75
+      }),
       fontSize: 16,
       lineHeight: 1,
       textTransform: 'uppercase'
@@ -107,7 +110,10 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
               <p
                 style={{
                   fontSize: 26,
-                  fontVariationSettings: '"wght" 700, "wdth" 80',
+                  fontVariationSettings: makeFontVariationSettings({
+                    weight: 700,
+                    width: 80
+                  }),
                   color: colors.redPns
                 }}
               >
@@ -117,7 +123,10 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
             <p
               style={{
                 fontSize: 44,
-                fontVariationSettings: '"wght" 700, "wdth" 80',
+                fontVariationSettings: makeFontVariationSettings({
+                  weight: 700,
+                  width: 80
+                }),
                 color: colors.reallyWhite
               }}
             >
