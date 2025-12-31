@@ -35,7 +35,7 @@ export const Tournaments: React.FC<TournamentsProps> = ({ year, attendance }) =>
         color: colors.nearlyBlack
       }}
     >
-      {<Stocks opacity={0.04} />}
+      <Stocks opacity={0.04} />
 
       <h1
         style={{
