@@ -9,7 +9,7 @@ services:
     environment:
       - ORIGIN=http://localhost:3001
     volumes:
-      - ./out:/out
+      - ./out:/app/out
     ports:
       - '3001:3000'
 
