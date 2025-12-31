@@ -7,16 +7,18 @@ import {
   FPS,
   MAIN_COMPOSITION_HEIGHT,
   MAIN_COMPOSITION_WIDTH,
+  PERFORMANCES_DURATION,
   THIS_IS_MY_RECAP_DURATION,
   totalDuration,
   TOURNAMENTS_DURATION
 } from './config';
 
 import { EndCard } from './EndCard';
+import { MyPerformances, myPerformancesSchema } from './MyPerformances';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
 
-import { ATTENDANCE, ME, YEAR } from './mock';
+import { ATTENDANCE, ME, PERFORMANCES, YEAR } from './mock';
 import { typography } from './styles';
 import './styles/remotion.css';
 
@@ -70,6 +72,18 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{
           year: YEAR,
           attendance: ATTENDANCE
+        }}
+      />
+      <Composition
+        id="Performances"
+        component={MyPerformances}
+        schema={myPerformancesSchema}
+        durationInFrames={PERFORMANCES_DURATION}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
+        defaultProps={{
+          performances: PERFORMANCES
         }}
       />
       <Composition
