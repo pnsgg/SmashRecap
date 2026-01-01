@@ -29,9 +29,8 @@ FROM base AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules /app/node_modules
-RUN --mount=type=secret,id=server_env \
-    cp /run/secrets/server_env .env && \
-    bun run build
+ENV REMOTION_BUNDLE_LOCATION=/app/remotion-bundle
+RUN bun run build
 
 # Bundle remotion project
 FROM base AS remotion-bundler
@@ -51,4 +50,5 @@ RUN bunx remotion browser ensure
 VOLUME [ "/app/out" ]
 EXPOSE 3000
 ENV NODE_ENV=production
+
 CMD ["bun", "./build"]

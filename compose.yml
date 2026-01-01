@@ -2,17 +2,9 @@ services:
   app:
     build:
       context: .
-      secrets:
-        - server_env
-    env_file:
-      - .secrets/server_env
     environment:
       - ORIGIN=http://localhost:3001
     volumes:
       - ./out:/app/out
     ports:
       - '3001:3000'
-
-secrets:
-  server_env:
-    file: .secrets/server_env
