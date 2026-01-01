@@ -8,22 +8,9 @@ export const POST: RequestHandler = async ({ request }) => {
   console.log('Authorization:', authorization);
 
   // The composition you want to render
-  const compositionId = 'ThisIsMyRecap';
+  const compositionId = 'Main';
 
-  const inputProps = {
-    year: 2025,
-    user: {
-      gamerTag: 'RouxChov',
-      image:
-        'https://images.start.gg/images/user/2858645/image-714398e1a693c64afc42d008a7a514c1.jpg',
-      country: 'France',
-      prefix: 'PNS',
-      pronouns: 'He/Him',
-      socialMedias: {
-        x: 'le_grld'
-      }
-    }
-  };
+  const inputProps = {};
 
   // Get the composition you want to render. Pass `inputProps` if you
   // want to customize the duration or other metadata.
@@ -39,11 +26,13 @@ export const POST: RequestHandler = async ({ request }) => {
       serveUrl: REMOTION_BUNDLE_LOCATION,
       codec: 'h264',
       imageFormat: 'png',
-      crf: 1,
-      pixelFormat: 'yuv420p',
-      colorSpace: 'bt709',
+      // crf: 1,
+      // pixelFormat: 'yuv420p',
+      // colorSpace: 'bt709',
       muted: true,
-      inputProps
+      inputProps,
+      onProgress: ({ progress, renderEstimatedTime }) =>
+        console.log(`Progress: ${progress * 100}% | Estimated time: ${renderEstimatedTime}`)
     });
     const mediaBuffer = media.buffer;
     if (!mediaBuffer || mediaBuffer.length === 0) {
