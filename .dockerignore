@@ -25,5 +25,6 @@ vite.config.ts.timestamp-*
 # Secrets
 .secrets/*
 
-# Remotion output
+# Remotion
+remotion-bundle
 out
