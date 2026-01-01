@@ -11,7 +11,7 @@ L'application peut être déployée en utilisant Docker Compose. Pour ce faire, 
 
 1. Clonez le dépôt
    ```
-   git clone https://github.com/pns/smashrecap.git
+   git clone https://github.com/pnsgg/smashrecap.git
    ```
 2. Déplacez-vous dans le répertoire du projet
    ```
