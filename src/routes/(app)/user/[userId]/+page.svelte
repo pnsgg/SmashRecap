@@ -37,12 +37,22 @@
       body: JSON.stringify({ userId: '123' })
     });
 
-    const res = await req.json();
-    console.log(res);
-
-    if (res.success === true) {
+    if (!req.ok) {
+      const message = await req.text();
+      console.error('Render failed:', message);
       isDownloading = false;
+      return;
     }
+
+    // Download the video
+    const blob = await req.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'smash-recap.mp4';
+    a.click();
+    isDownloading = false;
+    URL.revokeObjectURL(url);
   };
 </script>
 
