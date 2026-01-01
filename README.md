@@ -1,38 +1,24 @@
-# sv
+<a href="#">
+	<picture>
+		<source media="(prefers-color-scheme: dark)" srcset=".github/assets/banner_dark.png">
+		<img src=".github/assets/banner.png" alt="SmashRecap - You Smash year in review" />
+	</picture>
+</a>
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Déploiement
 
-## Creating a project
+L'application peut être déployée en utilisant Docker Compose. Pour ce faire, vous devez avoir Docker et Docker Compose installés sur votre système.
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+1. Clonez le dépôt
+   ```
+   git clone https://github.com/pns/smashrecap.git
+   ```
+2. Déplacez-vous dans le répertoire du projet
+   ```
+   cd smash-recap
+   ```
+3. Lancer les conteneurs docker
+   ```
+   docker-compose up -d --build
+   ```
+4. Visitez l'application à l'adresse http://localhost:3001
