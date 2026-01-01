@@ -26,13 +26,12 @@ export const POST: RequestHandler = async ({ request }) => {
       serveUrl: REMOTION_BUNDLE_LOCATION,
       codec: 'h264',
       imageFormat: 'png',
-      // crf: 1,
-      // pixelFormat: 'yuv420p',
-      // colorSpace: 'bt709',
       muted: true,
       inputProps,
       onProgress: ({ progress, renderEstimatedTime }) =>
-        console.log(`Progress: ${progress * 100}% | Estimated time: ${renderEstimatedTime}`)
+        console.log(
+          `Progress: ${Math.round(progress * 100)}% | Estimated time: ${Math.round(renderEstimatedTime / 1000)}s`
+        )
     });
     const mediaBuffer = media.buffer;
     if (!mediaBuffer || mediaBuffer.length === 0) {
