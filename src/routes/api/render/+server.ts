@@ -14,7 +14,8 @@ export const POST: RequestHandler = async ({ request }) => {
     year: 2025,
     user: {
       gamerTag: 'RouxChov',
-      image: 'images/rouxchov.jpg',
+      image:
+        'https://images.start.gg/images/user/2858645/image-714398e1a693c64afc42d008a7a514c1.jpg',
       country: 'France',
       prefix: 'PNS',
       pronouns: 'He/Him',
@@ -32,23 +33,33 @@ export const POST: RequestHandler = async ({ request }) => {
     inputProps
   });
 
-  await renderMedia({
-    composition,
-    serveUrl: REMOTION_BUNDLE_LOCATION,
-    codec: 'h264',
-    imageFormat: 'png',
-    crf: 1,
-    pixelFormat: 'yuv420p',
-    colorSpace: 'bt709',
-    muted: true,
-    outputLocation: `out/${compositionId}.mp4`,
-    inputProps
-  });
+  try {
+    const media = await renderMedia({
+      composition,
+      serveUrl: REMOTION_BUNDLE_LOCATION,
+      codec: 'h264',
+      imageFormat: 'png',
+      crf: 1,
+      pixelFormat: 'yuv420p',
+      colorSpace: 'bt709',
+      muted: true,
+      inputProps
+    });
+    const mediaBuffer = media.buffer;
+    if (!mediaBuffer || mediaBuffer.length === 0) {
+      throw new Error('Rendered media is empty');
+    }
 
-  return new Response(
-    JSON.stringify({
-      success: true,
-      message: 'Render completed successfully'
-    })
-  );
+    const buffer = Buffer.from(mediaBuffer);
+    return new Response(buffer, {
+      headers: {
+        'Content-Type': 'video/mp4',
+        'Content-Length': buffer.length.toString()
+      }
+    });
+  } catch (error) {
+    return new Response('Render failed for the following reason: ' + error, {
+      status: 500
+    });
+  }
 };
