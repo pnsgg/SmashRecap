@@ -15,6 +15,16 @@ const config = {
 
     alias: {
       $remotion: 'src/remotion'
+    },
+
+    experimental: {
+      remoteFunctions: true
+    }
+  },
+
+  compilerOptions: {
+    experimental: {
+      async: true
     }
   }
 };
