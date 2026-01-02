@@ -30,7 +30,7 @@ WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules /app/node_modules
 ENV REMOTION_BUNDLE_LOCATION=/app/remotion-bundle
-RUN bun run build
+RUN --mount=type=secret,id=startgg_secrets,dst=.env bun run build
 
 # Bundle remotion project
 FROM base AS remotion-bundler

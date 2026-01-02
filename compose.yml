@@ -2,9 +2,15 @@ services:
   app:
     build:
       context: .
+      secrets:
+        - startgg_secrets
     environment:
       - ORIGIN=http://localhost:3001
     volumes:
       - ./out:/app/out
     ports:
       - '3001:3000'
+
+secrets:
+  startgg_secrets:
+    file: .env
