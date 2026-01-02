@@ -1,3 +1,5 @@
+import { GetAuthenticatedUserQuery } from './queries';
+
 const AUTHORIZATION_ENDPOINT = 'https://start.gg/oauth/authorize';
 const ACCESS_TOKEN_ENDPOINT = 'https://api.start.gg/oauth/access_token';
 
@@ -51,9 +53,29 @@ export class Startgg {
 
     const data = await res.json();
     if (!res.ok) {
-      throw new Error(data.error);
+      return undefined;
     }
 
     return data as OAuth2Token;
+  }
+
+  public async getAuthenticatedUserId(accessToken: string): Promise<string | undefined> {
+    const res = await fetch('https://api.start.gg/gql/alpha', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({
+        query: GetAuthenticatedUserQuery
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      return undefined;
+    }
+
+    return data.data.currentUser.id;
   }
 }
