@@ -17,7 +17,14 @@ L'application peut être déployée en utilisant Docker Compose. Pour ce faire, 
    ```
    cd smash-recap
    ```
-3. Lancer les conteneurs docker
+3. Créer le fichier .env à partir du fichier .env.prod.example
+   ```
+   cp .env.example .env
+   ```
+4. Rendez-vous sur [start.gg](https://start.gg) => `Developer Settings` => `OAuth Applications` => `Create OAuth Client`
+ - Fill in the required fields and create the OAuth client
+ - Copy the `Client ID`, `Client secret` and `Application Authorization Callback` into the .env file
+4. Lancer les conteneurs docker
    ```
    docker-compose up -d --build
    ```
