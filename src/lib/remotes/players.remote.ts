@@ -57,20 +57,22 @@ export const getPlayerStats = query(
     } = await fetchStartGG(getUserInfo, { userId: userId.toString() });
     if (!user) error(404, 'User not found');
 
+    const userInfo = {
+      gamerTag: user.player?.gamerTag as string,
+      image: user.images?.[0]?.url || '',
+      country: user.location?.country ?? undefined,
+      prefix: user.player?.prefix ?? undefined,
+      pronouns: user.genderPronoun ?? undefined,
+      socialMedias: {
+        x:
+          user.authorizations?.find((auth) => auth?.type === 'TWITTER')?.externalUsername ??
+          undefined
+      }
+    };
+
     return {
       year,
-      user: {
-        image: user.images?.[0]?.url || '',
-        prefix: user.player?.prefix ?? undefined,
-        gamerTag: user.player?.gamerTag as string,
-        country: user.location?.country ?? undefined,
-        pronouns: user.genderPronoun ?? undefined,
-        socialMedias: {
-          x:
-            user.authorizations?.find((auth) => auth?.type === 'TWITTER')?.externalUsername ??
-            undefined
-        }
-      }
+      user: userInfo
     };
   }
 );
