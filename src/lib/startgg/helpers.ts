@@ -99,3 +99,5 @@ export const getThisYearEvents = async (userId: string, year: number) => {
 
   return events;
 };
+
+export const getEvents = async (userId: string, ids: string[]) => {};

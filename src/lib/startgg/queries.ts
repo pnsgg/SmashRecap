@@ -71,3 +71,25 @@ export const getPaginatedTournamentsEventsStartAt = graphql(`
     }
   }
 `);
+
+export const getUserInfo = graphql(`
+  query GetUserInfo($userId: ID!) {
+    user(id: $userId) {
+      images(type: "profile") {
+        url
+      }
+      genderPronoun
+      player {
+        prefix
+        gamerTag
+      }
+      location {
+        country
+      }
+      authorizations {
+        type
+        externalUsername
+      }
+    }
+  }
+`);
