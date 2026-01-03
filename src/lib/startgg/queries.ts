@@ -26,3 +26,11 @@ export const searchPlayerByGamerTag = graphql(`
     }
   }
 `);
+
+export const getUserById = graphql(`
+  query GetUserById($id: ID!) {
+    user(id: $id) {
+      id
+    }
+  }
+`);
