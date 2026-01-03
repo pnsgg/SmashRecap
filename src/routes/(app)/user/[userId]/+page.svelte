@@ -124,7 +124,12 @@
           </Button>
         </div>
       </div>
-      <Button href="extended" size={mobile.current ? 'small' : 'medium'} variant="tertiary">
+      <Button
+        extended
+        href="extended"
+        size={mobile.current ? 'small' : 'medium'}
+        variant="tertiary"
+      >
         Recap another user
       </Button>
     </div>
