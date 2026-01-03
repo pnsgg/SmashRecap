@@ -1,7 +1,7 @@
 import { query } from '$app/server';
 import { fetchStartGG } from '$lib/startgg/fetch';
-import { getThisYearEvents } from '$lib/startgg/helpers';
-import { searchPlayerByGamerTag } from '$lib/startgg/queries';
+import { getUserInfo, searchPlayerByGamerTag } from '$lib/startgg/queries';
+import { error } from '@sveltejs/kit';
 import * as v from 'valibot';
 
 export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (gamerTag) => {
@@ -51,9 +51,26 @@ export const getPlayerStats = query(
     year: v.pipe(v.number(), v.minValue(2000), v.maxValue(new Date().getFullYear()))
   }),
   async ({ userId, year }) => {
-    // Get attended events id
-    const eventsIds = await getThisYearEvents(userId.toString(), year);
+    // Get userinfo
+    const {
+      data: { user }
+    } = await fetchStartGG(getUserInfo, { userId: userId.toString() });
+    if (!user) error(404, 'User not found');
 
-    return {};
+    return {
+      year,
+      user: {
+        image: user.images?.[0]?.url || '',
+        prefix: user.player?.prefix ?? undefined,
+        gamerTag: user.player?.gamerTag as string,
+        country: user.location?.country ?? undefined,
+        pronouns: user.genderPronoun ?? undefined,
+        socialMedias: {
+          x:
+            user.authorizations?.find((auth) => auth?.type === 'TWITTER')?.externalUsername ??
+            undefined
+        }
+      }
+    };
   }
 );
