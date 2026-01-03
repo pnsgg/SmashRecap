@@ -1,5 +1,11 @@
 import { query } from '$app/server';
 import { fetchStartGG } from '$lib/startgg/fetch';
+import {
+  aggregateByMonth,
+  getEvents,
+  getThisYearEvents,
+  notNullNorUndefined
+} from '$lib/startgg/helpers';
 import { getUserInfo, searchPlayerByGamerTag } from '$lib/startgg/queries';
 import { error } from '@sveltejs/kit';
 import * as v from 'valibot';
@@ -70,9 +76,23 @@ export const getPlayerStats = query(
       }
     };
 
+    const stringUserId = userId.toString();
+
+    // Get attended events
+    const eventsIds = await getThisYearEvents(stringUserId, year);
+
+    // Get events info
+    const events = await getEvents(stringUserId, eventsIds);
+
+    // Count the number of tournaments attended by month
+    const tournaments = events.map((event) => event?.tournament).filter(notNullNorUndefined);
+    const tournamentsStartAt = tournaments.map((t) => t?.startAt).filter(notNullNorUndefined);
+    const tournamentsByMonth = aggregateByMonth(tournamentsStartAt);
+
     return {
       year,
-      user: userInfo
+      user: userInfo,
+      tournamentsByMonth
     };
   }
 );

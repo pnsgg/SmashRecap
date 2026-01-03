@@ -11,19 +11,23 @@ import {
 } from './config';
 import { EndCard } from './EndCard';
 import { FavouriteCharacters } from './FavouriteCharacter';
-import { ATTENDANCE, FAVOURITE_CHARACTERS, PERFORMANCES, YEAR } from './mock';
+import { FAVOURITE_CHARACTERS, PERFORMANCES } from './mock';
 import { MyPerformances } from './MyPerformances';
 import { colors } from './styles';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
-import { Tournaments } from './Tournaments';
+import { Tournaments, tournamentsSchema } from './Tournaments';
 
 export const mainSchema = z.object({
-  thisIsMyRecap: thisIsMyRecapSchema
+  thisIsMyRecap: thisIsMyRecapSchema,
+  tournaments: tournamentsSchema
 });
 
 export type MainProps = z.infer<typeof mainSchema>;
 
-export const Main: React.FC<MainProps> = ({ thisIsMyRecap: { user, year } }) => {
+export const Main: React.FC<MainProps> = ({
+  thisIsMyRecap: { user, year },
+  tournaments: { attendance }
+}) => {
   const frame = useCurrentFrame();
 
   const favStart = THIS_IS_MY_RECAP_DURATION + TOURNAMENTS_DURATION + PERFORMANCES_DURATION;
@@ -58,7 +62,7 @@ export const Main: React.FC<MainProps> = ({ thisIsMyRecap: { user, year } }) => 
         durationInFrames={TOURNAMENTS_DURATION + PERFORMANCES_DURATION}
       >
         <div style={{ filter: `blur(${blur}px)`, width: '100%', height: '100%' }}>
-          <Tournaments attendance={ATTENDANCE} year={YEAR} />
+          <Tournaments attendance={attendance} year={year} />
         </div>
       </Sequence>
 

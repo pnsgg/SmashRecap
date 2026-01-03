@@ -72,6 +72,10 @@
           thisIsMyRecap: {
             year: stats.year,
             user: stats.user
+          },
+          tournaments: {
+            year: stats.year,
+            attendance: stats.tournamentsByMonth
           }
         }}
       />

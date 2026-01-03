@@ -1,5 +1,6 @@
 import { fetchStartGG } from '$lib/startgg/fetch';
 import {
+  getEvent,
   getPaginatedTournamentsEventsStartAt,
   getTournamentsEventsPageInfo
 } from '$lib/startgg/queries';
@@ -14,7 +15,7 @@ export const unixToDate = (unix: number) => new Date(unix * 1000);
  * Given an array of dates, counts the number of occurrences of each month and returns an
  * object with the month names as keys and the counts as values.
  */
-export function aggregateByMonth(startAt: string[]) {
+export function aggregateByMonth(startAts: number[]) {
   const monthNames = [
     'Jan',
     'Feb',
@@ -32,8 +33,8 @@ export function aggregateByMonth(startAt: string[]) {
 
   const counts = new Array(12).fill(0);
 
-  startAt.forEach((dateStr) => {
-    const tournamentDate = unixToDate(parseInt(dateStr));
+  startAts.forEach((startAt) => {
+    const tournamentDate = unixToDate(startAt);
     const monthIndex = tournamentDate.getMonth();
 
     if (!isNaN(monthIndex)) counts[monthIndex]++;
@@ -100,4 +101,9 @@ export const getThisYearEvents = async (userId: string, year: number) => {
   return events;
 };
 
-export const getEvents = async (userId: string, ids: string[]) => {};
+export const getEvents = async (userId: string, ids: string[]) => {
+  const promises = ids.map((id) => fetchStartGG(getEvent, { eventId: id }));
+  const results = await Promise.all(promises);
+
+  return results.map(({ data }) => data.event);
+};

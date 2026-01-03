@@ -23,6 +23,7 @@ export const Tournaments: React.FC<TournamentsProps> = ({ year, attendance }) =>
 
   const GAP = 8;
   const maxBarHeight = 362;
+  const numberOfTournaments = attendance.reduce((acc, curr) => acc + curr.attendance, 0);
 
   return (
     <AbsoluteFill
@@ -49,7 +50,7 @@ export const Tournaments: React.FC<TournamentsProps> = ({ year, attendance }) =>
           transform: 'translateY(32px)'
         }}
       >
-        In {year}, you've been to <br /> 167 tournaments!
+        In {year}, you've been to <br /> {numberOfTournaments} tournaments!
       </h1>
 
       <div

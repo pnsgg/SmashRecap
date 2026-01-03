@@ -93,3 +93,13 @@ export const getUserInfo = graphql(`
     }
   }
 `);
+
+export const getEvent = graphql(`
+  query GetEvent($eventId: ID!) {
+    event(id: $eventId) {
+      tournament {
+        startAt
+      }
+    }
+  }
+`);
