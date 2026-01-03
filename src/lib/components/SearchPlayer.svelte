@@ -15,6 +15,11 @@
 
   let value = $state('');
   let debouncedValue = new Debounced(() => value, 500);
+
+  const fullPlayerName = (gamerTag: string, prefix: string | null): string => {
+    if (prefix) return `${prefix} ${gamerTag}`;
+    return gamerTag;
+  };
 </script>
 
 <Dialog.Root
@@ -60,7 +65,9 @@
                       </div>
                     {/if}
                     <div class="player-info">
-                      <span class="player-gamertag">{player.gamerTag}</span>
+                      <span class="player-gamertag">
+                        {fullPlayerName(player.gamerTag, player.prefix)}
+                      </span>
                       {#if player.country}
                         <span class="player-country">{player.country}</span>
                       {/if}

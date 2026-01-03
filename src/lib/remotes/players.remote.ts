@@ -24,7 +24,8 @@ export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (game
           gamerTag,
           isUser: true,
           hideTest: true
-        }
+        },
+        perPage: 50
       }
     });
 
@@ -37,6 +38,7 @@ export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (game
         return {
           id: parseInt(player.user.id),
           gamerTag: player.gamerTag,
+          prefix: player.prefix,
           image: player.user.images?.[0]?.url || '',
           country: player.user.location?.country || ''
         };

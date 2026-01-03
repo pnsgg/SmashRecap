@@ -12,6 +12,7 @@ export const searchPlayerByGamerTag = graphql(`
   query SearchPlayerByGamerTag($query: PlayerQuery!) {
     players(query: $query) {
       nodes {
+        prefix
         gamerTag
         user {
           id
