@@ -107,6 +107,7 @@ export const getEvent = graphql(`
         city
       }
       userEntrant(userId: $userId) {
+        id
         phaseGroups {
           bracketType
         }
@@ -115,6 +116,26 @@ export const getEvent = graphql(`
         }
         standing {
           placement
+        }
+        paginatedSets {
+          pageInfo {
+            total
+            totalPages
+          }
+          nodes {
+            winnerId
+            games {
+              selections {
+                entrant {
+                  id
+                  name
+                }
+                character {
+                  name
+                }
+              }
+            }
+          }
         }
       }
     }

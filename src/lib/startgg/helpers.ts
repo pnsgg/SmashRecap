@@ -155,3 +155,24 @@ export const seedingPerformanceRating = (seed: number, placement: number, bracke
 
   return expectedRFV - actualRFV;
 };
+
+/**
+ * Calculates the most played characters by a player.
+ * @param characters The characters played by the player
+ * @param maxCharacters The maximum number of characters to return
+ * @returns An array of objects containing the character and its count, sorted by count in descending order
+ */
+export const computeMostPlayedCharacters = (characters: string[], maxCharacters: number) => {
+  const characterCounts = characters.reduce(
+    (acc, char) => {
+      acc[char] = (acc[char] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>
+  );
+
+  return Object.entries(characterCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([char, count]) => ({ name: char, count }))
+    .slice(0, maxCharacters);
+};

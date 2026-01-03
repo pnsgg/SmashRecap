@@ -79,6 +79,9 @@
           },
           performances: {
             performances: stats.bestPerformances
+          },
+          favouriteCharacters: {
+            characters: stats.mostPlayedCharactersByPlayer
           }
         }}
       />

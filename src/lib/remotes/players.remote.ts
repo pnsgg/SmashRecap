@@ -3,12 +3,14 @@ import { fetchStartGG } from '$lib/startgg/fetch';
 import {
   aggregateByMonth,
   type BracketType,
+  computeMostPlayedCharacters,
   getEvents,
   getThisYearEvents,
   notNullNorUndefined,
   seedingPerformanceRating
 } from '$lib/startgg/helpers';
 import { getUserInfo, searchPlayerByGamerTag } from '$lib/startgg/queries';
+import { getFighterInfo } from '$remotion/constants';
 import { error } from '@sveltejs/kit';
 import * as v from 'valibot';
 
@@ -142,11 +144,37 @@ export const getPlayerStats = query(
       })
       .slice(0, 5);
 
+    // Most played characters
+    const charactersPlayedByPlayerAndOpponent = events?.map((event) => ({
+      entrantId: event?.userEntrant?.id,
+      sets: event?.userEntrant?.paginatedSets?.nodes?.map((set) => ({
+        winnerId: set?.winnerId,
+        selections: set?.games?.flatMap((game) =>
+          game?.selections?.map((selection) => ({
+            entrantId: selection?.entrant?.id,
+            character: selection?.character?.name
+          }))
+        )
+      }))
+    }));
+    const charactersPlayedByPlayer = charactersPlayedByPlayerAndOpponent
+      .flatMap((event) =>
+        event.sets
+          ?.filter((set) => set.winnerId === event.entrantId)
+          .flatMap((set) => set.selections?.map((selection) => selection?.character))
+      )
+      .filter(notNullNorUndefined);
+    const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(charactersPlayedByPlayer, 3);
+
     return {
       year,
       user: userInfo,
       tournamentsByMonth,
-      bestPerformances
+      bestPerformances,
+      mostPlayedCharactersByPlayer: mostPlayedCharactersByPlayer.map((character) => ({
+        ...character,
+        image: `/images/chara_1/${getFighterInfo(character.name).slug}.png`
+      }))
     };
   }
 );
