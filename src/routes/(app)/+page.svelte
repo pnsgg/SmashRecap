@@ -72,8 +72,10 @@
       bind:player
       autoPlay={false}
       data={{
-        year: YEAR,
-        user: ME
+        thisIsMyRecap: {
+          year: YEAR,
+          user: ME
+        }
       }}
     />
   </div>
