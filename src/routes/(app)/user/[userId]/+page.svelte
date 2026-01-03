@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import { Button, type ButtonProps } from '$lib/components/Button';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { getPlayerStats } from '$lib/remotes/players.remote';
@@ -125,7 +126,12 @@
           </Button>
         </div>
       </div>
-      <Button extended size={mobile.current ? 'small' : 'medium'} variant="tertiary">
+      <Button
+        href={resolve('/')}
+        extended
+        size={mobile.current ? 'small' : 'medium'}
+        variant="tertiary"
+      >
         Recap another user
       </Button>
     </div>
