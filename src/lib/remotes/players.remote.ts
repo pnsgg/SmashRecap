@@ -2,9 +2,11 @@ import { query } from '$app/server';
 import { fetchStartGG } from '$lib/startgg/fetch';
 import {
   aggregateByMonth,
+  type BracketType,
   getEvents,
   getThisYearEvents,
-  notNullNorUndefined
+  notNullNorUndefined,
+  seedingPerformanceRating
 } from '$lib/startgg/helpers';
 import { getUserInfo, searchPlayerByGamerTag } from '$lib/startgg/queries';
 import { error } from '@sveltejs/kit';
@@ -89,10 +91,62 @@ export const getPlayerStats = query(
     const tournamentsStartAt = tournaments.map((t) => t?.startAt).filter(notNullNorUndefined);
     const tournamentsByMonth = aggregateByMonth(tournamentsStartAt);
 
+    // Find the best performances
+    const bestPerformances = events
+      .map((event) => ({
+        tournament: event?.tournament,
+        // First element is always the main event
+        bracketType: event?.userEntrant?.phaseGroups?.[0]?.bracketType,
+        initialSeed: event?.userEntrant?.checkInSeed?.seedNum,
+        finalPlacement: event?.userEntrant?.standing?.placement
+      }))
+      .filter(
+        (event) =>
+          event.initialSeed &&
+          event.finalPlacement &&
+          event.tournament?.city &&
+          event.tournament?.startAt &&
+          event.tournament?.numAttendees &&
+          (event.bracketType === 'SINGLE_ELIMINATION' || event.bracketType === 'DOUBLE_ELIMINATION')
+      )
+      .sort((a, b) => {
+        const sprA = seedingPerformanceRating(
+          a.initialSeed!,
+          a.finalPlacement!,
+          a.bracketType as BracketType
+        );
+        const sprB = seedingPerformanceRating(
+          b.initialSeed!,
+          b.finalPlacement!,
+          b.bracketType as BracketType
+        );
+        return sprB - sprA;
+      })
+      .map((event) => {
+        const date = new Date(event.tournament?.startAt as number).toLocaleDateString('en-US', {
+          month: 'short',
+          day: '2-digit'
+        });
+
+        return {
+          finalPlacement: event.finalPlacement!,
+          initialSeed: event.initialSeed!,
+          tournament: {
+            image: event.tournament?.images?.[0]?.url as string,
+            name: event.tournament?.name as string,
+            date,
+            location: event.tournament?.city as string,
+            attendees: event.tournament?.numAttendees as number
+          }
+        };
+      })
+      .slice(0, 5);
+
     return {
       year,
       user: userInfo,
-      tournamentsByMonth
+      tournamentsByMonth,
+      bestPerformances
     };
   }
 );

@@ -11,22 +11,24 @@ import {
 } from './config';
 import { EndCard } from './EndCard';
 import { FavouriteCharacters } from './FavouriteCharacter';
-import { FAVOURITE_CHARACTERS, PERFORMANCES } from './mock';
-import { MyPerformances } from './MyPerformances';
+import { FAVOURITE_CHARACTERS } from './mock';
+import { MyPerformances, myPerformancesSchema } from './MyPerformances';
 import { colors } from './styles';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
 
 export const mainSchema = z.object({
   thisIsMyRecap: thisIsMyRecapSchema,
-  tournaments: tournamentsSchema
+  tournaments: tournamentsSchema,
+  performances: myPerformancesSchema
 });
 
 export type MainProps = z.infer<typeof mainSchema>;
 
 export const Main: React.FC<MainProps> = ({
   thisIsMyRecap: { user, year },
-  tournaments: { attendance }
+  tournaments: { attendance },
+  performances: { performances }
 }) => {
   const frame = useCurrentFrame();
 
@@ -71,7 +73,7 @@ export const Main: React.FC<MainProps> = ({
         from={THIS_IS_MY_RECAP_DURATION + TOURNAMENTS_DURATION}
         durationInFrames={PERFORMANCES_DURATION}
       >
-        <MyPerformances performances={PERFORMANCES} />
+        <MyPerformances performances={performances} />
       </Sequence>
 
       <Sequence

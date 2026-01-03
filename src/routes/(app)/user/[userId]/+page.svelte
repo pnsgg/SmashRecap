@@ -76,6 +76,9 @@
           tournaments: {
             year: stats.year,
             attendance: stats.tournamentsByMonth
+          },
+          performances: {
+            performances: stats.bestPerformances
           }
         }}
       />

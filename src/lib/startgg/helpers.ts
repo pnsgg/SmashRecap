@@ -102,8 +102,56 @@ export const getThisYearEvents = async (userId: string, year: number) => {
 };
 
 export const getEvents = async (userId: string, ids: string[]) => {
-  const promises = ids.map((id) => fetchStartGG(getEvent, { eventId: id }));
+  const promises = ids.map((id) => fetchStartGG(getEvent, { eventId: id, userId }));
   const results = await Promise.all(promises);
 
   return results.map(({ data }) => data.event);
+};
+
+/**
+ * Compute the number of Rounds From Victory in a single-elimination bracket.
+ * @see https://www.pgstats.com/articles/spr-uf-extra-mathematical-details
+ * @see https://www.pgstats.com/articles/introducing-spr-and-uf
+ * @param placement - The final placement of the player (1 = 1st place)
+ * @returns The number of rounds from victory
+ */
+export const singleBracketRoundsFromVictory = (placement: number) => {
+  return Math.ceil(Math.log2(placement));
+};
+
+/**
+ * Compute the number of Rounds From Victory in a double-elimination bracket.
+ * @see https://www.pgstats.com/articles/spr-uf-extra-mathematical-details
+ * @see https://www.pgstats.com/articles/introducing-spr-and-uf
+ * @param placement - The final placement of the player (1 = 1st place)
+ * @returns The number of rounds from victory
+ */
+export const doubleBracketRoundsFromVictory = (placement: number) => {
+  if (placement === 1) return 0;
+  return Math.floor(Math.log2(placement - 1)) + Math.ceil(Math.log2((2 / 3) * placement));
+};
+
+export type BracketType = 'SINGLE_ELIMINATION' | 'DOUBLE_ELIMINATION';
+
+/**
+ * Measures a player's performance in a bracket relative to their seed.
+ * A positive value indicates that the player performed better than expected,
+ * while a negative value indicates that the player performed worse than expected.
+ * @see https://www.pgstats.com/articles/introducing-spr-and-uf
+ * @param seed - The seed of the player
+ * @param placement - The final placement of the player (1 = 1st place)
+ * @param bracket - The type of bracket (single or double elimination)
+ */
+export const seedingPerformanceRating = (seed: number, placement: number, bracket: BracketType) => {
+  const expectedRFV =
+    bracket === 'SINGLE_ELIMINATION'
+      ? singleBracketRoundsFromVictory(seed)
+      : doubleBracketRoundsFromVictory(seed);
+
+  const actualRFV =
+    bracket === 'SINGLE_ELIMINATION'
+      ? singleBracketRoundsFromVictory(placement)
+      : doubleBracketRoundsFromVictory(placement);
+
+  return expectedRFV - actualRFV;
 };

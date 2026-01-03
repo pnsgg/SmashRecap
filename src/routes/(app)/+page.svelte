@@ -7,7 +7,7 @@
   import StartggIcon from '$lib/components/icons/StartggIcon.svelte';
   import SearchPlayer from '$lib/components/SearchPlayer.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
-  import { ATTENDANCE, ME, YEAR } from '$remotion/mock';
+  import { ATTENDANCE, ME, PERFORMANCES, YEAR } from '$remotion/mock';
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
   import type { PlayerRef } from '@remotion/player';
 
@@ -79,6 +79,9 @@
         tournaments: {
           year: YEAR,
           attendance: ATTENDANCE
+        },
+        performances: {
+          performances: PERFORMANCES
         }
       }}
     />
