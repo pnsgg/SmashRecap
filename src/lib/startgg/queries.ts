@@ -34,3 +34,40 @@ export const getUserById = graphql(`
     }
   }
 `);
+
+export const getTournamentsEventsPageInfo = graphql(`
+  query GetTournamentsEventsPageInfo($userId: ID!) {
+    user(id: $userId) {
+      events(
+        query: {
+          filter: { videogameId: [1386], eventType: 1, past: true, upcoming: false }
+          sortBy: "startAt DESC"
+        }
+      ) {
+        pageInfo {
+          total
+          totalPages
+        }
+      }
+    }
+  }
+`);
+
+export const getPaginatedTournamentsEventsStartAt = graphql(`
+  query GetTournamentsEventsStartAt($userId: ID!, $page: Int!) {
+    user(id: $userId) {
+      events(
+        query: {
+          filter: { videogameId: [1386], eventType: 1 }
+          sortBy: "startAt DESC"
+          page: $page
+        }
+      ) {
+        nodes {
+          id
+          startAt
+        }
+      }
+    }
+  }
+`);

@@ -1,5 +1,6 @@
 import { query } from '$app/server';
 import { fetchStartGG } from '$lib/startgg/fetch';
+import { getThisYearEvents } from '$lib/startgg/helpers';
 import { searchPlayerByGamerTag } from '$lib/startgg/queries';
 import * as v from 'valibot';
 
@@ -43,3 +44,16 @@ export type PlayerResult = {
   image: string;
   country: string;
 };
+
+export const getPlayerStats = query(
+  v.object({
+    userId: v.pipe(v.number(), v.minValue(1)),
+    year: v.pipe(v.number(), v.minValue(2000), v.maxValue(new Date().getFullYear()))
+  }),
+  async ({ userId, year }) => {
+    // Get attended events id
+    const eventsIds = await getThisYearEvents(userId.toString(), year);
+
+    return {};
+  }
+);
