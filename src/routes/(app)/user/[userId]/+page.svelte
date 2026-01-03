@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { resolve } from '$app/paths';
   import { Button, type ButtonProps } from '$lib/components/Button';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { getPlayerStats } from '$lib/remotes/players.remote';
   import { createBlueSkyIntent, createXIntent } from '$lib/socialIntents';
+  import type { MainProps } from '$remotion/Main';
   import { YEAR } from '$remotion/mock';
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
   import type { PlayerRef } from '@remotion/player';
@@ -30,7 +30,7 @@
 
   let userId = $derived(data.userId);
 
-  const renderRecap = async () => {
+  const renderRecap = async (stats: MainProps) => {
     isDownloading = true;
 
     const req = await fetch(`/api/render`, {
@@ -38,7 +38,7 @@
         Authorization: `Bearer ${'coucou'}`
       },
       method: 'POST',
-      body: JSON.stringify({ userId: '123' })
+      body: JSON.stringify(stats)
     });
 
     if (!req.ok) {
@@ -53,7 +53,7 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'smash-recap.mp4';
+    a.download = `${stats.thisIsMyRecap.user.prefix} ${stats.thisIsMyRecap.user.gamerTag}'s SmashRecap ${stats.thisIsMyRecap.year}.mp4`;
     a.click();
     isDownloading = false;
     URL.revokeObjectURL(url);
@@ -65,27 +65,25 @@
     <p class="heading">Your recap for {YEAR} is loading...</p>
   </div>
 {:then stats}
+  {@const data = {
+    thisIsMyRecap: {
+      year: stats.year,
+      user: stats.user
+    },
+    tournaments: {
+      year: stats.year,
+      attendance: stats.tournamentsByMonth
+    },
+    performances: {
+      performances: stats.bestPerformances
+    },
+    favouriteCharacters: {
+      characters: stats.mostPlayedCharactersByPlayer
+    }
+  }}
   <div class="my-recap">
     <div id="remotion-root">
-      <PlayerViewWrapper
-        bind:player
-        data={{
-          thisIsMyRecap: {
-            year: stats.year,
-            user: stats.user
-          },
-          tournaments: {
-            year: stats.year,
-            attendance: stats.tournamentsByMonth
-          },
-          performances: {
-            performances: stats.bestPerformances
-          },
-          favouriteCharacters: {
-            characters: stats.mostPlayedCharactersByPlayer
-          }
-        }}
-      />
+      <PlayerViewWrapper bind:player {data} />
     </div>
 
     <div class="instructions">
@@ -95,7 +93,7 @@
           id="download-button"
           extended
           size={mobile.current ? 'small' : 'medium'}
-          onclick={renderRecap}
+          onclick={() => renderRecap(data)}
           disabled={isDownloading}
           {...downloadButtonProps}
         >
@@ -126,12 +124,7 @@
           </Button>
         </div>
       </div>
-      <Button
-        href={resolve('/')}
-        extended
-        size={mobile.current ? 'small' : 'medium'}
-        variant="tertiary"
-      >
+      <Button href="extended" size={mobile.current ? 'small' : 'medium'} variant="tertiary">
         Recap another user
       </Button>
     </div>
