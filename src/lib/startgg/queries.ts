@@ -1,3 +1,5 @@
+import { graphql } from '$lib/graphql';
+
 export const GetAuthenticatedUserQuery = `
 	query GetAuthenticatedUser {
 		currentUser {
@@ -5,3 +7,22 @@ export const GetAuthenticatedUserQuery = `
 		}
 	}
 `;
+
+export const searchPlayerByGamerTag = graphql(`
+  query SearchPlayerByGamerTag($query: PlayerQuery!) {
+    players(query: $query) {
+      nodes {
+        gamerTag
+        user {
+          id
+          location {
+            country
+          }
+          images(type: "profile") {
+            url
+          }
+        }
+      }
+    }
+  }
+`);

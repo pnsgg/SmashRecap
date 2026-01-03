@@ -1,8 +1,11 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { resolve } from '$app/paths';
   import { Button } from '$lib/components/Button';
   import MagnifyingGlass from '$lib/components/icons/MagnifyingGlass.svelte';
   import PNS from '$lib/components/icons/PNS.svelte';
   import StartggIcon from '$lib/components/icons/StartggIcon.svelte';
+  import SearchPlayer from '$lib/components/SearchPlayer.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { ME, YEAR } from '$remotion/mock';
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
@@ -12,6 +15,16 @@
 
   const year = new Date().getFullYear();
   let player = $state<PlayerRef | undefined>();
+
+  let searchOpen = $state(false);
+
+  const onSearchSelection = (userId: number) => {
+    goto(
+      resolve('/(app)/user/[userId]', {
+        userId: userId.toString()
+      })
+    );
+  };
 </script>
 
 <div class="info">
@@ -42,11 +55,15 @@
       icon={MagnifyingGlass}
       size={mobile.current ? 'small' : 'medium'}
       variant="tertiary"
+      onclick={() => (searchOpen = true)}
     >
       Search for a player
     </Button>
   </div>
 </div>
+
+<SearchPlayer bind:open={searchOpen} onSelect={onSearchSelection} />
+
 <div class="preview">
   <p class="small-text">+10,000 recaps generated</p>
   <!-- <img src="/images/preview.png" alt="Preview of the 2025 SmashRecap" class="render" /> -->

@@ -45,10 +45,13 @@
     "@remotion/fonts": "4.0.397",
     "@remotion/lambda": "4.0.397",
     "@remotion/player": "4.0.397",
+    "bits-ui": "^2.14.4",
     "dotenv": "^17.2.3",
     "gql.tada": "^1.9.0",
+    "phosphor-svelte": "^3.0.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "remotion": "4.0.397"
+    "remotion": "4.0.397",
+    "runed": "^0.37.1"
   }
 }

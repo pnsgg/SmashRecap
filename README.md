@@ -17,7 +17,7 @@ L'application peut être déployée en utilisant Docker Compose. Pour ce faire, 
    ```
    cd smash-recap
    ```
-3. Créer le fichier .env à partir du fichier .env.prod.example
+3. Créer le fichier .env à partir du fichier .env.example
    ```
    cp .env.example .env
    ```
