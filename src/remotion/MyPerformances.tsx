@@ -26,7 +26,7 @@ const addNumberPrefix = (num: number): string => {
   const lastTwoDigits = num % 100;
 
   if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
-    return 'th';
+    return `${num}th`;
   }
 
   switch (lastDigit) {
