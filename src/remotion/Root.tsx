@@ -1,7 +1,7 @@
 import { loadFont } from '@remotion/fonts';
 import React from 'react';
 import { Composition, staticFile } from 'remotion';
-import { Main } from './Main';
+import { Main, mainSchema } from './Main';
 import {
   END_CARD_DURATION,
   FAVOURITE_CHARACTER_DURATION,
@@ -43,12 +43,19 @@ export const RemotionRoot: React.FC = () => {
         // npx remotion render HelloWorld
         id="Main"
         component={Main}
+        schema={mainSchema}
         durationInFrames={totalDuration}
         fps={FPS}
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
-      // You can override these props for each render:
-      // https://www.remotion.dev/docs/parametrized-rendering
+        defaultProps={{
+          thisIsMyRecap: {
+            user: ME,
+            year: YEAR
+          }
+        }}
+        // You can override these props for each render:
+        // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Composition
         id="ThisIsMyRecap"

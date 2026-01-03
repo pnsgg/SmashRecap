@@ -1,12 +1,10 @@
 import { Player, type PlayerRef } from '@remotion/player';
 import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
-import { Main } from './Main';
+import { Main, type MainProps } from './Main';
 import { totalDuration } from './config';
 
 // TODO: Define PlayerSchema type
-export type PlayerSchema = {
-  prop?: string;
-};
+export type PlayerSchema = MainProps;
 
 export type PlayerViewProps = {
   data: PlayerSchema;

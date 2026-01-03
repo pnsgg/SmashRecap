@@ -238,7 +238,8 @@ export const MyPerformances: React.FC<MyPerformancesProps> = ({ performances }) 
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 8
+          gap: 8,
+          width: '100%'
         }}
       >
         {performances.map((performance, index) => (

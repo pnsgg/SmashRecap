@@ -1,6 +1,17 @@
 import { query } from '$app/server';
 import { fetchStartGG } from '$lib/startgg/fetch';
-import { searchPlayerByGamerTag } from '$lib/startgg/queries';
+import {
+  aggregateByMonth,
+  type BracketType,
+  computeMostPlayedCharacters,
+  getEvents,
+  getThisYearEvents,
+  notNullNorUndefined,
+  seedingPerformanceRating
+} from '$lib/startgg/helpers';
+import { getUserInfo, searchPlayerByGamerTag } from '$lib/startgg/queries';
+import { getFighterInfo } from '$remotion/constants';
+import { error } from '@sveltejs/kit';
 import * as v from 'valibot';
 
 export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (gamerTag) => {
@@ -43,3 +54,127 @@ export type PlayerResult = {
   image: string;
   country: string;
 };
+
+export const getPlayerStats = query(
+  v.object({
+    userId: v.pipe(v.number(), v.minValue(1)),
+    year: v.pipe(v.number(), v.minValue(2000), v.maxValue(new Date().getFullYear()))
+  }),
+  async ({ userId, year }) => {
+    // Get userinfo
+    const {
+      data: { user }
+    } = await fetchStartGG(getUserInfo, { userId: userId.toString() });
+    if (!user) error(404, 'User not found');
+
+    const userInfo = {
+      gamerTag: user.player?.gamerTag as string,
+      image: user.images?.[0]?.url || '',
+      country: user.location?.country ?? undefined,
+      prefix: user.player?.prefix ?? undefined,
+      pronouns: user.genderPronoun ?? undefined,
+      socialMedias: {
+        x:
+          user.authorizations?.find((auth) => auth?.type === 'TWITTER')?.externalUsername ??
+          undefined
+      }
+    };
+
+    const stringUserId = userId.toString();
+
+    // Get attended events
+    const eventsIds = await getThisYearEvents(stringUserId, year);
+
+    // Get events info
+    const events = await getEvents(stringUserId, eventsIds);
+
+    // Count the number of tournaments attended by month
+    const tournaments = events.map((event) => event?.tournament).filter(notNullNorUndefined);
+    const tournamentsStartAt = tournaments.map((t) => t?.startAt).filter(notNullNorUndefined);
+    const tournamentsByMonth = aggregateByMonth(tournamentsStartAt);
+
+    // Find the best performances
+    const bestPerformances = events
+      .map((event) => ({
+        tournament: event?.tournament,
+        // First element is always the main event
+        bracketType: event?.userEntrant?.phaseGroups?.[0]?.bracketType,
+        initialSeed: event?.userEntrant?.checkInSeed?.seedNum,
+        finalPlacement: event?.userEntrant?.standing?.placement
+      }))
+      .filter(
+        (event) =>
+          event.initialSeed &&
+          event.finalPlacement &&
+          event.tournament?.city &&
+          event.tournament?.startAt &&
+          event.tournament?.numAttendees &&
+          (event.bracketType === 'SINGLE_ELIMINATION' || event.bracketType === 'DOUBLE_ELIMINATION')
+      )
+      .sort((a, b) => {
+        const sprA = seedingPerformanceRating(
+          a.initialSeed!,
+          a.finalPlacement!,
+          a.bracketType as BracketType
+        );
+        const sprB = seedingPerformanceRating(
+          b.initialSeed!,
+          b.finalPlacement!,
+          b.bracketType as BracketType
+        );
+        return sprB - sprA;
+      })
+      .map((event) => {
+        const date = new Date(event.tournament?.startAt as number).toLocaleDateString('en-US', {
+          month: 'short',
+          day: '2-digit'
+        });
+
+        return {
+          finalPlacement: event.finalPlacement!,
+          initialSeed: event.initialSeed!,
+          tournament: {
+            image: event.tournament?.images?.[0]?.url as string,
+            name: event.tournament?.name as string,
+            date,
+            location: event.tournament?.city as string,
+            attendees: event.tournament?.numAttendees as number
+          }
+        };
+      })
+      .slice(0, 5);
+
+    // Most played characters
+    const charactersPlayedByPlayerAndOpponent = events?.map((event) => ({
+      entrantId: event?.userEntrant?.id,
+      sets: event?.userEntrant?.paginatedSets?.nodes?.map((set) => ({
+        winnerId: set?.winnerId,
+        selections: set?.games?.flatMap((game) =>
+          game?.selections?.map((selection) => ({
+            entrantId: selection?.entrant?.id,
+            character: selection?.character?.name
+          }))
+        )
+      }))
+    }));
+    const charactersPlayedByPlayer = charactersPlayedByPlayerAndOpponent
+      .flatMap((event) =>
+        event.sets
+          ?.filter((set) => set.winnerId === event.entrantId)
+          .flatMap((set) => set.selections?.map((selection) => selection?.character))
+      )
+      .filter(notNullNorUndefined);
+    const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(charactersPlayedByPlayer, 3);
+
+    return {
+      year,
+      user: userInfo,
+      tournamentsByMonth,
+      bestPerformances,
+      mostPlayedCharactersByPlayer: mostPlayedCharactersByPlayer.map((character) => ({
+        ...character,
+        image: `/images/chara_1/${getFighterInfo(character.name).slug}.png`
+      }))
+    };
+  }
+);

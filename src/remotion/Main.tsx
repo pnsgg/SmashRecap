@@ -1,5 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, interpolate, interpolateColors, Sequence, useCurrentFrame } from 'remotion';
+import { z } from 'zod';
 import {
   END_CARD_DURATION,
   FAVOURITE_CHARACTER_DURATION,
@@ -9,26 +10,34 @@ import {
   TOURNAMENTS_DURATION
 } from './config';
 import { EndCard } from './EndCard';
-import { FavouriteCharacters } from './FavouriteCharacter';
-import { ATTENDANCE, FAVOURITE_CHARACTERS, ME, PERFORMANCES, YEAR } from './mock';
-import { MyPerformances } from './MyPerformances';
+import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
+import { MyPerformances, myPerformancesSchema } from './MyPerformances';
 import { colors } from './styles';
-import { ThisIsMyRecap } from './ThisIsMyRecap';
-import { Tournaments } from './Tournaments';
+import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
+import { Tournaments, tournamentsSchema } from './Tournaments';
 
-export const Main: React.FC = () => {
+export const mainSchema = z.object({
+  thisIsMyRecap: thisIsMyRecapSchema,
+  tournaments: tournamentsSchema,
+  performances: myPerformancesSchema,
+  favouriteCharacters: favouriteCharactersSchema
+});
+
+export type MainProps = z.infer<typeof mainSchema>;
+
+export const Main: React.FC<MainProps> = ({
+  thisIsMyRecap: { user, year },
+  tournaments: { attendance },
+  performances: { performances },
+  favouriteCharacters: { characters }
+}) => {
   const frame = useCurrentFrame();
 
   const favStart = THIS_IS_MY_RECAP_DURATION + TOURNAMENTS_DURATION + PERFORMANCES_DURATION;
 
   const backgroundColor = interpolateColors(
     frame,
-    [
-      THIS_IS_MY_RECAP_DURATION,
-      THIS_IS_MY_RECAP_DURATION + FPS / 2,
-      favStart - FPS / 2,
-      favStart
-    ],
+    [THIS_IS_MY_RECAP_DURATION, THIS_IS_MY_RECAP_DURATION + FPS / 2, favStart - FPS / 2, favStart],
     [colors.nearlyBlack, colors.reallyWhite, colors.reallyWhite, colors.nearlyBlack]
   );
 
@@ -47,7 +56,7 @@ export const Main: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor }}>
       <Sequence name="ThisIsMyRecap" durationInFrames={THIS_IS_MY_RECAP_DURATION}>
-        <ThisIsMyRecap user={ME} year={YEAR} />
+        <ThisIsMyRecap user={user} year={year} />
       </Sequence>
 
       <Sequence
@@ -56,7 +65,7 @@ export const Main: React.FC = () => {
         durationInFrames={TOURNAMENTS_DURATION + PERFORMANCES_DURATION}
       >
         <div style={{ filter: `blur(${blur}px)`, width: '100%', height: '100%' }}>
-          <Tournaments attendance={ATTENDANCE} year={YEAR} />
+          <Tournaments attendance={attendance} year={year} />
         </div>
       </Sequence>
 
@@ -65,7 +74,7 @@ export const Main: React.FC = () => {
         from={THIS_IS_MY_RECAP_DURATION + TOURNAMENTS_DURATION}
         durationInFrames={PERFORMANCES_DURATION}
       >
-        <MyPerformances performances={PERFORMANCES} />
+        <MyPerformances performances={performances} />
       </Sequence>
 
       <Sequence
@@ -73,7 +82,7 @@ export const Main: React.FC = () => {
         from={THIS_IS_MY_RECAP_DURATION + TOURNAMENTS_DURATION + PERFORMANCES_DURATION}
         durationInFrames={FAVOURITE_CHARACTER_DURATION}
       >
-        <FavouriteCharacters characters={FAVOURITE_CHARACTERS} />
+        <FavouriteCharacters characters={characters} />
       </Sequence>
 
       <Sequence
