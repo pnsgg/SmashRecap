@@ -3,6 +3,9 @@ import type { introspection } from '../graphql-env';
 
 export const graphql = initGraphQLTada<{
   introspection: introspection;
+  scalars: {
+    Timestamp: number;
+  };
 }>();
 
 export { readFragment } from 'gql.tada';
