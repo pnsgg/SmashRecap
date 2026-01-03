@@ -17,7 +17,12 @@
   let debouncedValue = new Debounced(() => value, 500);
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root
+  bind:open
+  onOpenChange={(open) => {
+    if (!open) value = '';
+  }}
+>
   <Dialog.Overlay class="dialog-overlay" />
   <Dialog.Content class="dialog-content">
     <Command.Root class="command-root" shouldFilter={false}>
