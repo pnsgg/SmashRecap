@@ -132,6 +132,10 @@ export const getEvent = graphql(`
                 entrant {
                   id
                   name
+                  players {
+                    id
+                    gamerTag
+                  }
                   checkInSeed {
                     seedNum
                   }

@@ -5,6 +5,7 @@ import {
   type BracketType,
   computeMostPlayedCharacters,
   findHighestUpset,
+  findRivals,
   getEvents,
   getThisYearEvents,
   notNullNorUndefined,
@@ -137,7 +138,7 @@ export const getPlayerStats = query(
           finalPlacement: event.finalPlacement!,
           initialSeed: event.initialSeed!,
           tournament: {
-            image: event.tournament?.images?.[0]?.url as string,
+            image: event.tournament?.images?.[0]?.url ?? undefined,
             name: event.tournament?.name as string,
             date,
             location: event.tournament?.city as string,
@@ -172,12 +173,16 @@ export const getPlayerStats = query(
       .filter(notNullNorUndefined);
     const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(charactersPlayedByPlayer, 3);
 
+    // Find rivals
+    const rivals = await findRivals(events);
+
     return {
       year,
       user: userInfo,
       tournamentsByMonth,
       bestPerformances,
       highestUpset,
+      rivals,
       mostPlayedCharactersByPlayer: mostPlayedCharactersByPlayer.map((character) => ({
         ...character,
         image: `/images/chara_1/${getFighterInfo(character.name).slug}.png`

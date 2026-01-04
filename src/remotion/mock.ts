@@ -159,3 +159,28 @@ export const HIGHEST_UPSET = {
     round: 'Losers Quarter-Final'
   }
 };
+
+export const RIVALS = {
+  nemesis: {
+    player: {
+      gamerTag: 'MkLeo',
+      image:
+        'https://images.start.gg/images/user/41259/image-0271c3ad5efe8d90d52b15b7a66a344d.jpg?ehk=zlU7%2B2cJ9tMJjd8f8ZklN%2BicssCSI77gEqiUmQJc%2Brc%3D&ehkOptimized=ACDLwxyH%2FXEFG1l%2BrZKpdAuuho0tA2U%2Fg%2Bg8anOqeWI%3D'
+    },
+    score: {
+      wins: 1,
+      losses: 5
+    }
+  },
+  victim: {
+    player: {
+      gamerTag: 'Glutonny',
+      image:
+        'https://images.start.gg/images/user/2613/image-abf07000a58994aef3b2172241f27951.jpg?ehk=d%2F3Rws%2BCTuWtXMLI0SV7Dmkw4%2FYSQNWoWPJD9uGNbF8%3D&ehkOptimized=WYVpqvxLkf3v09B0%2B1uCcNQFyX2kQCFz0svZDCX2sMA%3D'
+    },
+    score: {
+      wins: 5,
+      losses: 2
+    }
+  }
+};

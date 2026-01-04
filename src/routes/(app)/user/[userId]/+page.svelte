@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import { Button, type ButtonProps } from '$lib/components/Button';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { getPlayerStats } from '$lib/remotes/players.remote';
@@ -85,7 +86,10 @@
       ? {
           highestUpset: stats.highestUpset
         }
-      : undefined
+      : undefined,
+    rivalsProps: {
+      rivals: stats.rivals
+    }
   }}
   <div class="my-recap">
     <div id="remotion-root">
@@ -132,7 +136,7 @@
       </div>
       <Button
         extended
-        href="extended"
+        href={resolve('/')}
         size={mobile.current ? 'small' : 'medium'}
         variant="tertiary"
       >

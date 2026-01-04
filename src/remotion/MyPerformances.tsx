@@ -8,7 +8,7 @@ export const myPerformanceSchema = z.object({
   finalPlacement: z.number().min(1),
   initialSeed: z.number().min(1),
   tournament: z.object({
-    image: z.string().url(),
+    image: z.string().optional(),
     name: z.string().min(1),
     date: z.string().min(1),
     location: z.string().min(1),
@@ -156,11 +156,29 @@ const MyPerformanceCard: React.FC<
 
       {/* Info */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-        <Img
-          src={tournament.image}
-          alt={tournament.name}
-          style={{ height: 50, aspectRatio: '1/1' }}
-        />
+        {tournament.image ? (
+          <Img
+            src={tournament.image}
+            alt={tournament.name}
+            style={{ height: 50, aspectRatio: '1/1', objectFit: 'contain', borderRadius: 4 }}
+          />
+        ) : (
+          <div
+            style={{
+              height: 50,
+              aspectRatio: '1/1',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              borderRadius: 4,
+              color: colors.reallyWhite,
+              ...typography.heading4
+            }}
+          >
+            {tournament.name.charAt(0).toUpperCase()}
+          </div>
+        )}
 
         <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '100%', minWidth: 0 }}>
           <div

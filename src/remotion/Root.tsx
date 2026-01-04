@@ -10,6 +10,7 @@ import {
   MAIN_COMPOSITION_HEIGHT,
   MAIN_COMPOSITION_WIDTH,
   PERFORMANCES_DURATION,
+  RIVALS_DURATION,
   THIS_IS_MY_RECAP_DURATION,
   totalDuration,
   TOURNAMENTS_DURATION
@@ -22,7 +23,8 @@ import { Tournaments, tournamentsSchema } from './Tournaments';
 
 import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
 import { HighestUpset, highestUpsetSchema } from './HighestUpset';
-import { ATTENDANCE, FAVOURITE_CHARACTERS, HIGHEST_UPSET, ME, PERFORMANCES, YEAR } from './mock';
+import { ATTENDANCE, FAVOURITE_CHARACTERS, HIGHEST_UPSET, ME, PERFORMANCES, RIVALS, YEAR } from './mock';
+import { Rivals, rivalsSchema } from './Rivals';
 import { typography } from './styles';
 import './styles/remotion.css';
 
@@ -67,10 +69,13 @@ export const RemotionRoot: React.FC = () => {
           },
           highestUpsetProps: {
             highestUpset: HIGHEST_UPSET
+          },
+          rivalsProps: {
+            rivals: RIVALS
           }
         }}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
+      // You can override these props for each render:
+      // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Composition
         id="HighestUpset"
@@ -82,6 +87,18 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         defaultProps={{
           highestUpset: HIGHEST_UPSET
+        }}
+      />
+      <Composition
+        id="Rivals"
+        component={Rivals}
+        schema={rivalsSchema}
+        durationInFrames={RIVALS_DURATION}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
+        defaultProps={{
+          rivals: RIVALS
         }}
       />
       <Composition

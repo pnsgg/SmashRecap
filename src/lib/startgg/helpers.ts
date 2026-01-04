@@ -328,7 +328,7 @@ export const findHighestUpset = async (events: Awaited<ReturnType<typeof getEven
           opponent: {
             gamerTag: opponentParticipant.gamerTag!,
             prefix: opponentParticipant.prefix ?? undefined,
-            avatar: opponentParticipant?.user?.images?.[0]?.url
+            avatar: opponentParticipant?.user?.images?.[0]?.url ?? undefined
           },
           match: {
             score:
@@ -347,4 +347,115 @@ export const findHighestUpset = async (events: Awaited<ReturnType<typeof getEven
       console.error('Failed to fetch opponent for upset:', e);
     }
   }
+};
+
+export type Rival = {
+  player: {
+    gamerTag: string;
+    image: string;
+  };
+  score: {
+    wins: number;
+    losses: number;
+  };
+};
+
+export const findRivals = async (
+  events: Awaited<ReturnType<typeof getEvents>>
+): Promise<{
+  victim: Rival | null;
+  nemesis: Rival | null;
+}> => {
+  // Compute rivals
+  const opponents = new Map<
+    string,
+    {
+      id: string;
+      gamerTag: string;
+      wins: number;
+      losses: number;
+      entrantId: string; // Keep one entrantId to fetch the avatar later
+    }
+  >();
+
+  events.forEach((event) => {
+    const userEntrantId = event?.userEntrant?.id;
+    if (!userEntrantId) return;
+
+    event.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
+      if (!set?.winnerId || set.displayScore === 'DQ') return;
+
+      // Find match inside games
+      // If no games (e.g. valid set but no reported games details), try to infer from winnerId?
+      // Actually, we need opponent ID. If no games, we can't reliably get opponent ID if we depend on selections.
+      // But usually sets have games if score is reported.
+      const firstGame = set.games?.[0];
+      if (!firstGame?.selections) return;
+
+      const opponentSelection = firstGame.selections.find(
+        (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
+      );
+
+      if (!opponentSelection?.entrant) return;
+
+      const opponentPlayer = opponentSelection.entrant.players?.[0];
+      const opponentId = opponentPlayer?.id;
+      const opponentGamerTag = opponentPlayer?.gamerTag || opponentSelection.entrant.name;
+      const opponentEntrantId = opponentSelection.entrant.id;
+
+      // If no global player ID, use entrant name as key (might be flaky but better than nothing)
+      const key = opponentId ? opponentId.toString() : `name:${opponentGamerTag}`;
+
+      const current = opponents.get(key) || {
+        id: key,
+        gamerTag: opponentGamerTag!,
+        wins: 0,
+        losses: 0,
+        entrantId: opponentEntrantId!
+      };
+
+      if (set.winnerId.toString() === userEntrantId.toString()) {
+        current.wins++;
+      } else {
+        current.losses++;
+      }
+
+      opponents.set(key, current);
+    });
+  });
+
+  const sortedOpponents = Array.from(opponents.values());
+
+  const nemesis = sortedOpponents.sort((a, b) => b.losses - a.losses)[0];
+  const victim = sortedOpponents.sort((a, b) => b.wins - a.wins)[0];
+
+  const loadRivalDetails = async (rival: typeof nemesis): Promise<Rival | null> => {
+    if (!rival) return null;
+    // Fetch avatar
+    let image = '';
+    try {
+      const res = await fetchStartGG(getEntrant, { entrantId: rival.entrantId });
+      image = res.data.entrant?.players?.[0]?.user?.images?.[0]?.url || '';
+    } catch (e) {
+      console.error('Failed to load rival image', e);
+    }
+
+    return {
+      player: {
+        gamerTag: rival.gamerTag,
+        image
+      },
+      score: {
+        wins: rival.wins,
+        losses: rival.losses
+      }
+    };
+  };
+
+  const rivals = {
+    nemesis: await loadRivalDetails(nemesis),
+    victim: await loadRivalDetails(victim)
+  };
+
+  return rivals;
 };
