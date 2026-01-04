@@ -51,26 +51,26 @@ export const RemotionRoot: React.FC = () => {
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
         defaultProps={{
-          thisIsMyRecap: {
+          thisIsMyRecapProps: {
             user: ME,
             year: YEAR
           },
-          tournaments: {
+          tournamentsProps: {
             attendance: ATTENDANCE,
             year: YEAR
           },
-          performances: {
+          performancesProps: {
             performances: PERFORMANCES
           },
-          favouriteCharacters: {
+          favouriteCharactersProps: {
             characters: FAVOURITE_CHARACTERS
           },
-          highestUpset: {
+          highestUpsetProps: {
             highestUpset: HIGHEST_UPSET
           }
         }}
-      // You can override these props for each render:
-      // https://www.remotion.dev/docs/parametrized-rendering
+        // You can override these props for each render:
+        // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Composition
         id="HighestUpset"
