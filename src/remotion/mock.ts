@@ -184,3 +184,13 @@ export const RIVALS = {
     }
   }
 };
+
+export const GAME_5_STATS = {
+  totalSets: 20,
+  wins: 15
+};
+
+export const CLEAN_SWEEP_STATS = {
+  totalSweeps: 12,
+  totalSets: 150
+};

@@ -1,10 +1,13 @@
 import React from 'react';
 import { AbsoluteFill, interpolate, interpolateColors, Sequence, useCurrentFrame } from 'remotion';
 import { z } from 'zod';
+import { CleanSweep, cleanSweepSchema } from './CleanSweep';
 import {
+  CLEAN_SWEEP_DURATION,
   END_CARD_DURATION,
   FAVOURITE_CHARACTER_DURATION,
   FPS,
+  GAME_5_WARRIOR_DURATION,
   HIGHEST_UPSET_DURATION,
   PERFORMANCES_DURATION,
   RIVALS_DURATION,
@@ -13,6 +16,7 @@ import {
 } from './config';
 import { EndCard } from './EndCard';
 import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
+import { Game5Warrior, game5WarriorSchema } from './Game5Warrior';
 import { HighestUpset, highestUpsetSchema } from './HighestUpset';
 import { MyPerformances, myPerformancesSchema } from './MyPerformances';
 import { Rivals, rivalsSchema } from './Rivals';
@@ -26,6 +30,8 @@ export const mainSchema = z.object({
   performancesProps: myPerformancesSchema,
   favouriteCharactersProps: favouriteCharactersSchema,
   highestUpsetProps: highestUpsetSchema.optional(),
+  game5WarriorProps: game5WarriorSchema,
+  cleanSweepProps: cleanSweepSchema,
   rivalsProps: rivalsSchema.optional()
 });
 
@@ -37,6 +43,8 @@ export const Main: React.FC<MainProps> = ({
   performancesProps: { performances },
   favouriteCharactersProps: { characters },
   highestUpsetProps,
+  game5WarriorProps,
+  cleanSweepProps,
   rivalsProps
 }) => {
   const frame = useCurrentFrame();
@@ -61,13 +69,21 @@ export const Main: React.FC<MainProps> = ({
 
     const fromHighestUpset = currentFrame;
     const durationHighestUpset = HIGHEST_UPSET_DURATION;
-    if (highestUpsetProps?.highestUpset) {
+    if (highestUpsetProps) {
       currentFrame += durationHighestUpset;
     }
 
+    const fromGame5Warrior = currentFrame;
+    const durationGame5Warrior = GAME_5_WARRIOR_DURATION;
+    currentFrame += durationGame5Warrior;
+
+    const fromCleanSweep = currentFrame;
+    const durationCleanSweep = CLEAN_SWEEP_DURATION;
+    currentFrame += durationCleanSweep;
+
     const fromRivals = currentFrame;
     const durationRivals = RIVALS_DURATION;
-    if (rivalsProps?.rivals) {
+    if (rivalsProps) {
       currentFrame += durationRivals;
     }
 
@@ -85,6 +101,10 @@ export const Main: React.FC<MainProps> = ({
       durationFavouriteCharacters,
       fromHighestUpset,
       durationHighestUpset,
+      fromGame5Warrior,
+      durationGame5Warrior,
+      fromCleanSweep,
+      durationCleanSweep,
       fromRivals,
       durationRivals,
       fromEndCard,
@@ -102,6 +122,10 @@ export const Main: React.FC<MainProps> = ({
     durationFavouriteCharacters,
     fromHighestUpset,
     durationHighestUpset,
+    fromGame5Warrior,
+    durationGame5Warrior,
+    fromCleanSweep,
+    durationCleanSweep,
     fromRivals,
     durationRivals,
     fromEndCard,
@@ -152,19 +176,27 @@ export const Main: React.FC<MainProps> = ({
         <FavouriteCharacters characters={characters} />
       </Sequence>
 
-      {highestUpsetProps?.highestUpset && (
+      {highestUpsetProps && (
         <Sequence
           name="HighestUpset"
           from={fromHighestUpset}
           durationInFrames={durationHighestUpset}
         >
-          <HighestUpset highestUpset={highestUpsetProps.highestUpset} />
+          <HighestUpset {...highestUpsetProps} />
         </Sequence>
       )}
 
-      {rivalsProps?.rivals && (
+      <Sequence name="Game5Warrior" from={fromGame5Warrior} durationInFrames={durationGame5Warrior}>
+        <Game5Warrior {...game5WarriorProps} />
+      </Sequence>
+
+      <Sequence name="CleanSweep" from={fromCleanSweep} durationInFrames={durationCleanSweep}>
+        <CleanSweep {...cleanSweepProps} />
+      </Sequence>
+
+      {rivalsProps && (
         <Sequence name="Rivals" from={fromRivals} durationInFrames={durationRivals}>
-          <Rivals rivals={rivalsProps.rivals} />
+          <Rivals {...rivalsProps} />
         </Sequence>
       )}
 

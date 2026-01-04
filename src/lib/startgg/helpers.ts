@@ -362,10 +362,13 @@ export type Rival = {
 
 export const findRivals = async (
   events: Awaited<ReturnType<typeof getEvents>>
-): Promise<{
-  victim: Rival | null;
-  nemesis: Rival | null;
-}> => {
+): Promise<
+  | {
+      victim: Rival;
+      nemesis: Rival;
+    }
+  | undefined
+> => {
   // Compute rivals
   const opponents = new Map<
     string,
@@ -452,10 +455,14 @@ export const findRivals = async (
     };
   };
 
-  const rivals = {
-    nemesis: await loadRivalDetails(nemesis),
-    victim: await loadRivalDetails(victim)
-  };
+  const yourNemesis = await loadRivalDetails(nemesis);
+  const yourVictim = await loadRivalDetails(victim);
 
-  return rivals;
+  if (yourNemesis && yourVictim)
+    return {
+      nemesis: yourNemesis,
+      victim: yourVictim
+    };
+
+  return undefined;
 };

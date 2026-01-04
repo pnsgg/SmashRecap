@@ -7,7 +7,17 @@
   import StartggIcon from '$lib/components/icons/StartggIcon.svelte';
   import SearchPlayer from '$lib/components/SearchPlayer.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
-  import { ATTENDANCE, FAVOURITE_CHARACTERS, ME, PERFORMANCES, YEAR } from '$remotion/mock';
+  import {
+    ATTENDANCE,
+    CLEAN_SWEEP_STATS,
+    FAVOURITE_CHARACTERS,
+    GAME_5_STATS,
+    HIGHEST_UPSET,
+    ME,
+    PERFORMANCES,
+    RIVALS,
+    YEAR
+  } from '$remotion/mock';
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
   import type { PlayerRef } from '@remotion/player';
 
@@ -85,7 +95,11 @@
         },
         favouriteCharactersProps: {
           characters: FAVOURITE_CHARACTERS
-        }
+        },
+        rivalsProps: RIVALS,
+        cleanSweepProps: CLEAN_SWEEP_STATS,
+        game5WarriorProps: GAME_5_STATS,
+        highestUpsetProps: HIGHEST_UPSET
       }}
     />
   </div>

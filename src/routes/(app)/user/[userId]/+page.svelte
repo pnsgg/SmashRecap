@@ -93,7 +93,27 @@
   }}
   <div class="my-recap">
     <div id="remotion-root">
-      <PlayerViewWrapper bind:player {data} />
+      <PlayerViewWrapper
+        bind:player
+        data={{
+          thisIsMyRecapProps: {
+            year: stats.year,
+            user: stats.user
+          },
+          tournamentsProps: {
+            year: stats.year,
+            attendance: stats.tournamentsByMonth
+          },
+          performancesProps: {
+            performances: stats.bestPerformances
+          },
+          favouriteCharactersProps: {
+            characters: stats.mostPlayedCharactersByPlayer
+          },
+          highestUpsetProps: stats.highestUpset,
+          rivalsProps: stats.rivals
+        }}
+      />
     </div>
 
     <div class="instructions">

@@ -16,10 +16,8 @@ export const rivalSchema = z.object({
 });
 
 export const rivalsSchema = z.object({
-  rivals: z.object({
-    nemesis: rivalSchema.nullable(),
-    victim: rivalSchema.nullable()
-  })
+  nemesis: rivalSchema,
+  victim: rivalSchema
 });
 
 const PlayerDisplay: React.FC<{

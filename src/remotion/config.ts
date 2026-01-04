@@ -13,6 +13,8 @@ export const FAVOURITE_CHARACTER_DURATION = calculateFavouriteCharactersDuration
   FAVOURITE_CHARACTERS.length
 );
 export const HIGHEST_UPSET_DURATION = FPS * 5;
+export const GAME_5_WARRIOR_DURATION = FPS * 5;
+export const CLEAN_SWEEP_DURATION = FPS * 5;
 export const RIVALS_DURATION = FPS * 6;
 export const END_CARD_DURATION = FPS * 3;
 
@@ -22,6 +24,8 @@ export const totalDuration = [
   PERFORMANCES_DURATION,
   FAVOURITE_CHARACTER_DURATION,
   HIGHEST_UPSET_DURATION,
+  GAME_5_WARRIOR_DURATION,
+  CLEAN_SWEEP_DURATION,
   RIVALS_DURATION,
   END_CARD_DURATION
 ].reduce((acc, duration) => acc + duration, 0);

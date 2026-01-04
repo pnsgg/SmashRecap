@@ -5,26 +5,28 @@ import { Stocks } from './components/Stocks';
 import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const highestUpsetSchema = z.object({
-  highestUpset: z.object({
-    tournament: z.object({
-      name: z.string(),
-      date: z.string(),
-      image: z.string().optional()
-    }),
-    opponent: z.object({
-      gamerTag: z.string(),
-      prefix: z.string().optional(),
-      avatar: z.string().optional()
-    }),
-    match: z.object({
-      score: z.string(),
-      factor: z.number(),
-      round: z.string()
-    })
+  tournament: z.object({
+    name: z.string(),
+    date: z.string(),
+    image: z.string().optional()
+  }),
+  opponent: z.object({
+    gamerTag: z.string(),
+    prefix: z.string().optional(),
+    avatar: z.string().optional()
+  }),
+  match: z.object({
+    score: z.string(),
+    factor: z.number(),
+    round: z.string()
   })
 });
 
-export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({ highestUpset }) => {
+export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({
+  match,
+  opponent,
+  tournament
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -229,9 +231,9 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({ hig
                   boxShadow: '0 4px 20px rgba(255, 27, 76, 0.4)'
                 }}
               >
-                {highestUpset.opponent.avatar ? (
+                {opponent.avatar ? (
                   <Img
-                    src={highestUpset.opponent.avatar}
+                    src={opponent.avatar}
                     style={{
                       width: '100%',
                       height: '100%',
@@ -258,7 +260,7 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({ hig
                       })
                     }}
                   >
-                    {highestUpset.opponent.gamerTag.charAt(0).toUpperCase()}
+                    {opponent.gamerTag.charAt(0).toUpperCase()}
                   </div>
                 )}
                 <div
@@ -279,7 +281,7 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({ hig
                     transform: `scale(${factorScale})`
                   }}
                 >
-                  +{highestUpset.match.factor}
+                  +{match.factor}
                 </div>
               </div>
             </div>
@@ -300,7 +302,7 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({ hig
                 fontSize: 18
               }}
             >
-              {highestUpset.opponent.prefix}
+              {opponent.prefix}
             </span>
             <span
               style={{
@@ -309,7 +311,7 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({ hig
                 lineHeight: 1
               }}
             >
-              {highestUpset.opponent.gamerTag}
+              {opponent.gamerTag}
             </span>
           </div>
 
@@ -334,9 +336,7 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({ hig
               >
                 Score
               </div>
-              <div style={{ ...typography.heading3, color: colors.gold }}>
-                {highestUpset.match.score}
-              </div>
+              <div style={{ ...typography.heading3, color: colors.gold }}>{match.score}</div>
             </div>
             <div style={{ width: 1, backgroundColor: 'rgba(255,255,255,0.1)' }} />
             <div style={{ textAlign: 'center' }}>
@@ -350,11 +350,11 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({ hig
               >
                 Round
               </div>
-              <div style={{ ...typography.heading3 }}>{highestUpset.match.round}</div>
+              <div style={{ ...typography.heading3 }}>{match.round}</div>
             </div>
           </div>
 
-          {highestUpset.tournament.image && (
+          {tournament.image && (
             <div
               style={{
                 display: 'flex',
@@ -364,12 +364,9 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({ hig
                 opacity: 0.6
               }}
             >
-              <Img
-                src={highestUpset.tournament.image}
-                style={{ width: 30, height: 30, borderRadius: 4 }}
-              />
+              <Img src={tournament.image} style={{ width: 30, height: 30, borderRadius: 4 }} />
               <span style={{ ...typography.paragraph, fontSize: 16 }}>
-                {highestUpset.tournament.name} • {highestUpset.tournament.date}
+                {tournament.name} • {tournament.date}
               </span>
             </div>
           )}
