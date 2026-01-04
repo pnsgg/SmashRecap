@@ -188,7 +188,7 @@ const PlayerDisplay: React.FC<{
   );
 };
 
-export const Rivals: React.FC<z.infer<typeof rivalsSchema>> = ({ rivals }) => {
+export const Rivals: React.FC<z.infer<typeof rivalsSchema>> = ({ nemesis, victim }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -229,15 +229,15 @@ export const Rivals: React.FC<z.infer<typeof rivalsSchema>> = ({ rivals }) => {
       </AbsoluteFill>
 
       <AbsoluteFill>
-        {rivals.nemesis && (
+        {nemesis && (
           <div style={{ position: 'absolute', top: 40, left: 40 }}>
-            <PlayerDisplay type="nemesis" rival={rivals.nemesis} delay={10} />
+            <PlayerDisplay type="nemesis" rival={nemesis} delay={10} />
           </div>
         )}
 
-        {rivals.victim && (
+        {victim && (
           <div style={{ position: 'absolute', bottom: 40, right: 40 }}>
-            <PlayerDisplay type="victim" rival={rivals.victim} delay={15} />
+            <PlayerDisplay type="victim" rival={victim} delay={15} />
           </div>
         )}
       </AbsoluteFill>

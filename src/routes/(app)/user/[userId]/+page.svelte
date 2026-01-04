@@ -82,38 +82,20 @@
     favouriteCharactersProps: {
       characters: stats.mostPlayedCharactersByPlayer
     },
-    highestUpsetProps: stats.highestUpset
-      ? {
-          highestUpset: stats.highestUpset
-        }
-      : undefined,
-    rivalsProps: {
-      rivals: stats.rivals
+    highestUpsetProps: stats.highestUpset,
+    game5WarriorProps: {
+      totalSets: 150,
+      wins: 150
+    },
+    rivalsProps: stats.rivals,
+    cleanSweepProps: {
+      totalSets: 150,
+      totalSweeps: 125
     }
   }}
   <div class="my-recap">
     <div id="remotion-root">
-      <PlayerViewWrapper
-        bind:player
-        data={{
-          thisIsMyRecapProps: {
-            year: stats.year,
-            user: stats.user
-          },
-          tournamentsProps: {
-            year: stats.year,
-            attendance: stats.tournamentsByMonth
-          },
-          performancesProps: {
-            performances: stats.bestPerformances
-          },
-          favouriteCharactersProps: {
-            characters: stats.mostPlayedCharactersByPlayer
-          },
-          highestUpsetProps: stats.highestUpset,
-          rivalsProps: stats.rivals
-        }}
-      />
+      <PlayerViewWrapper bind:player {data} />
     </div>
 
     <div class="instructions">
