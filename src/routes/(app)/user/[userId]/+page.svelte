@@ -49,11 +49,12 @@
     }
 
     // Download the video
+    const download = `${stats.thisIsMyRecapProps.user.prefix} ${stats.thisIsMyRecapProps.user.gamerTag}'s SmashRecap ${stats.thisIsMyRecapProps.year}.mp4`;
     const blob = await req.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${stats.thisIsMyRecap.user.prefix} ${stats.thisIsMyRecap.user.gamerTag}'s SmashRecap ${stats.thisIsMyRecap.year}.mp4`;
+    a.download = download;
     a.click();
     isDownloading = false;
     URL.revokeObjectURL(url);
@@ -66,20 +67,25 @@
   </div>
 {:then stats}
   {@const data = {
-    thisIsMyRecap: {
+    thisIsMyRecapProps: {
       year: stats.year,
       user: stats.user
     },
-    tournaments: {
+    tournamentsProps: {
       year: stats.year,
       attendance: stats.tournamentsByMonth
     },
-    performances: {
+    performancesProps: {
       performances: stats.bestPerformances
     },
-    favouriteCharacters: {
+    favouriteCharactersProps: {
       characters: stats.mostPlayedCharactersByPlayer
-    }
+    },
+    highestUpsetProps: stats.highestUpset
+      ? {
+          highestUpset: stats.highestUpset
+        }
+      : undefined
   }}
   <div class="my-recap">
     <div id="remotion-root">

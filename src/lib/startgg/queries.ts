@@ -124,18 +124,40 @@ export const getEvent = graphql(`
             totalPages
           }
           nodes {
+            fullRoundText
+            displayScore
             winnerId
             games {
               selections {
                 entrant {
                   id
                   name
+                  checkInSeed {
+                    seedNum
+                  }
                 }
                 character {
                   name
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
+`);
+
+export const getEntrant = graphql(`
+  query GetEntrant($entrantId: ID!) {
+    entrant(id: $entrantId) {
+      id
+      players {
+        prefix
+        gamerTag
+        user {
+          images(type: "profile") {
+            url
           }
         }
       }

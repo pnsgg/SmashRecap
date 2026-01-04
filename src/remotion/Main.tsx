@@ -5,31 +5,35 @@ import {
   END_CARD_DURATION,
   FAVOURITE_CHARACTER_DURATION,
   FPS,
+  HIGHEST_UPSET_DURATION,
   PERFORMANCES_DURATION,
   THIS_IS_MY_RECAP_DURATION,
   TOURNAMENTS_DURATION
 } from './config';
 import { EndCard } from './EndCard';
 import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
+import { HighestUpset, highestUpsetSchema } from './HighestUpset';
 import { MyPerformances, myPerformancesSchema } from './MyPerformances';
 import { colors } from './styles';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
 
 export const mainSchema = z.object({
-  thisIsMyRecap: thisIsMyRecapSchema,
-  tournaments: tournamentsSchema,
-  performances: myPerformancesSchema,
-  favouriteCharacters: favouriteCharactersSchema
+  thisIsMyRecapProps: thisIsMyRecapSchema,
+  tournamentsProps: tournamentsSchema,
+  performancesProps: myPerformancesSchema,
+  favouriteCharactersProps: favouriteCharactersSchema,
+  highestUpsetProps: highestUpsetSchema.optional()
 });
 
 export type MainProps = z.infer<typeof mainSchema>;
 
 export const Main: React.FC<MainProps> = ({
-  thisIsMyRecap: { user, year },
-  tournaments: { attendance },
-  performances: { performances },
-  favouriteCharacters: { characters }
+  thisIsMyRecapProps: { user, year },
+  tournamentsProps: { attendance },
+  performancesProps: { performances },
+  favouriteCharactersProps: { characters },
+  highestUpsetProps
 }) => {
   const frame = useCurrentFrame();
 
@@ -85,13 +89,29 @@ export const Main: React.FC<MainProps> = ({
         <FavouriteCharacters characters={characters} />
       </Sequence>
 
+      {highestUpsetProps?.highestUpset && (
+        <Sequence
+          name="HighestUpset"
+          from={
+            THIS_IS_MY_RECAP_DURATION +
+            TOURNAMENTS_DURATION +
+            PERFORMANCES_DURATION +
+            FAVOURITE_CHARACTER_DURATION
+          }
+          durationInFrames={HIGHEST_UPSET_DURATION}
+        >
+          <HighestUpset highestUpset={highestUpsetProps.highestUpset} />
+        </Sequence>
+      )}
+
       <Sequence
         name="EndCard"
         from={
           THIS_IS_MY_RECAP_DURATION +
           TOURNAMENTS_DURATION +
           PERFORMANCES_DURATION +
-          FAVOURITE_CHARACTER_DURATION
+          FAVOURITE_CHARACTER_DURATION +
+          (highestUpsetProps?.highestUpset ? HIGHEST_UPSET_DURATION : 0)
         }
         durationInFrames={END_CARD_DURATION}
       >

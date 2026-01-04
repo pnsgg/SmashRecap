@@ -72,18 +72,18 @@
       bind:player
       autoPlay={false}
       data={{
-        thisIsMyRecap: {
+        thisIsMyRecapProps: {
           year: YEAR,
           user: ME
         },
-        tournaments: {
+        tournamentsProps: {
           year: YEAR,
           attendance: ATTENDANCE
         },
-        performances: {
+        performancesProps: {
           performances: PERFORMANCES
         },
-        favouriteCharacters: {
+        favouriteCharactersProps: {
           characters: FAVOURITE_CHARACTERS
         }
       }}

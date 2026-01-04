@@ -1,5 +1,6 @@
 import { fetchStartGG } from '$lib/startgg/fetch';
 import {
+  getEntrant,
   getEvent,
   getPaginatedTournamentsEventsStartAt,
   getTournamentsEventsPageInfo
@@ -175,4 +176,175 @@ export const computeMostPlayedCharacters = (characters: string[], maxCharacters:
     .sort((a, b) => b[1] - a[1])
     .map(([char, count]) => ({ name: char, count }))
     .slice(0, maxCharacters);
+};
+
+/**
+ * Calculates the upset factor for a match between two players.
+ * @param playerSeed - The seed of the player
+ * @param opponentSeed - The seed of the opponent
+ * @param bracket - The type of bracket (single or double elimination)
+ */
+export const upsetFactor = (playerSeed: number, opponentSeed: number, bracket: BracketType) => {
+  const playerRFV =
+    bracket === 'SINGLE_ELIMINATION'
+      ? singleBracketRoundsFromVictory(playerSeed)
+      : doubleBracketRoundsFromVictory(playerSeed);
+
+  const opponentRFV =
+    bracket === 'SINGLE_ELIMINATION'
+      ? singleBracketRoundsFromVictory(opponentSeed)
+      : doubleBracketRoundsFromVictory(opponentSeed);
+
+  return playerRFV - opponentRFV;
+};
+
+export type ParsedMatch = {
+  name: string;
+  score: number;
+}[];
+
+/**
+ * Parse the display score from the match
+ * @param match A string containing the match score (e.g. "ARK | Licane 1 - PNS | Clembs 2" or "DQ")
+ * @returns An array of objects containing the player name and score (e.g. [{ name: 'ARK | Licane', score: 1 }, { name: 'PNS | Clembs', score: 2 }] or 'DQ')
+ */
+export const parseMatch = (match: string): ParsedMatch | 'DQ' => {
+  if (match.match(/^DQ$/)) return 'DQ';
+
+  const parts = match.split(' - ');
+  return parts.map((part) => {
+    part = part.trim();
+    const lastSpaceIndex = part.lastIndexOf(' ');
+
+    const name = part.slice(0, lastSpaceIndex);
+    const score = parseInt(part.slice(lastSpaceIndex + 1, part.length), 10);
+
+    return {
+      name,
+      score
+    };
+  });
+};
+
+export const findHighestUpset = async (events: Awaited<ReturnType<typeof getEvents>>) => {
+  // Find highest upset
+  // Filter events and sets within events won by the user
+  // Also filter for sets where the player seed was higher (worse) than the opponent seed (upset)
+  const eventsWithWinningSets = events
+    ?.map((event) => {
+      const userEntrantId = event?.userEntrant?.id;
+      if (!userEntrantId) return null;
+
+      const winningSets = event.userEntrant?.paginatedSets?.nodes?.filter((set) => {
+        if (!set?.winnerId || set.winnerId.toString() !== userEntrantId.toString()) return false;
+
+        const firstGame = set.games?.[0];
+        if (!firstGame?.selections) return false;
+
+        const userSeed = firstGame.selections.find(
+          (s) => s?.entrant?.id && s.entrant.id.toString() === userEntrantId.toString()
+        )?.entrant?.checkInSeed?.seedNum;
+        const opponentSeed = firstGame.selections.find(
+          (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
+        )?.entrant?.checkInSeed?.seedNum;
+
+        if (userSeed && opponentSeed) {
+          return userSeed > opponentSeed;
+        }
+
+        return false;
+      });
+
+      if (!winningSets || winningSets.length === 0) return null;
+
+      return {
+        ...event,
+        winningSets
+      };
+    })
+    .filter(notNullNorUndefined);
+
+  // Flatten the sets to find the single highest upset match
+  const flattenedSets = eventsWithWinningSets.flatMap((event) =>
+    event
+      .winningSets!.map((set) => {
+        const userEntrantId = event.userEntrant?.id;
+        if (!userEntrantId || !set?.games) return null;
+
+        const firstGame = set.games[0];
+        if (!firstGame?.selections) return null;
+
+        const userSelection = firstGame.selections.find(
+          (s) => s?.entrant?.id && s.entrant.id.toString() === userEntrantId.toString()
+        );
+        const userSeed = userSelection?.entrant?.checkInSeed?.seedNum;
+
+        const opponentSelection = firstGame.selections.find(
+          (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
+        );
+        const opponentSeed = opponentSelection?.entrant?.checkInSeed?.seedNum;
+
+        if (!userSeed || !opponentSeed) return null;
+
+        // Determine bracket type, default to DOUBLE
+        const bracketType: BracketType =
+          (event.userEntrant?.phaseGroups?.[0]?.bracketType as BracketType) === 'SINGLE_ELIMINATION'
+            ? 'SINGLE_ELIMINATION'
+            : 'DOUBLE_ELIMINATION';
+
+        return {
+          set,
+          tournament: event.tournament!,
+          factor: upsetFactor(userSeed, opponentSeed, bracketType),
+          opponentEntrantId: opponentSelection?.entrant?.id
+        };
+      })
+      .filter(notNullNorUndefined)
+  );
+
+  // Sort by factor descending
+  flattenedSets.sort((a, b) => b.factor - a.factor);
+
+  const bestUpset = flattenedSets[0];
+
+  if (bestUpset && bestUpset.opponentEntrantId) {
+    try {
+      const oppRes = await fetchStartGG(getEntrant, { entrantId: bestUpset.opponentEntrantId });
+      const opponentParticipant = oppRes.data?.entrant?.players?.[0];
+
+      if (opponentParticipant) {
+        const match = parseMatch(bestUpset.set.displayScore!);
+        return {
+          tournament: {
+            name: bestUpset.tournament.name!,
+            date: bestUpset.tournament.startAt
+              ? unixToDate(bestUpset.tournament.startAt).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric'
+                })
+              : '',
+            image: bestUpset.tournament.images?.[0]?.url ?? undefined
+          },
+          opponent: {
+            gamerTag: opponentParticipant.gamerTag!,
+            prefix: opponentParticipant.prefix ?? undefined,
+            avatar: opponentParticipant?.user?.images?.[0]?.url
+          },
+          match: {
+            score:
+              match !== 'DQ'
+                ? match
+                    .map((m) => m.score)
+                    .sort((a, b) => b - a)
+                    .join(' - ')
+                : 'DQ',
+            factor: bestUpset.factor,
+            round: bestUpset.set.fullRoundText!
+          }
+        };
+      }
+    } catch (e) {
+      console.error('Failed to fetch opponent for upset:', e);
+    }
+  }
 };

@@ -6,6 +6,7 @@ import {
   END_CARD_DURATION,
   FAVOURITE_CHARACTER_DURATION,
   FPS,
+  HIGHEST_UPSET_DURATION,
   MAIN_COMPOSITION_HEIGHT,
   MAIN_COMPOSITION_WIDTH,
   PERFORMANCES_DURATION,
@@ -20,7 +21,8 @@ import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
 
 import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
-import { ATTENDANCE, FAVOURITE_CHARACTERS, ME, PERFORMANCES, YEAR } from './mock';
+import { HighestUpset, highestUpsetSchema } from './HighestUpset';
+import { ATTENDANCE, FAVOURITE_CHARACTERS, HIGHEST_UPSET, ME, PERFORMANCES, YEAR } from './mock';
 import { typography } from './styles';
 import './styles/remotion.css';
 
@@ -52,10 +54,35 @@ export const RemotionRoot: React.FC = () => {
           thisIsMyRecap: {
             user: ME,
             year: YEAR
+          },
+          tournaments: {
+            attendance: ATTENDANCE,
+            year: YEAR
+          },
+          performances: {
+            performances: PERFORMANCES
+          },
+          favouriteCharacters: {
+            characters: FAVOURITE_CHARACTERS
+          },
+          highestUpset: {
+            highestUpset: HIGHEST_UPSET
           }
         }}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
+      // You can override these props for each render:
+      // https://www.remotion.dev/docs/parametrized-rendering
+      />
+      <Composition
+        id="HighestUpset"
+        component={HighestUpset}
+        schema={highestUpsetSchema}
+        durationInFrames={HIGHEST_UPSET_DURATION}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
+        defaultProps={{
+          highestUpset: HIGHEST_UPSET
+        }}
       />
       <Composition
         id="ThisIsMyRecap"

@@ -139,3 +139,23 @@ export const END_CARD = {
     x: 'le_grld'
   }
 };
+
+export const HIGHEST_UPSET = {
+  tournament: {
+    name: 'KanDI',
+    date: 'Jan 23',
+    image:
+      'https://images.start.gg/images/tournament/861709/image-88fa22c3e812ae16302fb35a9e0d56de.png'
+  },
+  opponent: {
+    gamerTag: 'Glutonny',
+    prefix: 'Solary',
+    avatar:
+      'https://images.start.gg/images/user/2613/image-abf07000a58994aef3b2172241f27951.jpg?ehk=d%2F3Rws%2BCTuWtXMLI0SV7Dmkw4%2FYSQNWoWPJD9uGNbF8%3D&ehkOptimized=WYVpqvxLkf3v09B0%2B1uCcNQFyX2kQCFz0svZDCX2sMA%3D'
+  },
+  match: {
+    score: '3-2',
+    factor: 12,
+    round: 'Losers Quarter-Final'
+  }
+};

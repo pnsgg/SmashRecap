@@ -4,6 +4,7 @@ import {
   aggregateByMonth,
   type BracketType,
   computeMostPlayedCharacters,
+  findHighestUpset,
   getEvents,
   getThisYearEvents,
   notNullNorUndefined,
@@ -146,6 +147,9 @@ export const getPlayerStats = query(
       })
       .slice(0, 5);
 
+    // Find the highest upset factor dealt
+    const highestUpset = await findHighestUpset(events);
+
     // Most played characters
     const charactersPlayedByPlayerAndOpponent = events?.map((event) => ({
       entrantId: event?.userEntrant?.id,
@@ -173,6 +177,7 @@ export const getPlayerStats = query(
       user: userInfo,
       tournamentsByMonth,
       bestPerformances,
+      highestUpset,
       mostPlayedCharactersByPlayer: mostPlayedCharactersByPlayer.map((character) => ({
         ...character,
         image: `/images/chara_1/${getFighterInfo(character.name).slug}.png`
