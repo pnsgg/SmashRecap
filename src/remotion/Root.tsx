@@ -82,9 +82,7 @@ export const RemotionRoot: React.FC = () => {
             characters: FAVOURITE_CHARACTERS
           },
           highestUpsetProps: HIGHEST_UPSET,
-          rivalsProps: {
-            rivals: RIVALS
-          },
+          rivalsProps: RIVALS,
           game5WarriorProps: GAME_5_STATS,
           cleanSweepProps: CLEAN_SWEEP_STATS
         }}
