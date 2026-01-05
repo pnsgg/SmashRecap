@@ -18,14 +18,37 @@ export const CLEAN_SWEEP_DURATION = FPS * 5;
 export const RIVALS_DURATION = FPS * 6;
 export const END_CARD_DURATION = FPS * 3;
 
-export const totalDuration = [
-  THIS_IS_MY_RECAP_DURATION,
-  TOURNAMENTS_DURATION,
-  PERFORMANCES_DURATION,
-  FAVOURITE_CHARACTER_DURATION,
-  HIGHEST_UPSET_DURATION,
-  GAME_5_WARRIOR_DURATION,
-  CLEAN_SWEEP_DURATION,
-  RIVALS_DURATION,
-  END_CARD_DURATION
-].reduce((acc, duration) => acc + duration, 0);
+export const totalDuration = ({
+  characters,
+  hasHighestUpset = true,
+  hasRivals = true
+}: {
+  characters?: number;
+  hasHighestUpset?: boolean;
+  hasRivals?: boolean;
+}): number => {
+  const durations = [
+    THIS_IS_MY_RECAP_DURATION,
+    TOURNAMENTS_DURATION,
+    PERFORMANCES_DURATION,
+    GAME_5_WARRIOR_DURATION,
+    CLEAN_SWEEP_DURATION,
+    END_CARD_DURATION
+  ];
+
+  if (characters !== undefined) {
+    durations.push(calculateFavouriteCharactersDuration(characters));
+  } else {
+    durations.push(FAVOURITE_CHARACTER_DURATION);
+  }
+
+  if (hasHighestUpset) {
+    durations.push(HIGHEST_UPSET_DURATION);
+  }
+
+  if (hasRivals) {
+    durations.push(RIVALS_DURATION);
+  }
+
+  return durations.reduce((acc, duration) => acc + duration, 0);
+};

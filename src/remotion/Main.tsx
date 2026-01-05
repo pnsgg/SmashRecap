@@ -5,7 +5,6 @@ import { CleanSweep, cleanSweepSchema } from './CleanSweep';
 import {
   CLEAN_SWEEP_DURATION,
   END_CARD_DURATION,
-  FAVOURITE_CHARACTER_DURATION,
   FPS,
   GAME_5_WARRIOR_DURATION,
   HIGHEST_UPSET_DURATION,
@@ -15,7 +14,11 @@ import {
   TOURNAMENTS_DURATION
 } from './config';
 import { EndCard } from './EndCard';
-import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
+import {
+  calculateFavouriteCharactersDuration,
+  FavouriteCharacters,
+  favouriteCharactersSchema
+} from './FavouriteCharacter';
 import { Game5Warrior, game5WarriorSchema } from './Game5Warrior';
 import { HighestUpset, highestUpsetSchema } from './HighestUpset';
 import { MyPerformances, myPerformancesSchema } from './MyPerformances';
@@ -49,7 +52,7 @@ export const Main: React.FC<MainProps> = ({
 }) => {
   const frame = useCurrentFrame();
 
-  const getFrames = () => {
+  const getFrames = ({ characters }: { characters: number }) => {
     let currentFrame = 0;
 
     const fromThisIsMyRecap = currentFrame;
@@ -64,12 +67,12 @@ export const Main: React.FC<MainProps> = ({
     currentFrame += durationTournaments;
 
     const fromFavouriteCharacters = currentFrame;
-    const durationFavouriteCharacters = FAVOURITE_CHARACTER_DURATION;
+    const durationFavouriteCharacters = calculateFavouriteCharactersDuration(characters);
     currentFrame += durationFavouriteCharacters;
 
     const fromHighestUpset = currentFrame;
     const durationHighestUpset = HIGHEST_UPSET_DURATION;
-    if (highestUpsetProps) {
+    if (highestUpsetProps !== undefined) {
       currentFrame += durationHighestUpset;
     }
 
@@ -83,7 +86,7 @@ export const Main: React.FC<MainProps> = ({
 
     const fromRivals = currentFrame;
     const durationRivals = RIVALS_DURATION;
-    if (rivalsProps) {
+    if (rivalsProps !== undefined) {
       currentFrame += durationRivals;
     }
 
@@ -130,7 +133,7 @@ export const Main: React.FC<MainProps> = ({
     durationRivals,
     fromEndCard,
     durationEndCard
-  } = getFrames();
+  } = getFrames({ characters: characters?.length ?? 0 });
 
   const favStart = fromFavouriteCharacters;
 

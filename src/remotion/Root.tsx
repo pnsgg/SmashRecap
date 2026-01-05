@@ -62,7 +62,11 @@ export const RemotionRoot: React.FC = () => {
         id="Main"
         component={Main}
         schema={mainSchema}
-        durationInFrames={totalDuration}
+        durationInFrames={totalDuration({
+          characters: FAVOURITE_CHARACTERS.length,
+          hasHighestUpset: !!HIGHEST_UPSET,
+          hasRivals: !!RIVALS
+        })}
         fps={FPS}
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
@@ -86,8 +90,8 @@ export const RemotionRoot: React.FC = () => {
           game5WarriorProps: GAME_5_STATS,
           cleanSweepProps: CLEAN_SWEEP_STATS
         }}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
+      // You can override these props for each render:
+      // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Composition
         id="HighestUpset"
@@ -107,9 +111,7 @@ export const RemotionRoot: React.FC = () => {
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
         fps={FPS}
-        defaultProps={{
-          rivals: RIVALS
-        }}
+        defaultProps={RIVALS}
       />
       <Composition
         id="ThisIsMyRecap"
