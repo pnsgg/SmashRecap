@@ -25,6 +25,7 @@ export const Maskass: React.FC<MaskassProps> = ({ style, fps = 24 }) => {
 
   return (
     <Img
+      pauseWhenLoading
       src={staticFile(currentSprite)}
       style={{
         display: 'block',
