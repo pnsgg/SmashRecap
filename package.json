@@ -41,6 +41,7 @@
     "vite": "^7.2.6"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.962.0",
     "@remotion/cli": "4.0.397",
     "@remotion/fonts": "4.0.397",
     "@remotion/lambda": "4.0.397",
