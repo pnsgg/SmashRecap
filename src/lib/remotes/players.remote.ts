@@ -166,9 +166,7 @@ export const getPlayerStats = query(
     }));
     const charactersPlayedByPlayer = charactersPlayedByPlayerAndOpponent
       .flatMap((event) =>
-        event.sets
-          ?.filter((set) => set.winnerId === event.entrantId)
-          .flatMap((set) => set.selections?.map((selection) => selection?.character))
+        event.sets?.flatMap((set) => set.selections?.map((selection) => selection?.character))
       )
       .filter(notNullNorUndefined);
     const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(charactersPlayedByPlayer, 3);
