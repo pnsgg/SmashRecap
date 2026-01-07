@@ -1,4 +1,5 @@
 import { query } from '$app/server';
+import { redis } from '$lib/server/redis';
 import { fetchStartGG } from '$lib/startgg/fetch';
 import {
   aggregateByMonth,
@@ -65,6 +66,10 @@ export const getPlayerStats = query(
     year: v.pipe(v.number(), v.minValue(2000), v.maxValue(new Date().getFullYear()))
   }),
   async ({ userId, year }) => {
+    const key = `recap:${userId}:${year}`;
+    const cached = await redis.get(key);
+    if (cached) return JSON.parse(cached);
+
     // Get userinfo
     const {
       data: { user }
@@ -174,7 +179,7 @@ export const getPlayerStats = query(
     // Find rivals
     const rivals = await findRivals(events);
 
-    return {
+    const result = {
       year,
       user: userInfo,
       tournamentsByMonth,
@@ -186,5 +191,10 @@ export const getPlayerStats = query(
         image: `/images/chara_1/${getFighterInfo(character.name).slug}.png`
       }))
     };
+
+    await redis.set(key, JSON.stringify(result));
+    await redis.incr('total_recaps');
+
+    return result;
   }
 );
