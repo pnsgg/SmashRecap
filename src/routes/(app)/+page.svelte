@@ -21,6 +21,8 @@
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
   import type { PlayerRef } from '@remotion/player';
 
+  let { data } = $props();
+
   const mobile = new IsMobile();
 
   const year = new Date().getFullYear();
@@ -75,7 +77,11 @@
 <SearchPlayer bind:open={searchOpen} onSelect={onSearchSelection} />
 
 <div class="preview">
-  <p class="small-text">+10,000 recaps generated</p>
+  {#if data.totalRecaps === 0}
+    <p class="small-text">Be the first to generate your recap</p>
+  {:else}
+    <p class="small-text">+{data.totalRecaps} recaps generated</p>
+  {/if}
   <!-- <img src="/images/preview.png" alt="Preview of the 2025 SmashRecap" class="render" /> -->
   <div id="remotion-root">
     <PlayerViewWrapper
