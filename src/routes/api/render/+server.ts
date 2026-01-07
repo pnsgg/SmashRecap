@@ -1,5 +1,6 @@
 import { dev } from '$app/environment';
-import { REMOTION_BUNDLE_LOCATION, S3_BUCKET_NAME } from '$env/static/private';
+import { env } from '$env/dynamic/private';
+import { REMOTION_BUNDLE_LOCATION } from '$env/static/private';
 import { s3Client } from '$lib/server/s3';
 import { mainSchema } from '$remotion/Main';
 import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
@@ -24,7 +25,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
   const inputProps = inputPropsResult.data;
 
-  const bucketName = S3_BUCKET_NAME;
+  const bucketName = env.S3_BUCKET_NAME;
 
   // Generate Cache Key
   const hash = createHash('sha256').update(JSON.stringify(inputProps)).digest('hex');
