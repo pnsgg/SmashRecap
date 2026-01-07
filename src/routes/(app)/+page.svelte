@@ -25,7 +25,7 @@
 
   const mobile = new IsMobile();
 
-  const year = new Date().getFullYear();
+  const year = 2025;
   let player = $state<PlayerRef | undefined>();
 
   let searchOpen = $state(false);
