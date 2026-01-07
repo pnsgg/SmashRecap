@@ -16,6 +16,7 @@ services:
       - S3_BUCKET_NAME=${S3_BUCKET_NAME}
       - S3_REGION=${S3_REGION}
       - S3_ENDPOINT=${S3_ENDPOINT}
+      - REDIS_URL=${REDIS_URL}
 
   minio:
     image: minio/minio
@@ -41,6 +42,11 @@ services:
       mc ilm add --expiry-days 7 myminio/smash-recap;
       exit 0;
       "
+
+  redis:
+    image: redis:alpine
+    ports:
+      - '6379:6379'
 
 volumes:
   minio_data:
