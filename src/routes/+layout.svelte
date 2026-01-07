@@ -4,7 +4,7 @@
   import '../styles/app.css';
 
   let { children, data } = $props();
-  const year = new Date().getFullYear();
+  const year = 2025;
 
   const siteName = 'SmashRecap';
   const title = `${siteName} - Your ${year} Smash Bros. Ultimate year in review`;

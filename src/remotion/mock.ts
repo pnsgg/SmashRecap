@@ -1,6 +1,6 @@
 import type { MyPerformance } from './MyPerformances';
 
-export const YEAR = new Date().getFullYear();
+export const YEAR = 2025;
 export const ATTENDANCE = [
   {
     month: 'Jan',
