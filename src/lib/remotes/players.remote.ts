@@ -10,7 +10,8 @@ import {
   getEvents,
   getThisYearEvents,
   notNullNorUndefined,
-  seedingPerformanceRating
+  seedingPerformanceRating,
+  unixToDate
 } from '$lib/startgg/helpers';
 import { getUserInfo, searchPlayerByGamerTag } from '$lib/startgg/queries';
 import { getFighterInfo } from '$remotion/constants';
@@ -134,7 +135,7 @@ export const getPlayerStats = query(
         return sprB - sprA;
       })
       .map((event) => {
-        const date = new Date(event.tournament?.startAt as number).toLocaleDateString('en-US', {
+        const date = unixToDate(event.tournament?.startAt as number).toLocaleDateString('en-US', {
           month: 'short',
           day: '2-digit'
         });
