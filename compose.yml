@@ -24,7 +24,7 @@ services:
       - '9000:9000'
       - '9001:9001'
     volumes:
-      - minio_data:/data
+      - /mnt/drive/smash-recap-minio:/data
     environment:
       MINIO_ROOT_USER: ${S3_ACCESS_KEY_ID}
       MINIO_ROOT_PASSWORD: ${S3_SECRET_ACCESS_KEY}
@@ -48,8 +48,4 @@ services:
     ports:
       - '6379:6379'
     volumes:
-      - redis_data:/data
-
-volumes:
-  minio_data:
-  redis_data:
+      - /mnt/drive/smash-recap-redis:/data
