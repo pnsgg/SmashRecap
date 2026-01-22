@@ -52,7 +52,7 @@ export const ATTENDANCE = [
   }
 ];
 export const ME = {
-  image: 'https://images.start.gg/images/user/2858645/image-714398e1a693c64afc42d008a7a514c1.jpg',
+  image: 'https://images.start.gg/images/user/2858645/image-0a3ba57f70bfa4c26980f4bd9c49fc01.png',
   prefix: 'PNS',
   gamerTag: 'RouxChov',
   country: 'France',
