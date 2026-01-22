@@ -1,4 +1,5 @@
 import { query } from '$app/server';
+import { env } from '$env/dynamic/private';
 import { redis } from '$lib/server/redis';
 import { fetchStartGG } from '$lib/startgg/fetch';
 import {
@@ -10,6 +11,7 @@ import {
   getEvents,
   getThisYearEvents,
   notNullNorUndefined,
+  parseMatch,
   seedingPerformanceRating,
   unixToDate
 } from '$lib/startgg/helpers';
@@ -68,8 +70,11 @@ export const getPlayerStats = query(
   }),
   async ({ userId, year }) => {
     const key = `recap:${userId}:${year}`;
-    const cached = await redis.get(key);
-    if (cached) return JSON.parse(cached);
+
+    if (env.ALLOW_CACHING === 'true') {
+      const cached = await redis.get(key);
+      if (cached) return JSON.parse(cached);
+    }
 
     // Get userinfo
     const {
@@ -180,6 +185,16 @@ export const getPlayerStats = query(
     // Find rivals
     const rivals = await findRivals(events);
 
+    // Count the number of sets that went to last games
+    const totalSets = events.flatMap((event) => event?.userEntrant?.paginatedSets?.nodes || []);
+    const totalSetsToLastGame = totalSets
+      .map((set) => set?.displayScore)
+      .filter(notNullNorUndefined)
+      .map(parseMatch)
+      .filter((match) => match !== 'DQ')
+      .map(([p1, p2]) => Math.abs(p1.score - p2.score))
+      .filter((diff) => diff === 1).length;
+
     const result = {
       year,
       user: userInfo,
@@ -190,11 +205,15 @@ export const getPlayerStats = query(
       mostPlayedCharactersByPlayer: mostPlayedCharactersByPlayer.map((character) => ({
         ...character,
         image: `/images/chara_1/${getFighterInfo(character.name).slug}.png`
-      }))
+      })),
+      totalSets: totalSets.length,
+      totalSetsToLastGame
     };
 
-    await redis.set(key, JSON.stringify(result));
-    await redis.incr('total_recaps');
+    if (env.ALLOW_CACHING === 'true') {
+      await redis.set(key, JSON.stringify(result));
+      await redis.incr('total_recaps');
+    }
 
     return result;
   }
