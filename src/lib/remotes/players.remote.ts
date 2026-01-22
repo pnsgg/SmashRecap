@@ -35,7 +35,7 @@ export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (game
 
     return (res.data.players?.nodes
       ?.map((player) => {
-        // By design a user always have an id and a gamerTag
+        // By design a user always has an id and a gamerTag
         // Typescript skill issue here
         if (!player?.user?.id || !player?.gamerTag) return null;
 
