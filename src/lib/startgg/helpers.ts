@@ -227,91 +227,87 @@ export const parseMatch = (match: string): ParsedMatch | 'DQ' => {
 };
 
 export const findHighestUpset = async (events: Awaited<ReturnType<typeof getEvents>>) => {
-  // Find highest upset
-  // Filter events and sets within events won by the user
-  // Also filter for sets where the player seed was higher (worse) than the opponent seed (upset)
-  const eventsWithWinningSets = events
-    ?.map((event) => {
+  // Filter out sets won where an upset occurred
+  const winningUpsetSets = events
+    .flatMap((event) => {
       const userEntrantId = event?.userEntrant?.id;
-      if (!userEntrantId) return null;
+      if (!userEntrantId) return [];
 
-      const winningSets = event.userEntrant?.paginatedSets?.nodes?.filter((set) => {
-        if (!set?.winnerId || set.winnerId.toString() !== userEntrantId.toString()) return false;
+      return (
+        event.userEntrant?.paginatedSets?.nodes
+          ?.filter((set) => {
+            if (!set?.winnerId || set.winnerId.toString() !== userEntrantId.toString())
+              return false;
 
-        const firstGame = set.games?.[0];
-        if (!firstGame?.selections) return false;
+            const firstGame = set.games?.[0];
+            if (!firstGame?.selections) return false;
 
-        const userSeed = firstGame.selections.find(
-          (s) => s?.entrant?.id && s.entrant.id.toString() === userEntrantId.toString()
-        )?.entrant?.checkInSeed?.seedNum;
-        const opponentSeed = firstGame.selections.find(
-          (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
-        )?.entrant?.checkInSeed?.seedNum;
+            const userSeed = firstGame.selections.find(
+              (s) => s?.entrant?.id && s.entrant.id.toString() === userEntrantId.toString()
+            )?.entrant?.checkInSeed?.seedNum;
 
-        if (userSeed && opponentSeed) {
-          return userSeed > opponentSeed;
-        }
+            const opponentSeed = firstGame.selections.find(
+              (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
+            )?.entrant?.checkInSeed?.seedNum;
 
-        return false;
-      });
+            return (
+              notNullNorUndefined(userSeed) &&
+              notNullNorUndefined(opponentSeed) &&
+              userSeed > opponentSeed
+            );
+          })
+          .filter(notNullNorUndefined)
+          // Map to include necessary data for upset factor calculation
+          .map((set) => {
+            const firstGame = set.games?.[0];
+            if (!firstGame?.selections) return null;
 
-      if (!winningSets || winningSets.length === 0) return null;
+            const userSelection = firstGame.selections.find(
+              (s) => s?.entrant?.id && s.entrant.id.toString() === userEntrantId.toString()
+            );
 
-      return {
-        ...event,
-        winningSets
-      };
+            const opponentSelection = firstGame.selections.find(
+              (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
+            );
+
+            if (!userSelection || !opponentSelection) return null;
+
+            const userSeed = userSelection.entrant?.checkInSeed?.seedNum;
+            const opponentSeed = opponentSelection.entrant?.checkInSeed?.seedNum;
+
+            if (!notNullNorUndefined(userSeed) || !notNullNorUndefined(opponentSeed)) return null;
+
+            // Determine bracket type
+            const rawBracketType = event.userEntrant?.phaseGroups?.[0]?.bracketType;
+            if (
+              rawBracketType !== 'SINGLE_ELIMINATION' &&
+              rawBracketType !== 'DOUBLE_ELIMINATION'
+            ) {
+              return null;
+            }
+
+            if (!notNullNorUndefined(opponentSelection?.entrant?.id)) return null;
+
+            return {
+              set,
+              tournament: event.tournament!,
+              factor: upsetFactor(userSeed, opponentSeed, rawBracketType),
+              opponentEntrantId: opponentSelection?.entrant?.id
+            };
+          })
+          .filter(notNullNorUndefined)
+      );
     })
     .filter(notNullNorUndefined);
 
-  // Flatten the sets to find the single highest upset match
-  const flattenedSets = eventsWithWinningSets.flatMap((event) =>
-    event
-      .winningSets!.map((set) => {
-        const userEntrantId = event.userEntrant?.id;
-        if (!userEntrantId || !set?.games) return null;
-
-        const firstGame = set.games[0];
-        if (!firstGame?.selections) return null;
-
-        const userSelection = firstGame.selections.find(
-          (s) => s?.entrant?.id && s.entrant.id.toString() === userEntrantId.toString()
-        );
-        const userSeed = userSelection?.entrant?.checkInSeed?.seedNum;
-
-        const opponentSelection = firstGame.selections.find(
-          (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
-        );
-        const opponentSeed = opponentSelection?.entrant?.checkInSeed?.seedNum;
-
-        if (!userSeed || !opponentSeed) return null;
-
-        // Determine bracket type, default to DOUBLE
-        const bracketType: BracketType =
-          (event.userEntrant?.phaseGroups?.[0]?.bracketType as BracketType) === 'SINGLE_ELIMINATION'
-            ? 'SINGLE_ELIMINATION'
-            : 'DOUBLE_ELIMINATION';
-
-        return {
-          set,
-          tournament: event.tournament!,
-          factor: upsetFactor(userSeed, opponentSeed, bracketType),
-          opponentEntrantId: opponentSelection?.entrant?.id
-        };
-      })
-      .filter(notNullNorUndefined)
-  );
-
   // Sort by factor descending
-  flattenedSets.sort((a, b) => b.factor - a.factor);
+  winningUpsetSets.sort((a, b) => b.factor - a.factor);
+  const bestUpset = winningUpsetSets[0];
 
-  const bestUpset = flattenedSets[0];
-
-  if (bestUpset && bestUpset.opponentEntrantId) {
+  if (bestUpset) {
     try {
       const oppRes = await fetchStartGG(getEntrant, { entrantId: bestUpset.opponentEntrantId });
       const opponentParticipant = oppRes.data?.entrant?.players?.[0];
-
       if (opponentParticipant) {
         const match = parseMatch(bestUpset.set.displayScore!);
         return {
