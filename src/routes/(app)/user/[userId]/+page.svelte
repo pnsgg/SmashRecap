@@ -84,13 +84,13 @@
     },
     highestUpsetProps: stats.highestUpset,
     game5WarriorProps: {
-      totalSets: 150,
-      wins: 150
+      totalSets: stats.sets.total,
+      wins: stats.sets.lastgames
     },
     rivalsProps: stats.rivals,
     cleanSweepProps: {
-      totalSets: 150,
-      totalSweeps: 125
+      totalSets: stats.sets.total,
+      totalSweeps: stats.sets.cleansweeps
     }
   }}
   <div class="my-recap">
