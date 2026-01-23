@@ -103,6 +103,23 @@ export const getPlayerStats = query(
     // Get events info
     const events = await getEvents(stringUserId, eventsIds);
 
+    // Record all the gamer tags the user played as this year
+    const gamerTagsThisYear = new Set<string>();
+    events.forEach((event) =>
+      event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
+        set?.games?.[0]?.selections?.forEach((selection) => {
+          const entrantId = selection?.entrant?.id;
+          const eventEntrantId = event?.userEntrant?.id;
+          if (eventEntrantId && entrantId && entrantId === eventEntrantId) {
+            // Query filters out events which aren't 1v1, so we can assume there's only one player here
+            if (selection?.entrant?.players?.[0]?.gamerTag) {
+              gamerTagsThisYear.add(selection.entrant.players[0].gamerTag);
+            }
+          }
+        });
+      })
+    );
+
     // Count the number of tournaments attended by month
     const tournaments = events.map((event) => event?.tournament).filter(notNullNorUndefined);
     const tournamentsStartAt = tournaments.map((t) => t?.startAt).filter(notNullNorUndefined);
@@ -195,9 +212,23 @@ export const getPlayerStats = query(
       .map(([p1, p2]) => Math.abs(p1.score - p2.score))
       .filter((diff) => diff === 1).length;
 
+    // Count the number of cleen sweeps (i.e., 3-0 or 2-0 or X-0)
+    const totalCleenSweeps = totalSets
+      .map((set) => set?.displayScore)
+      .filter(notNullNorUndefined)
+      .map(parseMatch)
+      .filter((match) => match !== 'DQ')
+      .map(([p1, p2]) => {
+        if (gamerTagsThisYear.has(p1.name) && p2.score === 0) return Math.max(p1.score, p2.score);
+        if (gamerTagsThisYear.has(p2.name) && p1.score === 0) return Math.max(p1.score, p2.score);
+        return 0;
+      })
+      .filter((maxScore) => maxScore > 0).length;
+
     const result = {
       year,
       user: userInfo,
+      gamerTagsThisYear: Array.from(gamerTagsThisYear),
       tournamentsByMonth,
       bestPerformances,
       highestUpset,
@@ -206,8 +237,11 @@ export const getPlayerStats = query(
         ...character,
         image: `/images/chara_1/${getFighterInfo(character.name).slug}.png`
       })),
-      totalSets: totalSets.length,
-      totalSetsToLastGame
+      sets: {
+        total: totalSets.length,
+        lastgames: totalSetsToLastGame,
+        cleansweeps: totalCleenSweeps
+      }
     };
 
     if (env.ALLOW_CACHING === 'true') {
