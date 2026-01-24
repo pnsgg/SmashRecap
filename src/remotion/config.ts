@@ -15,17 +15,19 @@ export const FAVOURITE_CHARACTER_DURATION = calculateFavouriteCharactersDuration
 export const HIGHEST_UPSET_DURATION = FPS * 5;
 export const GAME_5_WARRIOR_DURATION = FPS * 5;
 export const CLEAN_SWEEP_DURATION = FPS * 5;
-export const RIVALS_DURATION = FPS * 6;
+
+export const THE_GAUNTLET_DURATION = FPS * 7;
 export const END_CARD_DURATION = FPS * 3;
 
 export const totalDuration = ({
   characters,
   hasHighestUpset = true,
-  hasRivals = true
+  hasGauntlet = true
 }: {
   characters?: number;
   hasHighestUpset?: boolean;
-  hasRivals?: boolean;
+
+  hasGauntlet?: boolean;
 }): number => {
   const durations = [
     THIS_IS_MY_RECAP_DURATION,
@@ -46,8 +48,10 @@ export const totalDuration = ({
     durations.push(HIGHEST_UPSET_DURATION);
   }
 
-  if (hasRivals) {
-    durations.push(RIVALS_DURATION);
+
+
+  if (hasGauntlet) {
+    durations.push(THE_GAUNTLET_DURATION);
   }
 
   return durations.reduce((acc, duration) => acc + duration, 0);
