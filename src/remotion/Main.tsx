@@ -11,6 +11,7 @@ import {
 import { Game5Warrior, game5WarriorSchema } from './Game5Warrior';
 import { HighestUpset, highestUpsetSchema } from './HighestUpset';
 import { MyPerformances, myPerformancesSchema } from './MyPerformances';
+import { PNSLogo } from './components/PNSLogo';
 import { colors } from './styles';
 import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
@@ -83,8 +84,6 @@ export const Main: React.FC<MainProps> = ({
     const fromCleanSweep = currentFrame;
     const durationCleanSweep = CLEAN_SWEEP_DURATION;
     currentFrame += durationCleanSweep;
-
-
 
     const fromGauntlet = currentFrame;
     const durationGauntlet = THE_GAUNTLET_DURATION;
@@ -159,6 +158,26 @@ export const Main: React.FC<MainProps> = ({
     }
   );
 
+  const logoColor = interpolateColors(
+    frame,
+    [
+      THIS_IS_MY_RECAP_DURATION,
+      THIS_IS_MY_RECAP_DURATION + FPS / 2,
+      favStart - FPS / 2,
+      favStart,
+      favStart + durationFavouriteCharacters - FPS / 2,
+      favStart + durationFavouriteCharacters
+    ],
+    [
+      colors.reallyWhite,
+      colors.nearlyBlack,
+      colors.nearlyBlack,
+      colors.reallyWhite,
+      colors.reallyWhite,
+      colors.reallyWhite
+    ]
+  );
+
   return (
     <AbsoluteFill style={{ backgroundColor }}>
       <Sequence name="ThisIsMyRecap" durationInFrames={durationThisIsMyRecap}>
@@ -201,8 +220,6 @@ export const Main: React.FC<MainProps> = ({
         <CleanSweep {...cleanSweepProps} />
       </Sequence>
 
-
-
       {gauntletProps && (
         <Sequence name="TheGauntlet" from={fromGauntlet} durationInFrames={durationGauntlet}>
           <TheGauntlet {...gauntletProps} />
@@ -212,6 +229,19 @@ export const Main: React.FC<MainProps> = ({
       <Sequence name="EndCard" from={fromEndCard} durationInFrames={durationEndCard}>
         <EndCard />
       </Sequence>
+
+      {/* Persistent Overlay */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 40,
+          right: 40,
+          zIndex: 1000,
+          opacity: 0.8
+        }}
+      >
+        <PNSLogo style={{ transform: 'scale(1.5)' }} color={logoColor} />
+      </div>
     </AbsoluteFill>
   );
 };
