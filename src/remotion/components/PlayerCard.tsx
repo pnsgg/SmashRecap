@@ -66,6 +66,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         }}
       >
         <Img
+          pauseWhenLoading
           src={image}
           style={{
             transform: 'rotate(15deg)',
