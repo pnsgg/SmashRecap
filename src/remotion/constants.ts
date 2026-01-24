@@ -57,7 +57,7 @@ export const getFighterInfo = (name: string): FighterInfo => {
     case 'Young Link':
       return { id: '22', name: name, slug: 'young_link' };
     case 'Ganondorf':
-      return { id: '23', name: name, slug: 'ganondorf' };
+      return { id: '23', name: name, slug: 'ganon' };
     case 'Mewtwo':
       return { id: '24', name: name, slug: 'mewtwo' };
     case 'Roy':
@@ -65,7 +65,7 @@ export const getFighterInfo = (name: string): FighterInfo => {
     case 'Chrom':
       return { id: '25e', name: name, slug: 'chrom' };
     case 'Mr. Game & Watch':
-      return { id: '26', name: name, slug: 'mr_game_&_watch' };
+      return { id: '26', name: name, slug: 'mr_game_and_watch' };
     case 'Meta Knight':
       return { id: '27', name: name, slug: 'meta_knight' };
     case 'Pit':
@@ -182,3 +182,92 @@ export const getFighterInfo = (name: string): FighterInfo => {
       throw new Error(`Unknown fighter name: ${name}`);
   }
 };
+
+export const ALL_FIGHTERS = [
+  'Mario',
+  'Donkey Kong',
+  'Link',
+  'Samus',
+  'Dark Samus',
+  'Yoshi',
+  'Kirby',
+  'Fox',
+  'Pikachu',
+  'Luigi',
+  'Ness',
+  'Captain Falcon',
+  'Jigglypuff',
+  'Peach',
+  'Daisy',
+  'Bowser',
+  'Ice Climbers',
+  'Sheik',
+  'Zelda',
+  'Dr. Mario',
+  'Pichu',
+  'Falco',
+  'Marth',
+  'Lucina',
+  'Young Link',
+  'Ganondorf',
+  'Mewtwo',
+  'Roy',
+  'Chrom',
+  'Mr. Game & Watch',
+  'Meta Knight',
+  'Pit',
+  'Dark Pit',
+  'Zero Suit Samus',
+  'Wario',
+  'Snake',
+  'Ike',
+  'Pokemon Trainer',
+  'Diddy Kong',
+  'Lucas',
+  'Sonic',
+  'King Dedede',
+  'Olimar',
+  'Lucario',
+  'R.O.B.',
+  'Toon Link',
+  'Wolf',
+  'Villager',
+  'Mega Man',
+  'Wii Fit Trainer',
+  'Rosalina & Luma',
+  'Little Mac',
+  'Greninja',
+  'Mii Brawler',
+  'Mii Swordfighter',
+  'Mii Gunner',
+  'Palutena',
+  'Pac-Man',
+  'Robin',
+  'Shulk',
+  'Bowser Jr.',
+  'Duck Hunt',
+  'Ryu',
+  'Ken',
+  'Cloud',
+  'Corrin',
+  'Bayonetta',
+  'Inkling',
+  'Ridley',
+  'Simon',
+  'Richter',
+  'King K. Rool',
+  'Isabelle',
+  'Incineroar',
+  'Piranha Plant',
+  'Joker',
+  'Hero',
+  'Banjo-Kazooie',
+  'Terry',
+  'Byleth',
+  'Min Min',
+  'Steve',
+  'Sephiroth',
+  'Pyra & Mythra',
+  'Kazuya',
+  'Sora'
+];
