@@ -158,6 +158,7 @@ const MyPerformanceCard: React.FC<
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
         {tournament.image ? (
           <Img
+            pauseWhenLoading
             src={tournament.image}
             alt={tournament.name}
             style={{ height: 50, aspectRatio: '1/1', objectFit: 'contain', borderRadius: 4 }}
