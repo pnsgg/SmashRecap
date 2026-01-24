@@ -5,6 +5,7 @@ import { fetchStartGG } from '$lib/startgg/fetch';
 import {
   aggregateByMonth,
   type BracketType,
+  computeGauntlet,
   computeMostPlayedCharacters,
   findHighestUpset,
   findRivals,
@@ -225,6 +226,8 @@ export const getPlayerStats = query(
       })
       .filter((maxScore) => maxScore > 0).length;
 
+    const encounteredCharacters = computeGauntlet(events);
+
     const result = {
       year,
       user: userInfo,
@@ -237,6 +240,10 @@ export const getPlayerStats = query(
         ...character,
         image: `/images/chara_1/${getFighterInfo(character.name).slug}.png`
       })),
+      gauntlet: {
+        encountered: Array.from(encounteredCharacters),
+        totalEncountered: encounteredCharacters.size
+      },
       sets: {
         total: totalSets.length,
         lastgames: totalSetsToLastGame,

@@ -233,6 +233,7 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({
               >
                 {opponent.avatar ? (
                   <Img
+                    pauseWhenLoading
                     src={opponent.avatar}
                     style={{
                       width: '100%',
@@ -364,7 +365,11 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({
                 opacity: 0.6
               }}
             >
-              <Img src={tournament.image} style={{ width: 30, height: 30, borderRadius: 4 }} />
+              <Img
+                pauseWhenLoading
+                src={tournament.image}
+                style={{ width: 30, height: 30, borderRadius: 4 }}
+              />
               <span style={{ ...typography.paragraph, fontSize: 16 }}>
                 {tournament.name} • {tournament.date}
               </span>

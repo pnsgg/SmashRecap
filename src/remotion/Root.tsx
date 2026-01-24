@@ -11,7 +11,8 @@ import {
   MAIN_COMPOSITION_HEIGHT,
   MAIN_COMPOSITION_WIDTH,
   PERFORMANCES_DURATION,
-  RIVALS_DURATION,
+
+  THE_GAUNTLET_DURATION,
   THIS_IS_MY_RECAP_DURATION,
   totalDuration,
   TOURNAMENTS_DURATION
@@ -32,13 +33,13 @@ import {
   CLEAN_SWEEP_STATS,
   FAVOURITE_CHARACTERS,
   GAME_5_STATS,
+  GAUNTLET_STATS,
   HIGHEST_UPSET,
   ME,
   PERFORMANCES,
-  RIVALS,
   YEAR
 } from './mock';
-import { Rivals, rivalsSchema } from './Rivals';
+import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
 import { typography } from './styles';
 import './styles/remotion.css';
 
@@ -65,7 +66,7 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={totalDuration({
           characters: FAVOURITE_CHARACTERS.length,
           hasHighestUpset: !!HIGHEST_UPSET,
-          hasRivals: !!RIVALS
+          hasGauntlet: !!GAUNTLET_STATS
         })}
         fps={FPS}
         width={MAIN_COMPOSITION_WIDTH}
@@ -86,7 +87,7 @@ export const RemotionRoot: React.FC = () => {
             characters: FAVOURITE_CHARACTERS
           },
           highestUpsetProps: HIGHEST_UPSET,
-          rivalsProps: RIVALS,
+          gauntletProps: GAUNTLET_STATS,
           game5WarriorProps: GAME_5_STATS,
           cleanSweepProps: CLEAN_SWEEP_STATS
         }}
@@ -103,15 +104,16 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         defaultProps={HIGHEST_UPSET}
       />
+
       <Composition
-        id="Rivals"
-        component={Rivals}
-        schema={rivalsSchema}
-        durationInFrames={RIVALS_DURATION}
+        id="TheGauntlet"
+        component={TheGauntlet}
+        schema={theGauntletSchema}
+        durationInFrames={THE_GAUNTLET_DURATION}
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
         fps={FPS}
-        defaultProps={RIVALS}
+        defaultProps={GAUNTLET_STATS}
       />
       <Composition
         id="ThisIsMyRecap"

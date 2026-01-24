@@ -462,3 +462,34 @@ export const findRivals = async (
 
   return undefined;
 };
+
+/**
+ * Compute the characters encountered in a set of events
+ *
+ * @param events - The events to compute the gauntlet for
+ * @returns A set of characters encountered in the events
+ */
+export const computeGauntlet = (events: Awaited<ReturnType<typeof getEvents>>): Set<string> => {
+  const encounteredCharacters = new Set<string>();
+
+  events.forEach((event) => {
+    const userEntrantId = event?.userEntrant?.id;
+    if (!userEntrantId) return;
+
+    event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
+      set?.games?.forEach((game) => {
+        game?.selections?.forEach((selection) => {
+          if (
+            selection?.entrant?.id &&
+            selection.entrant.id !== userEntrantId &&
+            selection?.character?.name
+          ) {
+            encounteredCharacters.add(selection.character.name);
+          }
+        });
+      });
+    });
+  });
+
+  return encounteredCharacters;
+};

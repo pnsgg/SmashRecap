@@ -28,3 +28,7 @@ vite.config.ts.timestamp-*
 # Remotion ouput
 out
 remotion-bundle
+
+# Docker volumes
+redis/data
+minio/data

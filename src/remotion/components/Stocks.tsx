@@ -6,6 +6,7 @@ export const Stocks: React.FC<{ opacity?: number }> = ({ opacity = 0.125 }) => {
   return (
     <AbsoluteFill style={{ width, height }}>
       <Img
+        pauseWhenLoading
         src={staticFile('/images/stocks.svg')}
         style={{ width: '100%', height: '100%', opacity }}
       />

@@ -95,6 +95,7 @@ export const Character: React.FC<CharacterProps> = ({ character }) => {
           }}
         >
           <Img
+            pauseWhenLoading
             src={staticFile(character.image)}
             alt=""
             width={width}
