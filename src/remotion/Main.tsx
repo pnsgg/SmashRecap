@@ -2,17 +2,6 @@ import React from 'react';
 import { AbsoluteFill, interpolate, interpolateColors, Sequence, useCurrentFrame } from 'remotion';
 import { z } from 'zod';
 import { CleanSweep, cleanSweepSchema } from './CleanSweep';
-import {
-  CLEAN_SWEEP_DURATION,
-  END_CARD_DURATION,
-  FPS,
-  GAME_5_WARRIOR_DURATION,
-  HIGHEST_UPSET_DURATION,
-  PERFORMANCES_DURATION,
-  RIVALS_DURATION,
-  THIS_IS_MY_RECAP_DURATION,
-  TOURNAMENTS_DURATION
-} from './config';
 import { EndCard } from './EndCard';
 import {
   calculateFavouriteCharactersDuration,
@@ -22,10 +11,21 @@ import {
 import { Game5Warrior, game5WarriorSchema } from './Game5Warrior';
 import { HighestUpset, highestUpsetSchema } from './HighestUpset';
 import { MyPerformances, myPerformancesSchema } from './MyPerformances';
-import { Rivals, rivalsSchema } from './Rivals';
 import { colors } from './styles';
+import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
+import {
+  CLEAN_SWEEP_DURATION,
+  END_CARD_DURATION,
+  FPS,
+  GAME_5_WARRIOR_DURATION,
+  HIGHEST_UPSET_DURATION,
+  PERFORMANCES_DURATION,
+  THE_GAUNTLET_DURATION,
+  THIS_IS_MY_RECAP_DURATION,
+  TOURNAMENTS_DURATION
+} from './config';
 
 export const mainSchema = z.object({
   thisIsMyRecapProps: thisIsMyRecapSchema,
@@ -35,7 +35,7 @@ export const mainSchema = z.object({
   highestUpsetProps: highestUpsetSchema.optional(),
   game5WarriorProps: game5WarriorSchema,
   cleanSweepProps: cleanSweepSchema,
-  rivalsProps: rivalsSchema.optional()
+  gauntletProps: theGauntletSchema.optional()
 });
 
 export type MainProps = z.infer<typeof mainSchema>;
@@ -48,7 +48,7 @@ export const Main: React.FC<MainProps> = ({
   highestUpsetProps,
   game5WarriorProps,
   cleanSweepProps,
-  rivalsProps
+  gauntletProps
 }) => {
   const frame = useCurrentFrame();
 
@@ -84,10 +84,12 @@ export const Main: React.FC<MainProps> = ({
     const durationCleanSweep = CLEAN_SWEEP_DURATION;
     currentFrame += durationCleanSweep;
 
-    const fromRivals = currentFrame;
-    const durationRivals = RIVALS_DURATION;
-    if (rivalsProps !== undefined) {
-      currentFrame += durationRivals;
+
+
+    const fromGauntlet = currentFrame;
+    const durationGauntlet = THE_GAUNTLET_DURATION;
+    if (gauntletProps !== undefined) {
+      currentFrame += durationGauntlet;
     }
 
     const fromEndCard = currentFrame;
@@ -108,8 +110,9 @@ export const Main: React.FC<MainProps> = ({
       durationGame5Warrior,
       fromCleanSweep,
       durationCleanSweep,
-      fromRivals,
-      durationRivals,
+
+      fromGauntlet,
+      durationGauntlet,
       fromEndCard,
       durationEndCard
     };
@@ -129,8 +132,9 @@ export const Main: React.FC<MainProps> = ({
     durationGame5Warrior,
     fromCleanSweep,
     durationCleanSweep,
-    fromRivals,
-    durationRivals,
+
+    fromGauntlet,
+    durationGauntlet,
     fromEndCard,
     durationEndCard
   } = getFrames({ characters: characters?.length ?? 0 });
@@ -197,9 +201,11 @@ export const Main: React.FC<MainProps> = ({
         <CleanSweep {...cleanSweepProps} />
       </Sequence>
 
-      {rivalsProps && (
-        <Sequence name="Rivals" from={fromRivals} durationInFrames={durationRivals}>
-          <Rivals {...rivalsProps} />
+
+
+      {gauntletProps && (
+        <Sequence name="TheGauntlet" from={fromGauntlet} durationInFrames={durationGauntlet}>
+          <TheGauntlet {...gauntletProps} />
         </Sequence>
       )}
 

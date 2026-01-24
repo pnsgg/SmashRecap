@@ -88,6 +88,7 @@
       wins: stats.sets.lastgames
     },
     rivalsProps: stats.rivals,
+    gauntletProps: stats.gauntlet,
     cleanSweepProps: {
       totalSets: stats.sets.total,
       totalSweeps: stats.sets.cleansweeps
