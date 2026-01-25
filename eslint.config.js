@@ -12,7 +12,9 @@ const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default defineConfig(
   includeIgnoreFile(gitignorePath),
-  { ignores: ['src/graphql-env.d.ts'] },
+  {
+    ignores: ['src/graphql-env.d.ts']
+  },
   js.configs.recommended,
   ...ts.configs.recommended,
   ...svelte.configs.recommended,
@@ -29,6 +31,10 @@ export default defineConfig(
   },
   {
     files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
+    rules: {
+      // @see https://github.com/sveltejs/eslint-plugin-svelte/issues/1353
+      'svelte/no-navigation-without-resolve': 'off'
+    },
 
     languageOptions: {
       parserOptions: {
