@@ -1,6 +1,7 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
   import { Button, type ButtonProps } from '$lib/components/Button';
+  import Download from '$lib/components/icons/Download.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { getPlayerStats } from '$lib/remotes/players.remote';
   import { createBlueSkyIntent, createXIntent } from '$lib/socialIntents';
@@ -97,6 +98,7 @@
           size={mobile.current ? 'small' : 'medium'}
           onclick={() => renderRecap(videoProps)}
           disabled={isDownloading}
+          icon={Download}
           {...downloadButtonProps}
         >
           {#if isDownloading}
