@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill } from 'remotion';
+import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
 import { z } from 'zod';
 import { Bar } from './components/Bar';
 import { Stocks } from './components/Stocks';
@@ -19,11 +19,14 @@ export const tournamentsSchema = z.object({
 export type TournamentsProps = z.infer<typeof tournamentsSchema>;
 
 export const Tournaments: React.FC<TournamentsProps> = ({ year, attendance }) => {
+  const frame = useCurrentFrame();
   const highestAttendance = Math.max(...attendance.map((t) => t.attendance));
 
   const GAP = 8;
   const maxBarHeight = 362;
   const numberOfTournaments = attendance.reduce((acc, curr) => acc + curr.attendance, 0);
+
+  const titleOpacity = interpolate(frame, [120, 130], [1, 0.75]);
 
   return (
     <AbsoluteFill
@@ -47,7 +50,8 @@ export const Tournaments: React.FC<TournamentsProps> = ({ year, attendance }) =>
             weight: 700
           }),
           width: '100%',
-          transform: 'translateY(32px)'
+          transform: 'translateY(32px)',
+          opacity: titleOpacity
         }}
       >
         In {year}, you've been to <br /> {numberOfTournaments} tournaments!
