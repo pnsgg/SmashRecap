@@ -15,7 +15,6 @@
     HIGHEST_UPSET,
     ME,
     PERFORMANCES,
-    RIVALS,
     YEAR
   } from '$remotion/mock';
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
@@ -102,7 +101,6 @@
         favouriteCharactersProps: {
           characters: FAVOURITE_CHARACTERS
         },
-        rivalsProps: RIVALS,
         cleanSweepProps: CLEAN_SWEEP_STATS,
         game5WarriorProps: GAME_5_STATS,
         highestUpsetProps: HIGHEST_UPSET

@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Create .env file
+        run: |
+          echo "STARTGG_CLIENT_ID=''" >> .env
+          echo "STARTGG_CLIENT_SECRET=''" >> .env
+          echo "STARTGG_REDIRECT_URI=''" >> .env
+          echo "REMOTION_BUNDLE_LOCATION=''" >> .env
+          echo "S3_ACCESS_KEY_ID=''" >> .env
+          echo "S3_SECRET_ACCESS_KEY=''" >> .env
+          echo "S3_BUCKET_NAME=''" >> .env
+          echo "S3_REGION=''" >> .env
+          echo "S3_ENDPOINT=''" >> .env
+          echo "REDIS_URL=''" >> .env
+
+      - name: Linting & Formatting
+        run: bun run lint
+
+      - name: Syntax & Type Check
+        run: bun run check
+
+  docker-build:
+    needs: quality-check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          echo "STARTGG_CLIENT_ID=''" >> .env
+          echo "STARTGG_CLIENT_SECRET=''" >> .env
+          echo "STARTGG_REDIRECT_URI=''" >> .env
+          echo "REMOTION_BUNDLE_LOCATION=''" >> .env
+          echo "S3_ACCESS_KEY_ID=''" >> .env
+          echo "S3_SECRET_ACCESS_KEY=''" >> .env
+          echo "S3_BUCKET_NAME=''" >> .env
+          echo "S3_REGION=''" >> .env
+          echo "S3_ENDPOINT=''" >> .env
+          echo "REDIS_URL=''" >> .env
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the Container registry
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=sha
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

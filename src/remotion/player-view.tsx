@@ -37,7 +37,6 @@ export const PlayerView = forwardRef((props: PlayerViewProps, ref) => {
       durationInFrames={totalDuration({
         characters: props.data.favouriteCharactersProps.characters.length,
         hasHighestUpset: !!props.data.highestUpsetProps,
-        hasRivals: !!props.data.rivalsProps,
         hasGauntlet: !!props.data.gauntletProps
       })}
       fps={30}

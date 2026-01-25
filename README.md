@@ -22,10 +22,12 @@ L'application peut être déployée en utilisant Docker Compose. Pour ce faire, 
    cp .env.example .env
    ```
 4. Rendez-vous sur [start.gg](https://start.gg) => `Developer Settings` => `OAuth Applications` => `Create OAuth Client`
- - Remplissez les champs requis et créez l'application OAuth
- - Copiez le `client id`, `client secret` et l'`Application Authorization Callback` dans le fichier .env
+
+- Remplissez les champs requis et créez l'application OAuth
+- Copiez le `client id`, `client secret` et l'`Application Authorization Callback` dans le fichier .env
+
 4. Lancer les conteneurs docker
    ```
    docker-compose up -d --build
    ```
-4. Visitez l'application à l'adresse http://localhost:3001
+5. Visitez l'application à l'adresse http://localhost:3001

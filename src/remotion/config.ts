@@ -48,8 +48,6 @@ export const totalDuration = ({
     durations.push(HIGHEST_UPSET_DURATION);
   }
 
-
-
   if (hasGauntlet) {
     durations.push(THE_GAUNTLET_DURATION);
   }

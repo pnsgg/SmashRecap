@@ -11,7 +11,6 @@ import {
   MAIN_COMPOSITION_HEIGHT,
   MAIN_COMPOSITION_WIDTH,
   PERFORMANCES_DURATION,
-
   THE_GAUNTLET_DURATION,
   THIS_IS_MY_RECAP_DURATION,
   totalDuration,
@@ -91,8 +90,8 @@ export const RemotionRoot: React.FC = () => {
           game5WarriorProps: GAME_5_STATS,
           cleanSweepProps: CLEAN_SWEEP_STATS
         }}
-      // You can override these props for each render:
-      // https://www.remotion.dev/docs/parametrized-rendering
+        // You can override these props for each render:
+        // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Composition
         id="HighestUpset"
