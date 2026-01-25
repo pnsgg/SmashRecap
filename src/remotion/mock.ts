@@ -124,9 +124,9 @@ export const PERFORMANCES: MyPerformance[] = [
 ];
 
 export const FAVOURITE_CHARACTERS = [
-  { name: 'Marth', count: 120, image: '/images/chara_1/marth.png' },
-  { name: 'Fox', count: 95, image: '/images/chara_1/fox.png' },
-  { name: 'Falco', count: 80, image: '/images/chara_1/falco.png' }
+  { name: 'Marth', count: 120, image: '/images/chara_1/marth.webp' },
+  { name: 'Fox', count: 95, image: '/images/chara_1/fox.webp' },
+  { name: 'Falco', count: 80, image: '/images/chara_1/falco.webp' }
 ];
 
 export const END_CARD = {

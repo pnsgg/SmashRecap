@@ -140,7 +140,7 @@ export const TheGauntlet: React.FC<TheGauntletProps> = ({ encountered }) => {
             >
               <Img
                 pauseWhenLoading
-                src={staticFile(`/images/chara_1/${info.slug}.png`)}
+                src={staticFile(`/images/chara_1/${info.slug}.webp`)}
                 style={{
                   width: '100%',
                   height: '100%',

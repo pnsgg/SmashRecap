@@ -238,7 +238,7 @@ export const getPlayerStats = query(
       rivals,
       mostPlayedCharactersByPlayer: mostPlayedCharactersByPlayer.map((character) => ({
         ...character,
-        image: `/images/chara_1/${getFighterInfo(character.name).slug}.png`
+        image: `/images/chara_1/${getFighterInfo(character.name).slug}.webp`
       })),
       gauntlet: {
         encountered: Array.from(encounteredCharacters),
