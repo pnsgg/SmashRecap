@@ -18,6 +18,7 @@ export default defineConfig(
   prettier,
   ...svelte.configs.prettier,
   {
+    ignorePatterns: ['src/graphql-env.d.ts'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
 
     rules: {
