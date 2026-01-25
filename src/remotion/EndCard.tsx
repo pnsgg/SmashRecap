@@ -54,7 +54,14 @@ export const EndCard: React.FC = () => {
           margin: '0 auto'
         }}
       >
-        {showFirstText ? 'Want to know your own stats?' : 'Get your #SmashRecap'}
+        {showFirstText ? (
+          'Want to know your own stats?'
+        ) : (
+          <span>
+            Get your #SmashRecap <br /> at{' '}
+            <span style={{ color: colors.redPns }}>recap.pns.gg</span>
+          </span>
+        )}
       </AbsoluteFill>
     </AbsoluteFill>
   );
