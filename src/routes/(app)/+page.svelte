@@ -85,7 +85,7 @@
   <div id="remotion-root">
     <PlayerViewWrapper
       bind:player
-      autoPlay={false}
+      autoPlay
       data={{
         thisIsMyRecapProps: {
           year: YEAR,
