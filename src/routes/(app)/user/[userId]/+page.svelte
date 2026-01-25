@@ -11,17 +11,6 @@
 
   let { data } = $props();
 
-  const intentText = `This is my Smash Recap! Get your own: ${data.canonicalUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`;
-
-  const xIntent = createXIntent({
-    text: intentText
-  });
-
-  const blueSkyIntent = createBlueSkyIntent({
-    text: intentText,
-    isMobile: data.userAgentInfo.isMobile
-  });
-
   const mobile = new IsMobile();
 
   let player = $state<PlayerRef | undefined>();
@@ -67,7 +56,7 @@
     <p class="heading">Your recap for {YEAR} is loading...</p>
   </div>
 {:then stats}
-  {@const data = {
+  {@const videoProps = {
     thisIsMyRecapProps: {
       year: stats.year,
       user: stats.user
@@ -96,7 +85,7 @@
   }}
   <div class="my-recap">
     <div id="remotion-root">
-      <PlayerViewWrapper bind:player {data} />
+      <PlayerViewWrapper bind:player data={videoProps} />
     </div>
 
     <div class="instructions">
@@ -106,7 +95,7 @@
           id="download-button"
           extended
           size={mobile.current ? 'small' : 'medium'}
-          onclick={() => renderRecap(data)}
+          onclick={() => renderRecap(videoProps)}
           disabled={isDownloading}
           {...downloadButtonProps}
         >
@@ -120,7 +109,9 @@
           <Button
             extended
             target="_blank"
-            href={xIntent}
+            href={createXIntent({
+              text: `This is my Smash Recap! Get your own: ${data.canonicalUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`
+            })}
             variant="secondary"
             size={mobile.current ? 'small' : 'medium'}
           >
@@ -129,7 +120,10 @@
           <Button
             extended
             target="_blank"
-            href={blueSkyIntent}
+            href={createBlueSkyIntent({
+              text: `This is my Smash Recap! Get your own: ${data.canonicalUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`,
+              isMobile: data.userAgentInfo.isMobile
+            })}
             variant="secondary"
             size={mobile.current ? 'small' : 'medium'}
           >
