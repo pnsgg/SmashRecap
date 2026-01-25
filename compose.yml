@@ -7,7 +7,10 @@ services:
     ports:
       - '3001:3000'
     environment:
-      - ORIGIN=http://localhost:3001
+      - ALLOW_CACHING=true
+      - ORIGIN=${ORIGIN}
+      - REDIS_URL=redis://redis:6379
+      - REMOTION_BUNDLE_LOCATION=""
       - STARTGG_CLIENT_ID=${STARTGG_CLIENT_ID}
       - STARTGG_CLIENT_SECRET=${STARTGG_CLIENT_SECRET}
       - STARTGG_REDIRECT_URI=${STARTGG_REDIRECT_URI}
@@ -16,8 +19,6 @@ services:
       - S3_BUCKET_NAME=${S3_BUCKET_NAME}
       - S3_REGION=${S3_REGION}
       - S3_ENDPOINT=http://minio:9000
-      - REDIS_URL=redis://redis:6379
-      - ALLOW_CACHING=true
     depends_on:
       - redis
       - minio
