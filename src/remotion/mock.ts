@@ -115,7 +115,7 @@ export const PERFORMANCES: MyPerformance[] = [
     tournament: {
       name: 'Session privée chez Célian',
       image:
-        'https://images.start.gg/images/user/2858645/image-714398e1a693c64afc42d008a7a514c1.jpg',
+        'https://images.start.gg/images/user/2858645/image-0a3ba57f70bfa4c26980f4bd9c49fc01.png',
       date: 'Dec 14',
       location: 'QG',
       attendees: 8
@@ -130,7 +130,7 @@ export const FAVOURITE_CHARACTERS = [
 ];
 
 export const END_CARD = {
-  image: 'https://images.start.gg/images/user/2858645/image-714398e1a693c64afc42d008a7a514c1.jpg',
+  image: 'https://images.start.gg/images/user/2858645/image-0a3ba57f70bfa4c26980f4bd9c49fc01.png',
   prefix: 'PNS',
   gamerTag: 'RouxChov',
   country: 'France',
