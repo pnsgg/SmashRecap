@@ -11,11 +11,10 @@ import {
 import { Game5Warrior, game5WarriorSchema } from './Game5Warrior';
 import { HighestUpset, highestUpsetSchema } from './HighestUpset';
 import { MyPerformances, myPerformancesSchema } from './MyPerformances';
-import { PNSLogo } from './components/PNSLogo';
-import { colors } from './styles';
 import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
+import { PNSLogo } from './components/PNSLogo';
 import {
   CLEAN_SWEEP_DURATION,
   END_CARD_DURATION,
@@ -27,6 +26,7 @@ import {
   THIS_IS_MY_RECAP_DURATION,
   TOURNAMENTS_DURATION
 } from './config';
+import { colors } from './styles';
 
 export const mainSchema = z.object({
   thisIsMyRecapProps: thisIsMyRecapSchema,
