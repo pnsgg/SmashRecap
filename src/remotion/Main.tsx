@@ -1,3 +1,4 @@
+import { preloadImage } from '@remotion/preload';
 import React from 'react';
 import { AbsoluteFill, interpolate, interpolateColors, Sequence, useCurrentFrame } from 'remotion';
 import { z } from 'zod';
@@ -14,6 +15,7 @@ import { MyPerformances, myPerformancesSchema } from './MyPerformances';
 import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
+import { SPRITES as MASKASS_SPRITES } from './components/Maskass';
 import { PNSLogo } from './components/PNSLogo';
 import {
   CLEAN_SWEEP_DURATION,
@@ -26,6 +28,7 @@ import {
   THIS_IS_MY_RECAP_DURATION,
   TOURNAMENTS_DURATION
 } from './config';
+import { ALL_FIGHTERS, getFighterInfo } from './constants';
 import { colors } from './styles';
 
 export const mainSchema = z.object({
@@ -177,6 +180,25 @@ export const Main: React.FC<MainProps> = ({
       colors.reallyWhite
     ]
   );
+
+  // Preload assets
+  preloadImage(user.image);
+  performances.forEach((perf) => {
+    if (perf.tournament.image) preloadImage(perf.tournament.image);
+  });
+  characters.forEach((char) => {
+    preloadImage(char.image);
+  });
+  if (highestUpsetProps && highestUpsetProps.opponent.avatar) {
+    preloadImage(highestUpsetProps.opponent.avatar);
+  }
+  ALL_FIGHTERS.forEach((fighter) => {
+    const url = `/images/stocks/${getFighterInfo(fighter).slug}.webp`;
+    preloadImage(url);
+  });
+  MASKASS_SPRITES.forEach((sprite) => {
+    preloadImage(sprite);
+  });
 
   return (
     <AbsoluteFill style={{ backgroundColor }}>

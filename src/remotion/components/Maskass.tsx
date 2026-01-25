@@ -1,7 +1,7 @@
 import React from 'react';
 import { Img, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 
-const SPRITES = [
+export const SPRITES = [
   '/images/maskass/fly-0.png',
   '/images/maskass/fly-1.png',
   '/images/maskass/fly-2.png',
