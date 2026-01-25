@@ -127,7 +127,7 @@
             variant="secondary"
             size={mobile.current ? 'small' : 'medium'}
           >
-            Post #SmashRecap on BlueSky
+            Post #SmashRecap on Bluesky
           </Button>
         </div>
       </div>
