@@ -26,7 +26,7 @@
     ...restProps
   }: Props = $props();
 
-  let svgSize = $derived(size === 'medium' ? 32 : 24);
+  let svgSize = $derived(size === 'medium' ? 24 : 16);
 </script>
 
 {#if href && !disabled}
@@ -75,7 +75,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
 
     user-select: none;
     text-decoration: none;
