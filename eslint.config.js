@@ -12,13 +12,13 @@ const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default defineConfig(
   includeIgnoreFile(gitignorePath),
+  { ignores: ['src/graphql-env.d.ts'] },
   js.configs.recommended,
   ...ts.configs.recommended,
   ...svelte.configs.recommended,
   prettier,
   ...svelte.configs.prettier,
   {
-    ignorePatterns: ['src/graphql-env.d.ts'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
 
     rules: {
