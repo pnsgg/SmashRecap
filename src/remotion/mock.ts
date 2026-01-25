@@ -160,8 +160,6 @@ export const HIGHEST_UPSET = {
   }
 };
 
-
-
 export const GAME_5_STATS = {
   totalSets: 20,
   wins: 15
@@ -174,9 +172,38 @@ export const CLEAN_SWEEP_STATS = {
 
 export const GAUNTLET_STATS = {
   encountered: [
-    'Fox', 'Falco', 'Marth', 'Sheik', 'Jigglypuff', 'Captain Falcon', 'Peach', 'Ice Climbers',
-    'Pikachu', 'Samus', 'Yoshi', 'Luigi', 'Dr. Mario', 'Ganondorf', 'Mario', 'Donkey Kong',
-    'Link', 'Young Link', 'Ness', 'Mewtwo', 'Roy', 'Mr. Game & Watch', 'Bowser', 'Kirby',
-    'Zelda', 'Pichu', 'Steve', 'Kazuya', 'Sora', 'Joker', 'Cloud', 'Sephiroth', 'Pyra & Mythra'
+    'Fox',
+    'Falco',
+    'Marth',
+    'Sheik',
+    'Jigglypuff',
+    'Captain Falcon',
+    'Peach',
+    'Ice Climbers',
+    'Pikachu',
+    'Samus',
+    'Yoshi',
+    'Luigi',
+    'Dr. Mario',
+    'Ganondorf',
+    'Mario',
+    'Donkey Kong',
+    'Link',
+    'Young Link',
+    'Ness',
+    'Mewtwo',
+    'Roy',
+    'Mr. Game & Watch',
+    'Bowser',
+    'Kirby',
+    'Zelda',
+    'Pichu',
+    'Steve',
+    'Kazuya',
+    'Sora',
+    'Joker',
+    'Cloud',
+    'Sephiroth',
+    'Pyra & Mythra'
   ]
 };
