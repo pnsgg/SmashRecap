@@ -74,7 +74,7 @@ export const TheGauntlet: React.FC<TheGauntletProps> = ({ encountered }) => {
           transform: `translateY(${titleY}px)`,
           textAlign: 'center',
           zIndex: 10,
-          position: 'relative' // Ensure it can overlap if needed, but flex handles position
+          position: 'relative'
         }}
       >
         <h1
@@ -140,7 +140,7 @@ export const TheGauntlet: React.FC<TheGauntletProps> = ({ encountered }) => {
             >
               <Img
                 pauseWhenLoading
-                src={staticFile(`/images/chara_1/${info.slug}.webp`)}
+                src={staticFile(`/images/stocks/${info.slug}.webp`)}
                 style={{
                   width: '100%',
                   height: '100%',
