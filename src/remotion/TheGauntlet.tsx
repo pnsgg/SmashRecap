@@ -65,7 +65,7 @@ export const TheGauntlet: React.FC<TheGauntletProps> = ({ encountered }) => {
         alignItems: 'center'
       }}
     >
-      <Stocks opacity={0.05} />
+      <Stocks opacity={0.025} />
 
       {/* Title */}
       <div
@@ -149,16 +149,6 @@ export const TheGauntlet: React.FC<TheGauntletProps> = ({ encountered }) => {
                   filter: `grayscale(${filter})`
                 }}
               />
-              {isEncountered && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    border: `2px solid ${colors.redPns}`,
-                    opacity: interpolate(lightUpSpring, [0, 1], [0, 1])
-                  }}
-                />
-              )}
             </div>
           );
         })}
