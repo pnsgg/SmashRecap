@@ -8,7 +8,6 @@ import {
   computeGauntlet,
   computeMostPlayedCharacters,
   findHighestUpset,
-  findRivals,
   getEvents,
   getThisYearEvents,
   notNullNorUndefined,
@@ -200,9 +199,6 @@ export const getPlayerStats = query(
       .filter(notNullNorUndefined);
     const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(charactersPlayedByPlayer, 3);
 
-    // Find rivals
-    const rivals = await findRivals(events);
-
     // Count the number of sets that went to last games
     const totalSets = events.flatMap((event) => event?.userEntrant?.paginatedSets?.nodes || []);
     const totalSetsToLastGame = totalSets
@@ -235,7 +231,6 @@ export const getPlayerStats = query(
       tournamentsByMonth,
       bestPerformances,
       highestUpset,
-      rivals,
       mostPlayedCharactersByPlayer: mostPlayedCharactersByPlayer.map((character) => ({
         ...character,
         image: `/images/chara_1/${getFighterInfo(character.name).slug}.webp`
@@ -248,7 +243,8 @@ export const getPlayerStats = query(
         total: totalSets.length,
         lastgames: totalSetsToLastGame,
         cleansweeps: totalCleenSweeps
-      }
+      },
+      events
     };
 
     if (env.ALLOW_CACHING === 'true') {
