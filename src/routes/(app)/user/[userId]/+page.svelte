@@ -84,65 +84,79 @@
       totalSweeps: stats.sets.cleansweeps
     }
   }}
-  <div class="my-recap">
-    <div id="remotion-root">
-      <PlayerViewWrapper bind:player data={videoProps} />
-    </div>
-
-    <div class="instructions">
-      <div class="actions">
-        <Button
-          bind:ref={downloadButton}
-          id="download-button"
-          extended
-          size={mobile.current ? 'small' : 'medium'}
-          onclick={() => renderRecap(videoProps)}
-          disabled={isDownloading}
-          icon={Download}
-          {...downloadButtonProps}
-        >
-          {#if isDownloading}
-            Downloading...
-          {:else}
-            Download Video
-          {/if}
-        </Button>
-        <div class="posts">
-          <Button
-            extended
-            target="_blank"
-            href={createXIntent({
-              text: `This is my Smash Recap! Get your own: ${data.canonicalUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`
-            })}
-            variant="secondary"
-            size={mobile.current ? 'small' : 'medium'}
-          >
-            Post #SmashRecap on X
-          </Button>
-          <Button
-            extended
-            target="_blank"
-            href={createBlueSkyIntent({
-              text: `This is my Smash Recap! Get your own: ${data.canonicalUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`,
-              isMobile: data.userAgentInfo.isMobile
-            })}
-            variant="secondary"
-            size={mobile.current ? 'small' : 'medium'}
-          >
-            Post #SmashRecap on Bluesky
-          </Button>
-        </div>
+  {#if videoProps.tournamentsProps.attendance.reduce((acc, month) => acc + month.attendance, 0) > 0}
+    <div class="my-recap">
+      <div id="remotion-root">
+        <PlayerViewWrapper bind:player data={videoProps} />
       </div>
-      <Button
-        extended
-        href={resolve('/')}
-        size={mobile.current ? 'small' : 'medium'}
-        variant="tertiary"
-      >
-        Recap another user
-      </Button>
+
+      <div class="instructions">
+        <div class="actions">
+          <Button onclick={() => alert(videoProps)} extended>Debug stats</Button>
+          <Button
+            bind:ref={downloadButton}
+            id="download-button"
+            extended
+            size={mobile.current ? 'small' : 'medium'}
+            onclick={() => renderRecap(videoProps)}
+            disabled={isDownloading}
+            icon={Download}
+            {...downloadButtonProps}
+          >
+            {#if isDownloading}
+              Downloading...
+            {:else}
+              Download Video
+            {/if}
+          </Button>
+          <div class="posts">
+            <Button
+              extended
+              target="_blank"
+              href={createXIntent({
+                text: `This is my Smash Recap! Get your own: ${data.canonicalUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`
+              })}
+              variant="secondary"
+              size={mobile.current ? 'small' : 'medium'}
+            >
+              Post #SmashRecap on X
+            </Button>
+            <Button
+              extended
+              target="_blank"
+              href={createBlueSkyIntent({
+                text: `This is my Smash Recap! Get your own: ${data.canonicalUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`,
+                isMobile: data.userAgentInfo.isMobile
+              })}
+              variant="secondary"
+              size={mobile.current ? 'small' : 'medium'}
+            >
+              Post #SmashRecap on Bluesky
+            </Button>
+          </div>
+        </div>
+        <Button
+          extended
+          href={resolve('/')}
+          size={mobile.current ? 'small' : 'medium'}
+          variant="tertiary"
+        >
+          Recap another user
+        </Button>
+      </div>
     </div>
-  </div>
+  {:else}
+    <div class="no-stats">
+      <p class="heading">
+        No tournament attendance found for {YEAR}. <br /> Recap cannot be generated.
+      </p>
+      <div style="display: flex; justify-content: center; margin-top: 1.5rem;">
+        <Button href={resolve('/')} size={mobile.current ? 'small' : 'medium'} variant="tertiary">
+          Try another user
+        </Button>
+      </div>
+    </div>
+  {/if}
 {/await}
 
 <style lang="scss">
@@ -205,5 +219,9 @@
         }
       }
     }
+  }
+
+  .no-stats {
+    width: 100%;
   }
 </style>
