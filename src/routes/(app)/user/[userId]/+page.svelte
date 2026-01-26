@@ -5,7 +5,6 @@
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { getPlayerStats } from '$lib/remotes/players.remote';
   import { createBlueSkyIntent, createXIntent } from '$lib/socialIntents';
-  import type { MainProps } from '$remotion/Main';
   import { YEAR } from '$remotion/mock';
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
   import type { PlayerRef } from '@remotion/player';
@@ -21,35 +20,35 @@
 
   let userId = $derived(data.userId);
 
-  const renderRecap = async (stats: MainProps) => {
-    isDownloading = true;
+  // const renderRecap = async (stats: MainProps) => {
+  //   isDownloading = true;
 
-    const req = await fetch(`/api/render`, {
-      headers: {
-        Authorization: `Bearer ${'coucou'}`
-      },
-      method: 'POST',
-      body: JSON.stringify(stats)
-    });
+  //   const req = await fetch(`/api/render`, {
+  //     headers: {
+  //       Authorization: `Bearer ${'coucou'}`
+  //     },
+  //     method: 'POST',
+  //     body: JSON.stringify(stats)
+  //   });
 
-    if (!req.ok) {
-      const message = await req.text();
-      console.error('Render failed:', message);
-      isDownloading = false;
-      return;
-    }
+  //   if (!req.ok) {
+  //     const message = await req.text();
+  //     console.error('Render failed:', message);
+  //     isDownloading = false;
+  //     return;
+  //   }
 
-    // Download the video
-    const download = `${stats.thisIsMyRecapProps.user.prefix} ${stats.thisIsMyRecapProps.user.gamerTag}'s SmashRecap ${stats.thisIsMyRecapProps.year}.mp4`;
-    const blob = await req.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = download;
-    a.click();
-    isDownloading = false;
-    URL.revokeObjectURL(url);
-  };
+  //   // Download the video
+  //   const download = `${stats.thisIsMyRecapProps.user.prefix} ${stats.thisIsMyRecapProps.user.gamerTag}'s SmashRecap ${stats.thisIsMyRecapProps.year}.mp4`;
+  //   const blob = await req.blob();
+  //   const url = URL.createObjectURL(blob);
+  //   const a = document.createElement('a');
+  //   a.href = url;
+  //   a.download = download;
+  //   a.click();
+  //   isDownloading = false;
+  //   URL.revokeObjectURL(url);
+  // };
 </script>
 
 {#await getPlayerStats({ userId, year: 2025 })}
