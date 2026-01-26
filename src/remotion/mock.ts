@@ -67,7 +67,8 @@ export const PERFORMANCES: MyPerformance[] = [
     initialSeed: 12,
     tournament: {
       name: 'Berbougnoultimate #1',
-      image: 'https://picsum.photos/50',
+      image:
+        'https://images.start.gg/images/tournament/731650/image-f33f78f1c1555a17d2e97ae8c641aa99.png',
       date: 'Jan 25',
       location: 'Toulouse',
       attendees: 64
