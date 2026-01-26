@@ -180,24 +180,7 @@ export const getPlayerStats = query(
     const highestUpset = await findHighestUpset(events);
 
     // Most played characters
-    const charactersPlayedByPlayerAndOpponent = events?.map((event) => ({
-      entrantId: event?.userEntrant?.id,
-      sets: event?.userEntrant?.paginatedSets?.nodes?.map((set) => ({
-        winnerId: set?.winnerId,
-        selections: set?.games?.flatMap((game) =>
-          game?.selections?.map((selection) => ({
-            entrantId: selection?.entrant?.id,
-            character: selection?.character?.name
-          }))
-        )
-      }))
-    }));
-    const charactersPlayedByPlayer = charactersPlayedByPlayerAndOpponent
-      .flatMap((event) =>
-        event.sets?.flatMap((set) => set.selections?.map((selection) => selection?.character))
-      )
-      .filter(notNullNorUndefined);
-    const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(charactersPlayedByPlayer, 3);
+    const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(events, gamerTagsThisYear);
 
     // Count the number of sets that went to last games
     const totalSets = events.flatMap((event) => event?.userEntrant?.paginatedSets?.nodes || []);

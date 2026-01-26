@@ -157,16 +157,26 @@ export const seedingPerformanceRating = (seed: number, placement: number, bracke
   return expectedRFV - actualRFV;
 };
 
-/**
- * Calculates the most played characters by a player.
- * @param characters The characters played by the player
- * @param maxCharacters The maximum number of characters to return
- * @returns An array of objects containing the character and its count, sorted by count in descending order
- */
-export const computeMostPlayedCharacters = (characters: string[], maxCharacters: number) => {
-  const characterCounts = characters.reduce(
-    (acc, char) => {
-      acc[char] = (acc[char] || 0) + 1;
+export const computeMostPlayedCharacters = (
+  events: Awaited<ReturnType<typeof getEvents>>,
+  aliases: Set<string>
+): Array<{ name: string; count: number }> => {
+  const selections = events
+    .flatMap(
+      (event) =>
+        event?.userEntrant?.paginatedSets?.nodes?.flatMap((set) =>
+          set?.games?.flatMap((game) => game?.selections)
+        ) || []
+    )
+    .filter(notNullNorUndefined)
+    .filter((selection) => selection?.entrant?.name && aliases.has(selection?.entrant?.name));
+
+  const characterCounts = selections.reduce(
+    (acc, selection) => {
+      const charName = selection.character?.name;
+      if (charName) {
+        acc[charName] = (acc[charName] || 0) + 1;
+      }
       return acc;
     },
     {} as Record<string, number>
@@ -174,8 +184,8 @@ export const computeMostPlayedCharacters = (characters: string[], maxCharacters:
 
   return Object.entries(characterCounts)
     .sort((a, b) => b[1] - a[1])
-    .map(([char, count]) => ({ name: char, count }))
-    .slice(0, maxCharacters);
+    .map(([name, count]) => ({ name, count }))
+    .slice(0, 3);
 };
 
 /**
