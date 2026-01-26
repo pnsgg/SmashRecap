@@ -64,6 +64,50 @@ export type PlayerResult = {
   country: string;
 };
 
+type PlayerStats = {
+  year: number;
+  user: {
+    gamerTag: string;
+    image: string;
+    country?: string;
+    prefix?: string;
+    pronouns?: string;
+    socialMedias: {
+      x?: string;
+    };
+  };
+  gamerTagsThisYear: string[];
+  tournamentsByMonth: { month: string; attendance: number }[];
+  bestPerformances: {
+    finalPlacement: number;
+    initialSeed: number;
+    tournament: {
+      image: string | undefined;
+      name: string;
+      date: string;
+      location: string;
+      attendees: number;
+    };
+  }[];
+  highestUpset:
+    | {
+        tournament: { name: string; date: string; image: string | undefined };
+        opponent: { gamerTag: string; prefix: string | undefined; avatar: string | undefined };
+        match: { score: string; factor: number; round: string };
+      }
+    | undefined;
+  mostPlayedCharactersByPlayer: { image: string; name: string; count: number }[];
+  gauntlet: {
+    encountered: string[];
+    totalEncountered: number;
+  };
+  sets: {
+    total: number;
+    lastgames: number;
+    cleansweeps: number;
+  };
+};
+
 export const getPlayerStats = query(
   v.object({
     userId: v.pipe(v.number(), v.minValue(1)),
@@ -74,7 +118,7 @@ export const getPlayerStats = query(
 
     if (env.ALLOW_CACHING === 'true') {
       const cached = await redis.get(key);
-      if (cached) return JSON.parse(cached);
+      if (cached) return JSON.parse(cached) as PlayerStats;
     }
 
     // Get userinfo
@@ -131,7 +175,7 @@ export const getPlayerStats = query(
 
     const encounteredCharacters = computeGauntlet(events);
 
-    const result = {
+    const result: PlayerStats = {
       year,
       user: userInfo,
       gamerTagsThisYear: Array.from(gamerTagsThisYear),

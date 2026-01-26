@@ -78,7 +78,6 @@
       totalSets: stats.sets.total,
       wins: stats.sets.lastgames
     },
-    rivalsProps: stats.rivals,
     gauntletProps: stats.gauntlet,
     cleanSweepProps: {
       totalSets: stats.sets.total,
