@@ -226,8 +226,7 @@ export const getPlayerStats = query(
         total: totalSets.length,
         lastgames: totalSetsToLastGame,
         cleansweeps: totalCleenSweeps
-      },
-      events
+      }
     };
 
     if (env.ALLOW_CACHING === 'true') {
