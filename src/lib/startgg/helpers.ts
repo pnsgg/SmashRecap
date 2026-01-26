@@ -385,3 +385,179 @@ export const computeGauntlet = (events: Awaited<ReturnType<typeof getEvents>>): 
 
   return encounteredCharacters;
 };
+
+/**
+ * Compute the total number of clean sweeps (e.g., 3-0, 2-0, X-0) dealt by the user in the given events.
+ *
+ * @param events - The events to compute the clean sweeps for
+ * @param aliases - A set of aliases representing the user's gamer tags
+ * @returns The total number of clean sweeps dealt by the user
+ */
+export const computeTotalCleanSweeps = (
+  events: Awaited<ReturnType<typeof getEvents>>,
+  aliases: Set<string>
+): number => {
+  return events
+    ?.flatMap(
+      (event) => event?.userEntrant?.paginatedSets?.nodes?.map((set) => set?.displayScore) || []
+    )
+    .filter(notNullNorUndefined)
+    .map(parseMatch)
+    .filter((match) => match !== 'DQ')
+    .filter((match) => {
+      // Ensure that one of the players is the user
+      return match.some((player) => aliases.has(player.name));
+    })
+    .map(([p1, p2]) => {
+      const opponentPlayer = aliases.has(p1.name) ? p2 : p1;
+
+      // Check for clean sweep
+      if (opponentPlayer.score === 0) {
+        return 1 as number;
+      }
+      return 0 as number;
+    })
+    .reduce((acc, val) => acc + val, 0);
+};
+
+/**
+ * Compute the total number of sets played by the user in the given events.
+ *
+ * @param events - The events to compute the sets for
+ * @returns The total number of sets played by the user
+ */
+export const computeTotalSets = (events: Awaited<ReturnType<typeof getEvents>>): number => {
+  return events
+    ?.flatMap(
+      (event) => event?.userEntrant?.paginatedSets?.nodes?.map((set) => set?.displayScore) || []
+    )
+    .filter(notNullNorUndefined).length;
+};
+
+/**
+ * Compute the total number of sets that went to the last game regardless of the outcome for the user in the given events.
+ *
+ * @param events - The events to compute the sets for
+ * @param aliases - A set of aliases representing the user's gamer tags
+ * @returns The total number of sets that went to the last game for the user
+ */
+export const computeTotalSetsToLastGame = (
+  events: Awaited<ReturnType<typeof getEvents>>,
+  aliases: Set<string>
+): number => {
+  return events
+    ?.flatMap(
+      (event) => event?.userEntrant?.paginatedSets?.nodes?.map((set) => set?.displayScore) || []
+    )
+    .filter(notNullNorUndefined)
+    .map(parseMatch)
+    .filter((match) => match !== 'DQ')
+    .filter((match) => {
+      // Ensure that one of the players is the user
+      return match.some((player) => aliases.has(player.name));
+    })
+    .map(([p1, p2]) => {
+      const totalGames = p1.score + p2.score;
+      const bestOf = totalGames + 1;
+
+      // Check if the set went to the last game
+      if (totalGames === bestOf - 1) {
+        return 1 as number;
+      }
+      return 0 as number;
+    })
+    .reduce((acc, val) => acc + val, 0);
+};
+
+/**
+ * Compute the set of aliases (gamer tags) used by the user in the given events.
+ *
+ * @param events - The events to compute the aliases from
+ * @returns A set of aliases used by the user
+ */
+export const computeAliasesFromEvents = (
+  events: Awaited<ReturnType<typeof getEvents>>
+): Set<string> => {
+  const aliases = new Set<string>();
+
+  events.forEach((event) => {
+    const userEntrantId = event?.userEntrant?.id;
+    if (!userEntrantId) return;
+
+    const selections =
+      event?.userEntrant?.paginatedSets?.nodes
+        ?.flatMap((set) => set?.games?.flatMap((game) => game?.selections))
+        .filter(notNullNorUndefined) || [];
+
+    selections.forEach((selection) => {
+      if (selection?.entrant?.id && selection?.entrant?.name) {
+        if (selection.entrant.id.toString() === userEntrantId.toString()) {
+          aliases.add(selection.entrant.name);
+        }
+      }
+    });
+  });
+
+  return aliases;
+};
+
+/**
+ * Compute the best performances (in term of SPR) of the user in the given events.
+ *
+ * @param events - The events to compute the best performances for
+ * @param topN - The number of top performances to return
+ * @returns An array of the best performances with tournament details
+ */
+export const computeBestPerformances = (
+  events: Awaited<ReturnType<typeof getEvents>>,
+  topN: number
+) =>
+  events
+    .map((event) => ({
+      tournament: event?.tournament,
+      // First element is always the main event
+      bracketType: event?.userEntrant?.phaseGroups?.[0]?.bracketType,
+      initialSeed: event?.userEntrant?.checkInSeed?.seedNum,
+      finalPlacement: event?.userEntrant?.standing?.placement
+    }))
+    .filter(
+      (event) =>
+        event.initialSeed &&
+        event.finalPlacement &&
+        event.tournament?.city &&
+        event.tournament?.startAt &&
+        event.tournament?.numAttendees &&
+        (event.bracketType === 'SINGLE_ELIMINATION' || event.bracketType === 'DOUBLE_ELIMINATION')
+    )
+    .sort((a, b) => {
+      const sprA = seedingPerformanceRating(
+        a.initialSeed!,
+        a.finalPlacement!,
+        a.bracketType as BracketType
+      );
+      const sprB = seedingPerformanceRating(
+        b.initialSeed!,
+        b.finalPlacement!,
+        b.bracketType as BracketType
+      );
+      return sprB - sprA;
+    })
+    .map((event) => {
+      const date = unixToDate(event.tournament?.startAt as number).toLocaleDateString('en-US', {
+        month: 'short',
+        day: '2-digit'
+      });
+
+      return {
+        finalPlacement: event.finalPlacement!,
+        initialSeed: event.initialSeed!,
+        tournament: {
+          image: event.tournament?.images?.[0]?.url ?? undefined,
+          name: event.tournament?.name as string,
+          date,
+          location: event.tournament?.city as string,
+          attendees: event.tournament?.numAttendees as number
+        }
+      };
+    })
+    .slice(0, topN);

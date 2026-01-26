@@ -4,16 +4,17 @@ import { redis } from '$lib/server/redis';
 import { fetchStartGG } from '$lib/startgg/fetch';
 import {
   aggregateByMonth,
-  type BracketType,
+  computeAliasesFromEvents,
+  computeBestPerformances,
   computeGauntlet,
   computeMostPlayedCharacters,
+  computeTotalCleanSweeps,
+  computeTotalSets,
+  computeTotalSetsToLastGame,
   findHighestUpset,
   getEvents,
   getThisYearEvents,
-  notNullNorUndefined,
-  parseMatch,
-  seedingPerformanceRating,
-  unixToDate
+  notNullNorUndefined
 } from '$lib/startgg/helpers';
 import { getUserInfo, searchPlayerByGamerTag } from '$lib/startgg/queries';
 import { getFighterInfo } from '$remotion/constants';
@@ -104,21 +105,7 @@ export const getPlayerStats = query(
     const events = await getEvents(stringUserId, eventsIds);
 
     // Record all the gamer tags the user played as this year
-    const gamerTagsThisYear = new Set<string>();
-    events.forEach((event) =>
-      event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
-        set?.games?.[0]?.selections?.forEach((selection) => {
-          const entrantId = selection?.entrant?.id;
-          const eventEntrantId = event?.userEntrant?.id;
-          if (eventEntrantId && entrantId && entrantId === eventEntrantId) {
-            // Query filters out events which aren't 1v1, so we can assume there's only one player here
-            if (selection?.entrant?.players?.[0]?.gamerTag) {
-              gamerTagsThisYear.add(selection.entrant.players[0].gamerTag);
-            }
-          }
-        });
-      })
-    );
+    const gamerTagsThisYear = computeAliasesFromEvents(events);
 
     // Count the number of tournaments attended by month
     const tournaments = events.map((event) => event?.tournament).filter(notNullNorUndefined);
@@ -126,55 +113,7 @@ export const getPlayerStats = query(
     const tournamentsByMonth = aggregateByMonth(tournamentsStartAt);
 
     // Find the best performances
-    const bestPerformances = events
-      .map((event) => ({
-        tournament: event?.tournament,
-        // First element is always the main event
-        bracketType: event?.userEntrant?.phaseGroups?.[0]?.bracketType,
-        initialSeed: event?.userEntrant?.checkInSeed?.seedNum,
-        finalPlacement: event?.userEntrant?.standing?.placement
-      }))
-      .filter(
-        (event) =>
-          event.initialSeed &&
-          event.finalPlacement &&
-          event.tournament?.city &&
-          event.tournament?.startAt &&
-          event.tournament?.numAttendees &&
-          (event.bracketType === 'SINGLE_ELIMINATION' || event.bracketType === 'DOUBLE_ELIMINATION')
-      )
-      .sort((a, b) => {
-        const sprA = seedingPerformanceRating(
-          a.initialSeed!,
-          a.finalPlacement!,
-          a.bracketType as BracketType
-        );
-        const sprB = seedingPerformanceRating(
-          b.initialSeed!,
-          b.finalPlacement!,
-          b.bracketType as BracketType
-        );
-        return sprB - sprA;
-      })
-      .map((event) => {
-        const date = unixToDate(event.tournament?.startAt as number).toLocaleDateString('en-US', {
-          month: 'short',
-          day: '2-digit'
-        });
-
-        return {
-          finalPlacement: event.finalPlacement!,
-          initialSeed: event.initialSeed!,
-          tournament: {
-            image: event.tournament?.images?.[0]?.url ?? undefined,
-            name: event.tournament?.name as string,
-            date,
-            location: event.tournament?.city as string,
-            attendees: event.tournament?.numAttendees as number
-          }
-        };
-      })
-      .slice(0, 5);
+    const bestPerformances = computeBestPerformances(events, 5);
 
     // Find the highest upset factor dealt
     const highestUpset = await findHighestUpset(events);
@@ -182,28 +121,13 @@ export const getPlayerStats = query(
     // Most played characters
     const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(events, gamerTagsThisYear);
 
+    const totalSets = computeTotalSets(events);
+
     // Count the number of sets that went to last games
-    const totalSets = events.flatMap((event) => event?.userEntrant?.paginatedSets?.nodes || []);
-    const totalSetsToLastGame = totalSets
-      .map((set) => set?.displayScore)
-      .filter(notNullNorUndefined)
-      .map(parseMatch)
-      .filter((match) => match !== 'DQ')
-      .map(([p1, p2]) => Math.abs(p1.score - p2.score))
-      .filter((diff) => diff === 1).length;
+    const totalSetsToLastGame = computeTotalSetsToLastGame(events, gamerTagsThisYear);
 
     // Count the number of cleen sweeps (i.e., 3-0 or 2-0 or X-0)
-    const totalCleenSweeps = totalSets
-      .map((set) => set?.displayScore)
-      .filter(notNullNorUndefined)
-      .map(parseMatch)
-      .filter((match) => match !== 'DQ')
-      .map(([p1, p2]) => {
-        if (gamerTagsThisYear.has(p1.name) && p2.score === 0) return Math.max(p1.score, p2.score);
-        if (gamerTagsThisYear.has(p2.name) && p1.score === 0) return Math.max(p1.score, p2.score);
-        return 0;
-      })
-      .filter((maxScore) => maxScore > 0).length;
+    const totalCleanSweeps = computeTotalCleanSweeps(events, gamerTagsThisYear);
 
     const encounteredCharacters = computeGauntlet(events);
 
@@ -223,9 +147,9 @@ export const getPlayerStats = query(
         totalEncountered: encounteredCharacters.size
       },
       sets: {
-        total: totalSets.length,
+        total: totalSets,
         lastgames: totalSetsToLastGame,
-        cleansweeps: totalCleenSweeps
+        cleansweeps: totalCleanSweeps
       }
     };
 
