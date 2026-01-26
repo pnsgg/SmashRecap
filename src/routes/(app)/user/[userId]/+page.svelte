@@ -1,5 +1,6 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
+  import { page } from '$app/state';
   import { Button, type ButtonProps } from '$lib/components/Button';
   import Download from '$lib/components/icons/Download.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
@@ -19,6 +20,7 @@
   let downloadButtonProps = $state<ButtonProps>();
 
   let userId = $derived(data.userId);
+  let shareUrl = $derived(() => page.url.href);
 
   // const renderRecap = async (stats: MainProps) => {
   //   isDownloading = true;
@@ -116,7 +118,7 @@
               extended
               target="_blank"
               href={createXIntent({
-                text: `This is my Smash Recap! Get your own: ${data.canonicalUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`
+                text: `This is my Smash Recap! Get your own: ${shareUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`
               })}
               variant="secondary"
               size={mobile.current ? 'small' : 'medium'}
@@ -127,7 +129,7 @@
               extended
               target="_blank"
               href={createBlueSkyIntent({
-                text: `This is my Smash Recap! Get your own: ${data.canonicalUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`,
+                text: `This is my Smash Recap! Get your own: ${shareUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`,
                 isMobile: data.userAgentInfo.isMobile
               })}
               variant="secondary"
