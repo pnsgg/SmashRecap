@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { page } from '$app/state';
   import favicon from '$lib/assets/favicon.svg';
   import Spotlight from '$lib/components/Spotlight.svelte';
   import '../styles/app.css';
 
-  let { children, data } = $props();
+  let { children } = $props();
   const year = 2025;
 
   const siteName = 'SmashRecap';
@@ -12,6 +13,8 @@
     'Unwrap your journey through the tournaments, battles, and triumphs that made your Smash year unforgettable.';
 
   const image = '/images/og.png';
+
+  let canonicalUrl = $derived(page.url.href);
 </script>
 
 <svelte:head>
@@ -25,7 +28,7 @@
 
   <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content={data.canonicalUrl} />
+  <meta name="twitter:site" content={canonicalUrl} />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={image} />
@@ -37,7 +40,7 @@
   <meta property="og:description" content={description} />
   <meta property="og:site_name" content={siteName} />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content={data.canonicalUrl} />
+  <meta property="og:url" content={canonicalUrl} />
   <meta property="og:image" content={image} />
   <meta property="og:image:alt" content={title} />
   <meta property="og:image:width" content="1200" />
