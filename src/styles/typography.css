@@ -5,6 +5,16 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Impact';
+  src:
+    url('/fonts/Impact.woff2') format('woff2'),
+    url('/fonts/Impact.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 .heading {
   font-size: 4rem;
   font-variation-settings: 'wdth' 75;
