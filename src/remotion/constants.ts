@@ -178,6 +178,8 @@ export const getFighterInfo = (name: string): FighterInfo => {
       return { id: '81', name: name, slug: 'kazuya' };
     case 'Sora':
       return { id: '82', name: name, slug: 'sora' };
+    case 'Random Character':
+      return { id: '83', name: name, slug: 'random' };
     default:
       throw new Error(`Unknown fighter name: ${name}`);
   }
