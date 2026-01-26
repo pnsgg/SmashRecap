@@ -20,7 +20,7 @@
   let downloadButtonProps = $state<ButtonProps>();
 
   let userId = $derived(data.userId);
-  let shareUrl = $derived(() => page.url.href);
+  let shareUrl = $derived(page.url.href);
 
   // const renderRecap = async (stats: MainProps) => {
   //   isDownloading = true;
