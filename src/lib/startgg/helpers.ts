@@ -410,8 +410,6 @@ export const computeTotalCleanSweeps = (
     })
     .map(([p1, p2]) => {
       const opponentPlayer = aliases.has(p1.name) ? p2 : p1;
-
-      // Check for clean sweep
       if (opponentPlayer.score === 0) {
         return 1 as number;
       }
@@ -445,28 +443,22 @@ export const computeTotalSetsToLastGame = (
   events: Awaited<ReturnType<typeof getEvents>>,
   aliases: Set<string>
 ): number => {
-  return events
-    ?.flatMap(
-      (event) => event?.userEntrant?.paginatedSets?.nodes?.map((set) => set?.displayScore) || []
-    )
-    .filter(notNullNorUndefined)
-    .map(parseMatch)
-    .filter((match) => match !== 'DQ')
-    .filter((match) => {
-      // Ensure that one of the players is the user
-      return match.some((player) => aliases.has(player.name));
-    })
-    .map(([p1, p2]) => {
-      const totalGames = p1.score + p2.score;
-      const bestOf = totalGames + 1;
-
-      // Check if the set went to the last game
-      if (totalGames === bestOf - 1) {
-        return 1 as number;
-      }
-      return 0 as number;
-    })
-    .reduce((acc, val) => acc + val, 0);
+  return (
+    events
+      ?.flatMap(
+        (event) => event?.userEntrant?.paginatedSets?.nodes?.map((set) => set?.displayScore) || []
+      )
+      .filter(notNullNorUndefined)
+      .map(parseMatch)
+      .filter((match) => match !== 'DQ')
+      .filter((match) => {
+        // Ensure that one of the players is the user
+        return match.some((player) => aliases.has(player.name));
+      })
+      .map(([p1, p2]) => (Math.abs(p1.score - p2.score) === 1 ? 1 : 0))
+      // @ts-expect-error This is a valid operation (0 | 1) is assignable to number
+      .reduce((acc, val) => acc + val, 0)
+  );
 };
 
 /**
