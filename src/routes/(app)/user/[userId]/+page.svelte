@@ -92,14 +92,17 @@
 
       <div class="instructions">
         <div class="actions">
-          <Button onclick={() => alert(videoProps)} extended>Debug stats</Button>
+          <Button
+            onclick={() => alert(`\`\`\`json\n${JSON.stringify(videoProps)}\n\`\`\``)}
+            extended>Debug stats</Button
+          >
           <Button
             bind:ref={downloadButton}
             id="download-button"
             extended
             size={mobile.current ? 'small' : 'medium'}
-            onclick={() => renderRecap(videoProps)}
-            disabled={isDownloading}
+            onclick={() => undefined}
+            disabled={true}
             icon={Download}
             {...downloadButtonProps}
           >
