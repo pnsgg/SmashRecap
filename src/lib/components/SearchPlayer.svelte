@@ -113,13 +113,10 @@
         display: flex;
         align-items: center;
         padding: 1rem;
+        background: var(--really-white);
+        color: var(--nearly-black);
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         gap: 0.75rem;
-
-        :global(.search-icon) {
-          color: var(--really-white);
-          opacity: 0.5;
-        }
 
         :global(.command-input) {
           flex: 1;
@@ -127,11 +124,10 @@
           outline: none;
           font-size: 1.125rem;
           font-family: inherit;
-          color: var(--really-white);
           background: transparent;
 
           &::placeholder {
-            color: var(--really-white);
+            /*color: var(--really-white);*/
             opacity: 0.4;
           }
         }
@@ -239,7 +235,8 @@
   :global(.dialog-overlay) {
     position: fixed;
     inset: 0;
-    backdrop-filter: blur(4px);
+    background-color: color-mix(in srgb, var(--nearly-black) 100%, transparent 80%);
+    /*backdrop-filter: blur(4px);*/
     z-index: 999;
   }
 
