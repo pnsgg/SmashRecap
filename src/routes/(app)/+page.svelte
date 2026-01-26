@@ -7,25 +7,12 @@
   import StartggIcon from '$lib/components/icons/StartggIcon.svelte';
   import SearchPlayer from '$lib/components/SearchPlayer.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
-  import {
-    ATTENDANCE,
-    CLEAN_SWEEP_STATS,
-    FAVOURITE_CHARACTERS,
-    GAME_5_STATS,
-    HIGHEST_UPSET,
-    ME,
-    PERFORMANCES,
-    YEAR
-  } from '$remotion/mock';
-  import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
-  import type { PlayerRef } from '@remotion/player';
 
   let { data } = $props();
 
   const mobile = new IsMobile();
 
   const year = 2025;
-  let player = $state<PlayerRef | undefined>();
 
   let searchOpen = $state(false);
 
@@ -66,7 +53,8 @@
       icon={MagnifyingGlass}
       size={mobile.current ? 'small' : 'medium'}
       variant="tertiary"
-      onclick={() => (searchOpen = true)}
+      onmousedown={() => (searchOpen = true)}
+      ontouchstart={() => (searchOpen = true)}
     >
       Search for a player
     </Button>
@@ -81,31 +69,8 @@
   {:else}
     <p class="small-text">+{data.totalRecaps} recaps generated</p>
   {/if}
-  <!-- <img src="/images/preview.png" alt="Preview of the 2025 SmashRecap" class="render" /> -->
   <div id="remotion-root">
-    <PlayerViewWrapper
-      bind:player
-      autoPlay
-      data={{
-        thisIsMyRecapProps: {
-          year: YEAR,
-          user: ME
-        },
-        tournamentsProps: {
-          year: YEAR,
-          attendance: ATTENDANCE
-        },
-        performancesProps: {
-          performances: PERFORMANCES
-        },
-        favouriteCharactersProps: {
-          characters: FAVOURITE_CHARACTERS
-        },
-        cleanSweepProps: CLEAN_SWEEP_STATS,
-        game5WarriorProps: GAME_5_STATS,
-        highestUpsetProps: HIGHEST_UPSET
-      }}
-    />
+    <video autoplay muted loop playsinline src="/videos/Main.webm"></video>
   </div>
 </div>
 
@@ -175,7 +140,7 @@
       text-align: center;
     }
 
-    #remotion-root {
+    #remotion-root > video {
       width: 100%;
       aspect-ratio: 1 / 1;
       border: 2px solid var(--really-white);
