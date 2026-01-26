@@ -1,6 +1,13 @@
 import { preloadImage } from '@remotion/preload';
-import React from 'react';
-import { AbsoluteFill, interpolate, interpolateColors, Sequence, useCurrentFrame } from 'remotion';
+import React, { useMemo } from 'react';
+import {
+  AbsoluteFill,
+  interpolate,
+  interpolateColors,
+  Sequence,
+  staticFile,
+  useCurrentFrame
+} from 'remotion';
 import { z } from 'zod';
 import { CleanSweep, cleanSweepSchema } from './CleanSweep';
 import { EndCard } from './EndCard';
@@ -182,23 +189,25 @@ export const Main: React.FC<MainProps> = ({
   );
 
   // Preload assets
-  preloadImage(user.image);
-  performances.forEach((perf) => {
-    if (perf.tournament.image) preloadImage(perf.tournament.image);
-  });
-  characters.forEach((char) => {
-    preloadImage(char.image);
-  });
-  if (highestUpsetProps && highestUpsetProps.opponent.avatar) {
-    preloadImage(highestUpsetProps.opponent.avatar);
-  }
-  ALL_FIGHTERS.forEach((fighter) => {
-    const url = `/images/stocks/${getFighterInfo(fighter).slug}.webp`;
-    preloadImage(url);
-  });
-  MASKASS_SPRITES.forEach((sprite) => {
-    preloadImage(sprite);
-  });
+  useMemo(() => {
+    preloadImage(user.image);
+    performances.forEach((perf) => {
+      if (perf.tournament.image) preloadImage(perf.tournament.image);
+    });
+    characters.forEach((char) => {
+      preloadImage(staticFile(char.image));
+    });
+    if (highestUpsetProps && highestUpsetProps.opponent.avatar) {
+      preloadImage(highestUpsetProps.opponent.avatar);
+    }
+    ALL_FIGHTERS.forEach((fighter) => {
+      const url = staticFile(`/images/stocks/${getFighterInfo(fighter).slug}.webp`);
+      preloadImage(url);
+    });
+    MASKASS_SPRITES.forEach((sprite) => {
+      preloadImage(staticFile(sprite));
+    });
+  }, []);
 
   return (
     <AbsoluteFill style={{ backgroundColor }}>
