@@ -1,22 +1,37 @@
 import { REMOTION_BUNDLE_LOCATION } from '$env/static/private';
+import { makeRecapUrlKey, redis } from '$lib/server/redis';
 import { mainSchema } from '$remotion/Main';
 import { getFunctions, renderMediaOnLambda } from '@remotion/lambda/client';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import 'dotenv/config';
+import { z } from 'zod';
+
+const schema = z.object({
+  userId: z.number(),
+  stats: mainSchema,
+  filename: z.string()
+});
 
 export const POST: RequestHandler = async ({ request }) => {
-  const authorization = request.headers.get('Authorization');
-  console.log('Authorization:', authorization);
-
   const data = await request.json();
-  const inputPropsResult = mainSchema.safeParse(data);
-  if (!inputPropsResult.success) {
+  const results = schema.safeParse(data);
+  if (!results.success) {
     return error(400, {
-      message: inputPropsResult.error.message
+      message: results.error.message
     });
   }
 
-  const inputProps = inputPropsResult.data;
+  // Check if a render is not available
+  const key = makeRecapUrlKey(results.data.stats.thisIsMyRecapProps.year, results.data.userId);
+  const videoUrl = await redis.get(key);
+  if (videoUrl) {
+    return json({
+      url: videoUrl
+    });
+  }
+
+  // Trigger a render on AWS otherwise
+  const inputProps = results.data.stats;
 
   const [lambda] = await getFunctions({
     region: 'us-east-1',
@@ -33,7 +48,7 @@ export const POST: RequestHandler = async ({ request }) => {
     codec: 'vp9',
     downloadBehavior: {
       type: 'download',
-      fileName: 'output.webm'
+      fileName: results.data.filename
     },
     inputProps
   });

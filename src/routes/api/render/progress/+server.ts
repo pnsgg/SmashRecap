@@ -1,10 +1,13 @@
+import { makeRecapUrlKey, redis } from '$lib/server/redis';
 import { getRenderProgress, speculateFunctionName } from '@remotion/lambda/client';
 import { json } from '@sveltejs/kit';
 import { z } from 'zod';
 
 const schema = z.object({
   renderId: z.string(),
-  bucketName: z.string()
+  bucketName: z.string(),
+  year: z.number(),
+  userId: z.number()
 });
 
 export const POST = async ({ request }) => {
@@ -17,7 +20,7 @@ export const POST = async ({ request }) => {
     });
   }
 
-  const { renderId, bucketName } = result.data;
+  const { renderId, bucketName, year, userId } = result.data;
 
   const functionName = speculateFunctionName({
     diskSizeInMb: 2048,
@@ -45,7 +48,10 @@ export const POST = async ({ request }) => {
     );
   }
 
-  if (renderProgress.done) {
+  if (renderProgress.done && renderProgress.outputFile) {
+    // Store the outputFile URL into redis
+    await redis.set(makeRecapUrlKey(year, userId), renderProgress.outputFile);
+
     return json({
       type: 'done',
       url: renderProgress.outputFile,

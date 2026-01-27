@@ -24,34 +24,47 @@
   let userId = $derived(data.userId);
   let shareUrl = $derived(page.url.href);
 
-  /* eslint-disable no-constant-condition */
+  const downloadFromUrl = (url: string, name: string): void => {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   const renderRecap = async (stats: MainProps) => {
     isDownloading = true;
 
+    const year = stats.thisIsMyRecapProps.year;
+    const filename =
+      `${stats.thisIsMyRecapProps.user.prefix ?? ''} ${stats.thisIsMyRecapProps.user.gamerTag}'s SmashRecap ${stats.thisIsMyRecapProps.year}.mp4`.trim();
+
     // Trigger the render
     const renderReq = await fetch(`/api/render`, {
-      headers: {
-        Authorization: `Bearer ${'coucou'}`
-      },
       method: 'POST',
-      body: JSON.stringify(stats)
+      body: JSON.stringify({ stats, userId, filename, year })
     });
 
     if (!renderReq.ok) {
       const message = await renderReq.text();
-      console.error('Render failed:', message);
       console.error('Render failed:', message);
       isDownloading = false;
       renderingProgress = undefined;
       return;
     }
 
-    const { renderId, bucketName } = await renderReq.json();
+    const renderResponse = await renderReq.json();
+    if ('url' in renderResponse) {
+      return downloadFromUrl(renderResponse.url, filename);
+    }
+
+    const { renderId, bucketName } = renderResponse;
 
     const checkProgress = async () => {
       const progressReq = await fetch('/api/render/progress', {
         method: 'POST',
-        body: JSON.stringify({ renderId, bucketName })
+        body: JSON.stringify({ renderId, bucketName, userId: data.userId, year })
       });
 
       if (!progressReq.ok) {
@@ -74,18 +87,8 @@
         }
 
         if (progress.type === 'done') {
-          // Download the video
-          const download =
-            `${stats.thisIsMyRecapProps.user.prefix ?? ''} ${stats.thisIsMyRecapProps.user.gamerTag}'s SmashRecap ${stats.thisIsMyRecapProps.year}.mp4`.trim();
-
-          const downloadUrl = `/api/download?url=${encodeURIComponent(progress.url)}&filename=${encodeURIComponent(download)}`;
-
-          const a = document.createElement('a');
-          a.href = downloadUrl;
-          a.download = download;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+          const downloadUrl = `/api/download?url=${encodeURIComponent(progress.url)}&filename=${encodeURIComponent(filename)}`;
+          downloadFromUrl(downloadUrl, filename);
 
           isDownloading = false;
           renderingProgress = undefined;
