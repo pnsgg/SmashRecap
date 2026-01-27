@@ -1,4 +1,4 @@
-import { REMOTION_BUNDLE_LOCATION } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { makeRecapUrlKey, redis } from '$lib/server/redis';
 import { mainSchema } from '$remotion/Main';
 import { getFunctions, renderMediaOnLambda } from '@remotion/lambda/client';
@@ -44,7 +44,7 @@ export const POST: RequestHandler = async ({ request }) => {
     region: 'us-east-1',
     functionName: lambda.functionName,
     composition: COMPOSITION,
-    serveUrl: REMOTION_BUNDLE_LOCATION,
+    serveUrl: env.REMOTION_BUNDLE_LOCATION,
     codec: 'vp9',
     downloadBehavior: {
       type: 'download',
