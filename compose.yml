@@ -2,15 +2,13 @@ services:
   app:
     build:
       context: .
-    volumes:
-      - ./out:/app/out
     ports:
       - '3001:3000'
     environment:
       - ALLOW_CACHING=true
       - ORIGIN=${ORIGIN}
       - REDIS_URL=redis://redis:6379
-      - REMOTION_BUNDLE_LOCATION=""
+      - REMOTION_BUNDLE_LOCATION="${REMOTION_BUNDLE_LOCATION}"
       - STARTGG_CLIENT_ID=${STARTGG_CLIENT_ID}
       - STARTGG_CLIENT_SECRET=${STARTGG_CLIENT_SECRET}
       - STARTGG_REDIRECT_URI=${STARTGG_REDIRECT_URI}
