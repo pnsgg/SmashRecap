@@ -144,7 +144,7 @@ export const getFighterInfo = (name: string): FighterInfo => {
       return { id: '64', name: name, slug: 'inkling' };
     case 'Ridley':
       return { id: '65', name: name, slug: 'ridley' };
-    case 'Simon':
+    case 'Simon Belmon':
       return { id: '66', name: name, slug: 'simon' };
     case 'Richter':
       return { id: '66e', name: name, slug: 'richter' };
@@ -236,7 +236,8 @@ export const ALL_FIGHTERS = [
   'Villager',
   'Mega Man',
   'Wii Fit Trainer',
-  'Rosalina & Luma',
+  'Rosalina',
+  'Sheik',
   'Little Mac',
   'Greninja',
   'Mii Brawler',
@@ -255,7 +256,7 @@ export const ALL_FIGHTERS = [
   'Bayonetta',
   'Inkling',
   'Ridley',
-  'Simon',
+  'Simon Belmont',
   'Richter',
   'King K. Rool',
   'Isabelle',
@@ -271,5 +272,6 @@ export const ALL_FIGHTERS = [
   'Sephiroth',
   'Pyra & Mythra',
   'Kazuya',
-  'Sora'
+  'Sora',
+  'Random Character'
 ];
