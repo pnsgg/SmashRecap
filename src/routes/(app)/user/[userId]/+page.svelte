@@ -6,6 +6,7 @@
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { getPlayerStats } from '$lib/remotes/players.remote';
   import { createBlueSkyIntent, createXIntent } from '$lib/socialIntents';
+  import type { MainProps } from '$remotion/Main';
   import { YEAR } from '$remotion/mock';
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
   import type { PlayerRef } from '@remotion/player';
@@ -17,40 +18,88 @@
   let player = $state<PlayerRef | undefined>();
   let downloadButton = $state<HTMLAnchorElement | undefined>();
   let isDownloading = $state(false);
+  let renderingProgress = $state<number | undefined>(undefined);
   let downloadButtonProps = $state<ButtonProps>();
 
   let userId = $derived(data.userId);
   let shareUrl = $derived(page.url.href);
 
-  // const renderRecap = async (stats: MainProps) => {
-  //   isDownloading = true;
+  /* eslint-disable no-constant-condition */
+  const renderRecap = async (stats: MainProps) => {
+    isDownloading = true;
 
-  //   const req = await fetch(`/api/render`, {
-  //     headers: {
-  //       Authorization: `Bearer ${'coucou'}`
-  //     },
-  //     method: 'POST',
-  //     body: JSON.stringify(stats)
-  //   });
+    // Trigger the render
+    const renderReq = await fetch(`/api/render`, {
+      headers: {
+        Authorization: `Bearer ${'coucou'}`
+      },
+      method: 'POST',
+      body: JSON.stringify(stats)
+    });
 
-  //   if (!req.ok) {
-  //     const message = await req.text();
-  //     console.error('Render failed:', message);
-  //     isDownloading = false;
-  //     return;
-  //   }
+    if (!renderReq.ok) {
+      const message = await renderReq.text();
+      console.error('Render failed:', message);
+      console.error('Render failed:', message);
+      isDownloading = false;
+      renderingProgress = undefined;
+      return;
+    }
 
-  //   // Download the video
-  //   const download = `${stats.thisIsMyRecapProps.user.prefix} ${stats.thisIsMyRecapProps.user.gamerTag}'s SmashRecap ${stats.thisIsMyRecapProps.year}.mp4`;
-  //   const blob = await req.blob();
-  //   const url = URL.createObjectURL(blob);
-  //   const a = document.createElement('a');
-  //   a.href = url;
-  //   a.download = download;
-  //   a.click();
-  //   isDownloading = false;
-  //   URL.revokeObjectURL(url);
-  // };
+    const { renderId, bucketName } = await renderReq.json();
+
+    const checkProgress = async () => {
+      const progressReq = await fetch('/api/render/progress', {
+        method: 'POST',
+        body: JSON.stringify({ renderId, bucketName })
+      });
+
+      if (!progressReq.ok) {
+        const message = await progressReq.text();
+        throw new Error(message);
+      }
+
+      return progressReq.json();
+    };
+
+    while (true) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      try {
+        const progress = await checkProgress();
+        if (progress.type === 'error') {
+          alert('Render failed: ' + progress.message);
+          isDownloading = false;
+          renderingProgress = undefined;
+          return;
+        }
+
+        if (progress.type === 'done') {
+          // Download the video
+          const download =
+            `${stats.thisIsMyRecapProps.user.prefix ?? ''} ${stats.thisIsMyRecapProps.user.gamerTag}'s SmashRecap ${stats.thisIsMyRecapProps.year}.mp4`.trim();
+
+          const downloadUrl = `/api/download?url=${encodeURIComponent(progress.url)}&filename=${encodeURIComponent(download)}`;
+
+          const a = document.createElement('a');
+          a.href = downloadUrl;
+          a.download = download;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          isDownloading = false;
+          renderingProgress = undefined;
+          break;
+        }
+        renderingProgress = progress.progress;
+      } catch (err) {
+        console.error('Polling failed:', err);
+        isDownloading = false;
+        renderingProgress = undefined;
+        return;
+      }
+    }
+  };
 </script>
 
 {#await getPlayerStats({ userId, year: 2025 })}
@@ -101,13 +150,17 @@
             id="download-button"
             extended
             size={mobile.current ? 'small' : 'medium'}
-            onclick={() => undefined}
-            disabled={true}
+            onclick={() => renderRecap(videoProps)}
+            disabled={isDownloading}
             icon={Download}
             {...downloadButtonProps}
           >
             {#if isDownloading}
-              Downloading...
+              {#if renderingProgress !== undefined}
+                Downloading... {Math.round(renderingProgress * 100)}%
+              {:else}
+                Downloading...
+              {/if}
             {:else}
               Download Video
             {/if}
