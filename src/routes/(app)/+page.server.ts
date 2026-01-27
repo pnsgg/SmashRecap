@@ -1,8 +1,8 @@
-import { redis } from '$lib/server/redis';
+import { makerRecapStatsKey, redis } from '$lib/server/redis';
 
 export const load = async () => {
-  const count = await redis.get('total_recaps');
+  const keys = await redis.keys(makerRecapStatsKey(2025, '*'));
   return {
-    totalRecaps: count ? parseInt(count) : 0
+    totalRecaps: keys.length
   };
 };

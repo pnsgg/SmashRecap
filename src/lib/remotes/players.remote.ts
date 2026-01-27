@@ -1,6 +1,6 @@
 import { query } from '$app/server';
 import { env } from '$env/dynamic/private';
-import { redis } from '$lib/server/redis';
+import { makerRecapStatsKey, redis } from '$lib/server/redis';
 import { fetchStartGG } from '$lib/startgg/fetch';
 import {
   aggregateByMonth,
@@ -99,7 +99,6 @@ type PlayerStats = {
   mostPlayedCharactersByPlayer: { image: string; name: string; count: number }[];
   gauntlet: {
     encountered: string[];
-    totalEncountered: number;
   };
   sets: {
     total: number;
@@ -114,7 +113,7 @@ export const getPlayerStats = query(
     year: v.pipe(v.number(), v.minValue(2000), v.maxValue(new Date().getFullYear()))
   }),
   async ({ userId, year }) => {
-    const key = `recap:${userId}:${year}`;
+    const key = makerRecapStatsKey(year, userId);
 
     if (env.ALLOW_CACHING === 'true') {
       const cached = await redis.get(key);
@@ -187,8 +186,7 @@ export const getPlayerStats = query(
         image: `/images/chara_1/${getFighterInfo(character.name).slug}.webp`
       })),
       gauntlet: {
-        encountered: Array.from(encounteredCharacters),
-        totalEncountered: encounteredCharacters.size
+        encountered: Array.from(encounteredCharacters.values())
       },
       sets: {
         total: totalSets,
@@ -199,7 +197,6 @@ export const getPlayerStats = query(
 
     if (env.ALLOW_CACHING === 'true') {
       await redis.set(key, JSON.stringify(result));
-      await redis.incr('total_recaps');
     }
 
     return result;
