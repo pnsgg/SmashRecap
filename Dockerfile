@@ -1,25 +1,26 @@
-FROM oven/bun:debian AS base
+FROM oven/bun:1-slim AS base
 
-# Install dependencies
 FROM base AS deps
 WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun ci
 
-# Build the app wth secrets
+FROM base AS production-deps
+WORKDIR /app
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile --production
+
 FROM base AS builder
 WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY --from=deps /app/node_modules /app/node_modules
 RUN bun run build
 
-
-# Run the app
 FROM base AS runner
 WORKDIR /app
-COPY --from=builder --chown=bun:bun /app/build build/
-COPY --from=builder --chown=bun:bun /app/node_modules node_modules/
-EXPOSE 3000
 ENV NODE_ENV=production
-
+USER bun
+COPY --from=builder /app/build build
+COPY --from=production-deps /app/node_modules node_modules
+EXPOSE 3000
 CMD ["bun", "./build"]
