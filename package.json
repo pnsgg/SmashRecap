@@ -13,7 +13,6 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "remotion:studio": "remotion studio",
-    "remotion:bundle": "bun deploy.mjs",
     "remotion:lambda:rms": "remotion lambda sites rmall -y",
     "lambda:deploy": "remotion lambda functions deploy",
     "lambda:site": "remotion lambda sites create src/remotion/index.ts --site-name smash-recap"
