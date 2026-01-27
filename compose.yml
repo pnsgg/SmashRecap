@@ -1,7 +1,6 @@
 services:
   app:
-    build:
-      context: .
+    image: ghcr.io/pnsgg/smashrecap:latest
     ports:
       - '3001:3000'
     environment:
