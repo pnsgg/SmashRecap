@@ -46,7 +46,7 @@ export const mainSchema = z.object({
   highestUpsetProps: highestUpsetSchema.optional(),
   game5WarriorProps: game5WarriorSchema,
   cleanSweepProps: cleanSweepSchema,
-  gauntletProps: theGauntletSchema.optional()
+  gauntletProps: theGauntletSchema
 });
 
 export type MainProps = z.infer<typeof mainSchema>;

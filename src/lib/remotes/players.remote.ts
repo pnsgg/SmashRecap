@@ -99,7 +99,6 @@ type PlayerStats = {
   mostPlayedCharactersByPlayer: { image: string; name: string; count: number }[];
   gauntlet: {
     encountered: string[];
-    totalEncountered: number;
   };
   sets: {
     total: number;
@@ -187,8 +186,7 @@ export const getPlayerStats = query(
         image: `/images/chara_1/${getFighterInfo(character.name).slug}.webp`
       })),
       gauntlet: {
-        encountered: Array.from(encounteredCharacters),
-        totalEncountered: encounteredCharacters.size
+        encountered: Array.from(encounteredCharacters.values())
       },
       sets: {
         total: totalSets,
