@@ -145,12 +145,8 @@
         <PlayerViewWrapper bind:player data={videoProps} />
       </div>
 
-    <div class="instructions">
+      <div class="instructions">
         <div class="actions">
-          <Button
-            onclick={() => alert(`\`\`\`json\n${JSON.stringify(videoProps)}\n\`\`\``)}
-            extended>Debug stats</Button
-          >
           <Button
             bind:ref={downloadButton}
             id="download-button"
