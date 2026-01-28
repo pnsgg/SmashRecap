@@ -208,3 +208,7 @@ export const GAUNTLET_STATS = {
     'Pyra & Mythra'
   ]
 };
+
+export const DQ_STATS = {
+  totalDQs: 3
+};

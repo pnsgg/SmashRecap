@@ -14,7 +14,8 @@ import {
   THE_GAUNTLET_DURATION,
   THIS_IS_MY_RECAP_DURATION,
   totalDuration,
-  TOURNAMENTS_DURATION
+  TOURNAMENTS_DURATION,
+  DQ_DURATION
 } from './config';
 import { Main, mainSchema } from './Main';
 
@@ -24,12 +25,14 @@ import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
 
 import { CleanSweep, cleanSweepSchema } from './CleanSweep';
+import { DQ, dqSchema } from './DQ';
 import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
 import { Game5Warrior, game5WarriorSchema } from './Game5Warrior';
 import { HighestUpset, highestUpsetSchema } from './HighestUpset';
 import {
   ATTENDANCE,
   CLEAN_SWEEP_STATS,
+  DQ_STATS,
   FAVOURITE_CHARACTERS,
   GAME_5_STATS,
   GAUNTLET_STATS,
@@ -64,8 +67,7 @@ export const RemotionRoot: React.FC = () => {
         schema={mainSchema}
         durationInFrames={totalDuration({
           characters: FAVOURITE_CHARACTERS.length,
-          hasHighestUpset: !!HIGHEST_UPSET,
-          hasGauntlet: !!GAUNTLET_STATS
+          hasHighestUpset: !!HIGHEST_UPSET
         })}
         fps={FPS}
         width={MAIN_COMPOSITION_WIDTH}
@@ -88,7 +90,8 @@ export const RemotionRoot: React.FC = () => {
           highestUpsetProps: HIGHEST_UPSET,
           gauntletProps: GAUNTLET_STATS,
           game5WarriorProps: GAME_5_STATS,
-          cleanSweepProps: CLEAN_SWEEP_STATS
+          cleanSweepProps: CLEAN_SWEEP_STATS,
+          dqProps: DQ_STATS
         }}
         // You can override these props for each render:
         // https://www.remotion.dev/docs/parametrized-rendering
@@ -191,6 +194,16 @@ export const RemotionRoot: React.FC = () => {
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
         fps={FPS}
+      />
+      <Composition
+        id="DQ"
+        component={DQ}
+        schema={dqSchema}
+        durationInFrames={DQ_DURATION}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
+        defaultProps={DQ_STATS}
       />
     </>
   );
