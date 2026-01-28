@@ -26,8 +26,10 @@ L'application peut être déployée en utilisant Docker Compose. Pour ce faire, 
 - Remplissez les champs requis et créez l'application OAuth
 - Copiez le `client id`, `client secret` et l'`Application Authorization Callback` dans le fichier .env
 
-4. Lancer les conteneurs docker
+5. Rendez-vous sur [remotion.dev/docs/lambda/setup](https://www.remotion.dev/docs/lambda/setup) pour mettre en place votre Lambda avec AWS.
+
+6. Lancer les conteneurs docker
    ```
-   docker-compose up -d --build
+   docker compose up
    ```
-5. Visitez l'application à l'adresse http://localhost:3001
+7. Visitez l'application à l'adresse http://localhost:3001
