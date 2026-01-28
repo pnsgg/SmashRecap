@@ -36,8 +36,7 @@ export const PlayerView = forwardRef((props: PlayerViewProps, ref) => {
       component={Main}
       durationInFrames={totalDuration({
         characters: props.data.favouriteCharactersProps.characters.length,
-        hasHighestUpset: !!props.data.highestUpsetProps,
-        hasGauntlet: !!props.data.gauntletProps
+        hasHighestUpset: !!props.data.highestUpsetProps
       })}
       fps={30}
       compositionHeight={600}

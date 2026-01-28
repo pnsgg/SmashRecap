@@ -10,6 +10,7 @@ import {
 } from 'remotion';
 import { z } from 'zod';
 import { CleanSweep, cleanSweepSchema } from './CleanSweep';
+import { DQ, dqSchema } from './DQ';
 import { EndCard } from './EndCard';
 import {
   calculateFavouriteCharactersDuration,
@@ -26,6 +27,7 @@ import { SPRITES as MASKASS_SPRITES } from './components/Maskass';
 import { PNSLogo } from './components/PNSLogo';
 import {
   CLEAN_SWEEP_DURATION,
+  DQ_DURATION,
   END_CARD_DURATION,
   FPS,
   GAME_5_WARRIOR_DURATION,
@@ -46,6 +48,7 @@ export const mainSchema = z.object({
   highestUpsetProps: highestUpsetSchema.optional(),
   game5WarriorProps: game5WarriorSchema,
   cleanSweepProps: cleanSweepSchema,
+  dqProps: dqSchema,
   gauntletProps: theGauntletSchema
 });
 
@@ -59,6 +62,7 @@ export const Main: React.FC<MainProps> = ({
   highestUpsetProps,
   game5WarriorProps,
   cleanSweepProps,
+  dqProps,
   gauntletProps
 }) => {
   const frame = useCurrentFrame();
@@ -95,6 +99,10 @@ export const Main: React.FC<MainProps> = ({
     const durationCleanSweep = CLEAN_SWEEP_DURATION;
     currentFrame += durationCleanSweep;
 
+    const fromDQ = currentFrame;
+    const durationDQ = DQ_DURATION;
+    currentFrame += durationDQ;
+
     const fromGauntlet = currentFrame;
     const durationGauntlet = THE_GAUNTLET_DURATION;
     if (gauntletProps !== undefined) {
@@ -119,7 +127,8 @@ export const Main: React.FC<MainProps> = ({
       durationGame5Warrior,
       fromCleanSweep,
       durationCleanSweep,
-
+      fromDQ,
+      durationDQ,
       fromGauntlet,
       durationGauntlet,
       fromEndCard,
@@ -141,7 +150,8 @@ export const Main: React.FC<MainProps> = ({
     durationGame5Warrior,
     fromCleanSweep,
     durationCleanSweep,
-
+    fromDQ,
+    durationDQ,
     fromGauntlet,
     durationGauntlet,
     fromEndCard,
@@ -249,6 +259,10 @@ export const Main: React.FC<MainProps> = ({
 
       <Sequence name="CleanSweep" from={fromCleanSweep} durationInFrames={durationCleanSweep}>
         <CleanSweep {...cleanSweepProps} />
+      </Sequence>
+
+      <Sequence name="DQ" from={fromDQ} durationInFrames={durationDQ}>
+        <DQ {...dqProps} />
       </Sequence>
 
       {gauntletProps && (
