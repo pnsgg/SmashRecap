@@ -9,6 +9,7 @@ import {
   computeGauntlet,
   computeMostPlayedCharacters,
   computeTotalCleanSweeps,
+  computeTotalDQs,
   computeTotalSets,
   computeTotalSetsToLastGame,
   findHighestUpset,
@@ -105,6 +106,7 @@ type PlayerStats = {
     lastgames: number;
     cleansweeps: number;
   };
+  dqs: number;
 };
 
 export const getPlayerStats = query(
@@ -174,6 +176,9 @@ export const getPlayerStats = query(
 
     const encounteredCharacters = computeGauntlet(events);
 
+    // Count the number of DQs
+    const totalDQs = computeTotalDQs(events);
+
     const result: PlayerStats = {
       year,
       user: userInfo,
@@ -192,7 +197,8 @@ export const getPlayerStats = query(
         total: totalSets,
         lastgames: totalSetsToLastGame,
         cleansweeps: totalCleanSweeps
-      }
+      },
+      dqs: totalDQs
     };
 
     if (env.ALLOW_CACHING === 'true') {

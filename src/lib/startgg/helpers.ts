@@ -553,3 +553,31 @@ export const computeBestPerformances = (
       };
     })
     .slice(0, topN);
+
+/**
+ * Compute the total number of times the user was disqualified (DQ'd).
+ * This counts sets where the display score is 'DQ' and the user is NOT the winner.
+ *
+ * @param events - The events to check for DQs
+ * @returns The total number of DQs suffered by the user
+ */
+export const computeTotalDQs = (events: Awaited<ReturnType<typeof getEvents>>): number => {
+  return events
+    .flatMap((event) => {
+      const userEntrantId = event?.userEntrant?.id;
+      if (!userEntrantId) return [];
+
+      return (
+        event?.userEntrant?.paginatedSets?.nodes
+          ?.filter((set) => {
+            if (!set?.displayScore || !set?.winnerId) return false;
+            // The player who DQed cannot be marker as winner hence why checking for winnerId
+            return (
+              set.displayScore === 'DQ' && set.winnerId.toString() !== userEntrantId.toString()
+            );
+          })
+          .map((set) => set!) || []
+      );
+    })
+    .filter(notNullNorUndefined).length;
+};
