@@ -47,8 +47,6 @@
     });
 
     if (!renderReq.ok) {
-      const message = await renderReq.text();
-      console.error('Render failed:', message);
       isDownloading = false;
       renderingProgress = undefined;
       return;
@@ -56,6 +54,8 @@
 
     const renderResponse = await renderReq.json();
     if ('url' in renderResponse) {
+      isDownloading = false;
+      renderingProgress = undefined;
       return downloadFromUrl(renderResponse.url, filename);
     }
 
@@ -87,16 +87,15 @@
         }
 
         if (progress.type === 'done') {
-          const downloadUrl = `/api/download?url=${encodeURIComponent(progress.url)}&filename=${encodeURIComponent(filename)}`;
-          downloadFromUrl(downloadUrl, filename);
-
           isDownloading = false;
           renderingProgress = undefined;
+
+          const downloadUrl = `/api/download?url=${encodeURIComponent(progress.url)}&filename=${encodeURIComponent(filename)}`;
+          downloadFromUrl(downloadUrl, filename);
           break;
         }
         renderingProgress = progress.progress;
-      } catch (err) {
-        console.error('Polling failed:', err);
+      } catch {
         isDownloading = false;
         renderingProgress = undefined;
         return;
