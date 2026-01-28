@@ -22,7 +22,7 @@ export type FavouriteCharacterType = z.infer<typeof favouriteCharacterSchema>;
 
 export const GROW_DURATION = 20;
 export const SHRINK_DURATION = 15;
-export const HOLD_DURATION = 35;
+export const HOLD_DURATION = 55;
 export const TOTAL_DURATION = GROW_DURATION + HOLD_DURATION + SHRINK_DURATION;
 
 interface CharacterProps {
