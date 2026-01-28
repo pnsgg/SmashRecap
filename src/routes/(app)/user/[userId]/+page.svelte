@@ -110,7 +110,7 @@
     <p class="heading">Your recap for {YEAR} is loading...</p>
   </div>
 {:then stats}
-  {@const videoProps = {
+  {@const videoProps: MainProps = {
     thisIsMyRecapProps: {
       year: stats.year,
       user: stats.user
@@ -134,6 +134,9 @@
     cleanSweepProps: {
       totalSets: stats.sets.total,
       totalSweeps: stats.sets.cleansweeps
+    },
+    dqProps: {
+      totalDQs: stats.dqs
     }
   }}
   {#if videoProps.tournamentsProps.attendance.reduce((acc, month) => acc + month.attendance, 0) > 0}
@@ -142,7 +145,7 @@
         <PlayerViewWrapper bind:player data={videoProps} />
       </div>
 
-      <div class="instructions">
+    <div class="instructions">
         <div class="actions">
           <Button
             onclick={() => alert(`\`\`\`json\n${JSON.stringify(videoProps)}\n\`\`\``)}
