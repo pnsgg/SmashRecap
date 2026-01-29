@@ -39,8 +39,11 @@ import {
   HIGHEST_UPSET,
   ME,
   PERFORMANCES,
+  WORST_MATCHUPS,
   YEAR
 } from './mock';
+import { WorstMatchups, worstMatchupsSchema } from './WorstMatchups';
+import { WORST_MATCHUPS_DURATION } from './config';
 import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
 import { typography } from './styles';
 import './styles/remotion.css';
@@ -91,7 +94,10 @@ export const RemotionRoot: React.FC = () => {
           gauntletProps: GAUNTLET_STATS,
           game5WarriorProps: GAME_5_STATS,
           cleanSweepProps: CLEAN_SWEEP_STATS,
-          dqProps: DQ_STATS
+          dqProps: DQ_STATS,
+          worstMatchupsProps: {
+            matchups: WORST_MATCHUPS
+          }
         }}
         // You can override these props for each render:
         // https://www.remotion.dev/docs/parametrized-rendering
@@ -153,6 +159,18 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         defaultProps={{
           performances: PERFORMANCES
+        }}
+      />
+      <Composition
+        id="WorstMatchups"
+        component={WorstMatchups}
+        schema={worstMatchupsSchema}
+        durationInFrames={WORST_MATCHUPS_DURATION}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
+        defaultProps={{
+          matchups: WORST_MATCHUPS
         }}
       />
       <Composition
