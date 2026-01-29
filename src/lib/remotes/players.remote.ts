@@ -22,6 +22,16 @@ import { getFighterInfo } from '$remotion/constants';
 import { error } from '@sveltejs/kit';
 import * as v from 'valibot';
 
+/**
+ * Search for a player by gamer tag.
+ *
+ * This query searches for a player on start.gg given a gamer tag and a year.
+ * It filters the results to only include players who have attended a tournament at least once.
+ * The results are sorted by attendance (higher first).
+ *
+ * @param input - The gamer tag to search for.
+ * @returns A list of `PlayerResult` objects matching the criteria.
+ */
 export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (gamerTag) => {
   if (gamerTag.length === 0) return [];
 
@@ -33,25 +43,29 @@ export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (game
           isUser: true,
           hideTest: true
         },
-        perPage: 50
+        perPage: 100
       }
     });
 
-    return (res.data.players?.nodes
-      ?.map((player) => {
-        // By design a user always has an id and a gamerTag
-        // Typescript skill issue here
-        if (!player?.user?.id || !player?.gamerTag) return null;
+    return (
+      res.data.players?.nodes
+        ?.map((player) => {
+          // By design a user always has an id and a gamerTag
+          // Typescript skill issue here
+          if (!player?.user?.id || !player?.gamerTag) return null;
 
-        return {
-          id: parseInt(player.user.id),
-          gamerTag: player.gamerTag,
-          prefix: player.prefix,
-          image: player.user.images?.[0]?.url || '',
-          country: player.user.location?.country || ''
-        };
-      })
-      .filter((player) => player !== null) || []) satisfies PlayerResult[];
+          return {
+            id: parseInt(player.user.id),
+            gamerTag: player.gamerTag,
+            prefix: player.prefix,
+            image: player.user.images?.[0]?.url || '',
+            country: player.user.location?.country || '',
+            nbEvent: player.user.events?.pageInfo?.total ?? 0
+          };
+        })
+        .filter((p) => p !== null && p.nbEvent > 0)
+        .toSorted((p1, p2) => p2!.nbEvent - p1!.nbEvent) || ([] satisfies PlayerResult[])
+    );
   } catch (error) {
     console.error('Error searching player:', error);
     return [];
@@ -63,6 +77,8 @@ export type PlayerResult = {
   gamerTag: string;
   image: string;
   country: string;
+  nbEvent: number;
+  lastEvent: number;
 };
 
 type PlayerStats = {

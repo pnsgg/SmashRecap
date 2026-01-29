@@ -22,6 +22,11 @@ export const searchPlayerByGamerTag = graphql(`
           images(type: "profile") {
             url
           }
+          events(query: { sortBy: "startAt DESC" }) {
+            pageInfo {
+              total
+            }
+          }
         }
       }
     }
