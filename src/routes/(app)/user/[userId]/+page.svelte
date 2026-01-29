@@ -171,24 +171,24 @@
               extended
               target="_blank"
               href={createXIntent({
-                text: `This is my Smash Recap! Get your own: ${shareUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`
+                text: `This is my SmashRecap! Get your own: ${shareUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`
               })}
               variant="secondary"
               size={mobile.current ? 'small' : 'medium'}
             >
-              Post #SmashRecap on X
+              Share on X
             </Button>
             <Button
               extended
               target="_blank"
               href={createBlueSkyIntent({
-                text: `This is my Smash Recap! Get your own: ${shareUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`,
+                text: `This is my SmashRecap! Get your own: ${shareUrl}\n\n[Delete this placeholder, download and drag your MP4 video in here]`,
                 isMobile: data.userAgentInfo.isMobile
               })}
               variant="secondary"
               size={mobile.current ? 'small' : 'medium'}
             >
-              Post #SmashRecap on Bluesky
+              Share on Bluesky
             </Button>
           </div>
         </div>
