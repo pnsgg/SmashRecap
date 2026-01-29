@@ -64,7 +64,8 @@ export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (game
           };
         })
         .filter((p) => p !== null && p.nbEvent > 0)
-        .toSorted((p1, p2) => p2!.nbEvent - p1!.nbEvent) || ([] satisfies PlayerResult[])
+        .toSorted((p1, p2) => p2!.nbEvent - p1!.nbEvent)
+        .filter((p) => p !== null) || ([] satisfies PlayerResult[])
     );
   } catch (error) {
     console.error('Error searching player:', error);
