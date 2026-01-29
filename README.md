@@ -5,6 +5,29 @@
 	</picture>
 </a>
 
+## Description
+
+SmashRecap est une application qui génère une vidéo récapitulative personnalisée de votre année compétitive sur Super Smash Bros. Ultimate, en utilisant les données de start.gg.
+
+## Développement Local
+
+Pour lancer le projet localement :
+
+1. Assurez-vous d'avoir [Bun](https://bun.sh/) installé.
+2. Installez les dépendances :
+   ```bash
+   bun install
+   ```
+3. Configurez vos variables d'environnement (voir section Déploiement pour l'API start.gg).
+4. Lancez le serveur de développement :
+   ```bash
+   bun run dev
+   ```
+   ou pour lancer Remotion Studio :
+   ```bash
+   bun run remotion:studio
+   ```
+
 ## Déploiement
 
 L'application peut être déployée en utilisant Docker Compose. Pour ce faire, vous devez avoir Docker et Docker Compose installés sur votre système.
