@@ -12,7 +12,7 @@
   const description =
     'Unwrap your journey through the tournaments, battles, and triumphs that made your Smash year unforgettable.';
 
-  const image = '/images/og.png';
+  const image = '/images/og.webp';
 
   let canonicalUrl = $derived(page.url.href);
 </script>
