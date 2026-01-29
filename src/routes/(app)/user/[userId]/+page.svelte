@@ -127,7 +127,8 @@
     highestUpsetProps: stats.highestUpset,
     game5WarriorProps: {
       totalSets: stats.sets.total,
-      wins: stats.sets.lastgames
+      wins: stats.sets.lastgames.count,
+      winRate: stats.sets.lastgames.winRate
     },
     gauntletProps: stats.gauntlet,
     cleanSweepProps: {

@@ -7,7 +7,8 @@ import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const game5WarriorSchema = z.object({
   totalSets: z.number(),
-  wins: z.number()
+  wins: z.number(),
+  winRate: z.number()
 });
 
 export type Game5WarriorProps = z.infer<typeof game5WarriorSchema>;
@@ -21,7 +22,7 @@ const SCORE_HISTORY = [
   { left: 3, right: 2 }
 ];
 
-export const Game5Warrior: React.FC<Game5WarriorProps> = ({ totalSets, wins }) => {
+export const Game5Warrior: React.FC<Game5WarriorProps> = ({ totalSets, wins, winRate }) => {
   const frame = useCurrentFrame();
   const { fps, height, durationInFrames } = useVideoConfig();
 
@@ -50,6 +51,13 @@ export const Game5Warrior: React.FC<Game5WarriorProps> = ({ totalSets, wins }) =
     frame: frame - slideshowDuration,
     config: { damping: 200, stiffness: 50 },
     delay: 30
+  });
+
+  const textEntranceSpring = spring({
+    fps,
+    frame: frame - slideshowDuration,
+    config: { damping: 200, stiffness: 50 },
+    delay: 60
   });
 
   const displayedWins = Math.round(interpolate(timesSpring, [0, 1], [0, wins]));
@@ -115,8 +123,30 @@ export const Game5Warrior: React.FC<Game5WarriorProps> = ({ totalSets, wins }) =
               textShadow: `0 4px 10px ${colors.nearlyBlack}`
             }}
           >
-            sets went to last game.
+            <span>sets went to last game</span>
+            {winRate !== undefined && winRate > 0 && (
+              <>
+                {' '}
+                <span>
+                  and you won <br /> {Math.round(winRate)}% of them
+                </span>
+              </>
+            )}
           </div>
+
+          {winRate !== undefined && (
+            <div
+              style={{
+                ...typography.heading2,
+                textTransform: 'uppercase',
+                maxWidth: 600,
+                textShadow: `0 4px 10px ${colors.nearlyBlack}`,
+                marginTop: 20,
+                opacity: interpolate(textEntranceSpring, [0, 1], [0, 0.8]),
+                transform: `translateY(${interpolate(textEntranceSpring, [0, 1], [20, 0])}px)`
+              }}
+            ></div>
+          )}
         </div>
       </div>
     </AbsoluteFill>

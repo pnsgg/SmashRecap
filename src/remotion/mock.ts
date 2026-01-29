@@ -163,7 +163,8 @@ export const HIGHEST_UPSET = {
 
 export const GAME_5_STATS = {
   totalSets: 20,
-  wins: 15
+  wins: 15,
+  winRate: 78.92
 };
 
 export const CLEAN_SWEEP_STATS = {
