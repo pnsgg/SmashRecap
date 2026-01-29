@@ -120,7 +120,11 @@ type PlayerStats = {
   };
   sets: {
     total: number;
-    lastgames: number;
+    lastgames: {
+      count: number;
+      winCount: number;
+      winRate: number;
+    };
     cleansweeps: number;
   };
   dqs: number;

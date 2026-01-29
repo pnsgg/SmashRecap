@@ -442,23 +442,47 @@ export const computeTotalSets = (events: Awaited<ReturnType<typeof getEvents>>):
 export const computeTotalSetsToLastGame = (
   events: Awaited<ReturnType<typeof getEvents>>,
   aliases: Set<string>
-): number => {
-  return (
-    events
-      ?.flatMap(
-        (event) => event?.userEntrant?.paginatedSets?.nodes?.map((set) => set?.displayScore) || []
-      )
-      .filter(notNullNorUndefined)
-      .map(parseMatch)
-      .filter((match) => match !== 'DQ')
-      .filter((match) => {
-        // Ensure that one of the players is the user
-        return match.some((player) => aliases.has(player.name));
-      })
-      .map(([p1, p2]) => (Math.abs(p1.score - p2.score) === 1 ? 1 : 0))
-      // @ts-expect-error This is a valid operation (0 | 1) is assignable to number
-      .reduce((acc, val) => acc + val, 0)
-  );
+): { count: number; winCount: number; winRate: number } => {
+  const sets = events
+    ?.flatMap(
+      (event) => event?.userEntrant?.paginatedSets?.nodes?.map((set) => set?.displayScore) || []
+    )
+    .filter(notNullNorUndefined)
+    .map(parseMatch)
+    .filter((match) => match !== 'DQ')
+    .filter((match) => {
+      // Ensure that one of the players is the user
+      return match.some((player) => aliases.has(player.name));
+    })
+    .map(([p1, p2]) => {
+      const user = aliases.has(p1.name) ? p1 : p2;
+      const opponent = aliases.has(p1.name) ? p2 : p1;
+
+      const isLastGame = Math.abs(p1.score - p2.score) === 1;
+      const won = user.score > opponent.score;
+
+      return {
+        isLastGame,
+        won
+      };
+    })
+    .filter(({ isLastGame }) => isLastGame);
+
+  if (sets.length === 0) {
+    return {
+      count: 0,
+      winCount: 0,
+      winRate: 0
+    };
+  }
+
+  const winCount = sets.filter(({ won }) => won).length;
+
+  return {
+    count: sets.length,
+    winCount,
+    winRate: (winCount / sets.length) * 100
+  };
 };
 
 /**
