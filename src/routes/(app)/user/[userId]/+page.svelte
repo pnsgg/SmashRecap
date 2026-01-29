@@ -141,7 +141,7 @@
   {#if videoProps.tournamentsProps.attendance.reduce((acc, month) => acc + month.attendance, 0) > 0}
     <div class="my-recap">
       <div id="remotion-root">
-        <PlayerViewWrapper bind:player data={videoProps} />
+        <PlayerViewWrapper bind:player data={videoProps} autoPlay />
       </div>
 
       <div class="instructions">
