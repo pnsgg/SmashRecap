@@ -1,6 +1,7 @@
 services:
   app:
     image: ghcr.io/pnsgg/smashrecap:latest
+    pull_policy: always
     ports:
       - '3001:3000'
     environment:
@@ -22,3 +23,4 @@ services:
       - '6379:6379'
     volumes:
       - ./redis/data:/data
+    command: redis-server --appendonly yes
