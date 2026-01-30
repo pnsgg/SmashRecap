@@ -73,6 +73,15 @@ export const RemotionRoot: React.FC = () => {
           hasHighestUpset: !!HIGHEST_UPSET,
           worstMatchups: WORST_MATCHUPS.length
         })}
+        calculateMetadata={async ({ props }) => {
+          return {
+            durationInFrames: totalDuration({
+              characters: props.favouriteCharactersProps.characters.length,
+              hasHighestUpset: !!props.highestUpsetProps,
+              worstMatchups: props.worstMatchupsProps.matchups.length
+            })
+          };
+        }}
         fps={FPS}
         width={MAIN_COMPOSITION_WIDTH}
         height={MAIN_COMPOSITION_HEIGHT}
@@ -100,8 +109,8 @@ export const RemotionRoot: React.FC = () => {
             matchups: WORST_MATCHUPS
           }
         }}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
+      // You can override these props for each render:
+      // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Composition
         id="HighestUpset"
