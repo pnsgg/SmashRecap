@@ -17,7 +17,7 @@
   </div>
   <div class="credit">
     <span class="small-text">source code</span>
-    <a href="https://github.com/pnsgg/smash-recap">
+    <a href="https://github.com/pnsgg/smashrecap">
       <img src="/images/github-mark-white.svg" alt="X icon" width="20" height="20" />
       <span class="paragraph">GitHub</span>
     </a>

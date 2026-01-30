@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "smash-recap",
+      "name": "smashrecap",
       "dependencies": {
         "@remotion/cli": "4.0.409",
         "@remotion/fonts": "4.0.409",

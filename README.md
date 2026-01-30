@@ -38,7 +38,7 @@ L'application peut être déployée en utilisant Docker Compose. Pour ce faire, 
    ```
 2. Déplacez-vous dans le répertoire du projet
    ```
-   cd smash-recap
+   cd smashrecap
    ```
 3. Créer le fichier .env à partir du fichier .env.example
    ```

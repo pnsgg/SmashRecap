@@ -4,7 +4,7 @@ services:
     ports:
       - '6379:6379'
     volumes:
-      - smash-recap-redis:/data
+      - smashrecap-redis:/data
 
   redis-commander:
     image: rediscommander/redis-commander:latest
@@ -16,4 +16,4 @@ services:
       - redis
 
 volumes:
-  smash-recap-redis:
+  smashrecap-redis:

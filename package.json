@@ -1,5 +1,5 @@
 {
-  "name": "smash-recap",
+  "name": "smashrecap",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -15,7 +15,7 @@
     "remotion:studio": "remotion studio",
     "remotion:lambda:rms": "remotion lambda sites rmall -y",
     "lambda:deploy": "remotion lambda functions deploy",
-    "lambda:site": "remotion lambda sites create src/remotion/index.ts --site-name smash-recap"
+    "lambda:site": "remotion lambda sites create src/remotion/index.ts --site-name smashrecap"
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.0",
