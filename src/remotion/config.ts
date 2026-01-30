@@ -1,5 +1,6 @@
 import { calculateFavouriteCharactersDuration } from './FavouriteCharacter';
-import { FAVOURITE_CHARACTERS } from './mock';
+import { calculateWorstMatchupsDuration } from './WorstMatchups';
+import { FAVOURITE_CHARACTERS, WORST_MATCHUPS } from './mock';
 
 export const FPS = 30;
 
@@ -12,7 +13,7 @@ export const PERFORMANCES_DURATION = FPS * 4;
 export const FAVOURITE_CHARACTER_DURATION = calculateFavouriteCharactersDuration(
   FAVOURITE_CHARACTERS.length
 );
-export const WORST_MATCHUPS_DURATION = calculateFavouriteCharactersDuration(3);
+export const WORST_MATCHUPS_DURATION = calculateWorstMatchupsDuration(WORST_MATCHUPS.length);
 
 export const HIGHEST_UPSET_DURATION = FPS * 5;
 export const GAME_5_WARRIOR_DURATION = FPS * 5;
