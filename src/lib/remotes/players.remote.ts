@@ -174,41 +174,24 @@ export const getPlayerStats = query(
 
     // Get attended events
     const eventsIds = await getThisYearEvents(stringUserId, year);
-
-    // Get events info
     const events = await getEvents(stringUserId, eventsIds);
-
-    // Record all the gamer tags the user played as this year
-    const gamerTagsThisYear = computeAliasesFromEvents(events);
 
     // Count the number of tournaments attended by month
     const tournaments = events.map((event) => event?.tournament).filter(notNullNorUndefined);
     const tournamentsStartAt = tournaments.map((t) => t?.startAt).filter(notNullNorUndefined);
     const tournamentsByMonth = aggregateByMonth(tournamentsStartAt);
 
-    // Find the best performances
+    // Compute stats
+    const gamerTagsThisYear = computeAliasesFromEvents(events);
     const bestPerformances = computeBestPerformances(events, 5);
-
-    // Find the highest upset factor dealt
-    const highestUpset = await findHighestUpset(events);
-
-    // Most played characters
     const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(events, gamerTagsThisYear);
-
     const totalSets = computeTotalSets(events);
-
-    // Count the number of sets that went to last games
     const totalSetsToLastGame = computeTotalSetsToLastGame(events, gamerTagsThisYear);
-
-    // Count the number of cleen sweeps (i.e., 3-0 or 2-0 or X-0)
     const totalCleanSweeps = computeTotalCleanSweeps(events, gamerTagsThisYear);
-
     const encounteredCharacters = computeGauntlet(events);
-
-    // Count the number of DQs
     const totalDQs = computeTotalDQs(events);
-
     const worstMatchups = computeWorstMatchups(events, 3);
+    const highestUpset = await findHighestUpset(events);
 
     const result: PlayerStats = {
       year,
