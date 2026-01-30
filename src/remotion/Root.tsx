@@ -3,6 +3,7 @@ import React from 'react';
 import { Composition, staticFile } from 'remotion';
 import {
   CLEAN_SWEEP_DURATION,
+  DQ_DURATION,
   END_CARD_DURATION,
   FAVOURITE_CHARACTER_DURATION,
   FPS,
@@ -13,11 +14,10 @@ import {
   PERFORMANCES_DURATION,
   THE_GAUNTLET_DURATION,
   THIS_IS_MY_RECAP_DURATION,
-  TOURNAMENTS_DURATION,
-  DQ_DURATION
+  TOURNAMENTS_DURATION
 } from './config';
-import { Main, mainSchema } from './Main';
 import { calculateTimeline } from './logic/timeline';
+import { Main, mainSchema } from './Main';
 
 import { EndCard } from './EndCard';
 import { MyPerformances, myPerformancesSchema } from './MyPerformances';
@@ -25,6 +25,7 @@ import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
 
 import { CleanSweep, cleanSweepSchema } from './CleanSweep';
+import { WORST_MATCHUPS_DURATION } from './config';
 import { DQ, dqSchema } from './DQ';
 import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
 import { Game5Warrior, game5WarriorSchema } from './Game5Warrior';
@@ -42,11 +43,10 @@ import {
   WORST_MATCHUPS,
   YEAR
 } from './mock';
-import { WorstMatchups, worstMatchupsSchema } from './WorstMatchups';
-import { WORST_MATCHUPS_DURATION } from './config';
-import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
 import { typography } from './styles';
 import './styles/remotion.css';
+import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
+import { WorstMatchups, worstMatchupsSchema } from './WorstMatchups';
 
 // Each <Composition> is an entry in the sidebar!
 
@@ -58,6 +58,11 @@ export const RemotionRoot: React.FC = () => {
   })
     .then(() => console.log('Font loaded'))
     .catch(console.error);
+  loadFont({
+    family: 'Impact',
+    url: staticFile('/fonts/Impact.woff2'),
+    display: 'block'
+  });
 
   return (
     <>
