@@ -24,8 +24,8 @@ import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
 import {
-  WorstMatchups,
   calculateWorstMatchupsDuration,
+  WorstMatchups,
   worstMatchupsSchema
 } from './WorstMatchups';
 import { SPRITES as MASKASS_SPRITES } from './components/Maskass';
@@ -40,8 +40,7 @@ import {
   PERFORMANCES_DURATION,
   THE_GAUNTLET_DURATION,
   THIS_IS_MY_RECAP_DURATION,
-  TOURNAMENTS_DURATION,
-  WORST_MATCHUPS_DURATION
+  TOURNAMENTS_DURATION
 } from './config';
 import { ALL_FIGHTERS, getFighterInfo } from './constants';
 import { colors } from './styles';
