@@ -130,6 +130,9 @@
       wins: stats.sets.lastgames.count,
       winRate: stats.sets.lastgames.winRate
     },
+    worstMatchupsProps: {
+      matchups: stats.worstMatchups
+    },
     gauntletProps: stats.gauntlet,
     cleanSweepProps: {
       totalSets: stats.sets.total,
