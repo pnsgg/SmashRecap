@@ -45,20 +45,9 @@ import {
 import { ALL_FIGHTERS, getFighterInfo } from './constants';
 import { colors } from './styles';
 
-export const mainSchema = z.object({
-  thisIsMyRecapProps: thisIsMyRecapSchema,
-  tournamentsProps: tournamentsSchema,
-  performancesProps: myPerformancesSchema,
-  favouriteCharactersProps: favouriteCharactersSchema,
-  worstMatchupsProps: worstMatchupsSchema,
-  highestUpsetProps: highestUpsetSchema.optional(),
-  game5WarriorProps: game5WarriorSchema,
-  cleanSweepProps: cleanSweepSchema,
-  dqProps: dqSchema,
-  gauntletProps: theGauntletSchema
-});
+import { type MainProps, mainSchema } from '../lib/schemas/stats';
 
-export type MainProps = z.infer<typeof mainSchema>;
+export { mainSchema, type MainProps };
 
 export const Main: React.FC<MainProps> = ({
   thisIsMyRecapProps: { user, year },
