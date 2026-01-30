@@ -1,5 +1,6 @@
 import { calculateFavouriteCharactersDuration } from './FavouriteCharacter';
-import { FAVOURITE_CHARACTERS } from './mock';
+import { calculateWorstMatchupsDuration } from './WorstMatchups';
+import { FAVOURITE_CHARACTERS, WORST_MATCHUPS } from './mock';
 
 export const FPS = 30;
 
@@ -12,6 +13,8 @@ export const PERFORMANCES_DURATION = FPS * 4;
 export const FAVOURITE_CHARACTER_DURATION = calculateFavouriteCharactersDuration(
   FAVOURITE_CHARACTERS.length
 );
+export const WORST_MATCHUPS_DURATION = calculateWorstMatchupsDuration(WORST_MATCHUPS.length);
+
 export const HIGHEST_UPSET_DURATION = FPS * 5;
 export const GAME_5_WARRIOR_DURATION = FPS * 5;
 export const CLEAN_SWEEP_DURATION = FPS * 5;
@@ -22,10 +25,12 @@ export const END_CARD_DURATION = FPS * 3;
 
 export const totalDuration = ({
   characters,
-  hasHighestUpset = true
+  hasHighestUpset = true,
+  worstMatchups
 }: {
   characters?: number;
   hasHighestUpset?: boolean;
+  worstMatchups?: number;
 }): number => {
   const durations = [
     THIS_IS_MY_RECAP_DURATION,
@@ -42,6 +47,12 @@ export const totalDuration = ({
     durations.push(calculateFavouriteCharactersDuration(characters));
   } else {
     durations.push(FAVOURITE_CHARACTER_DURATION);
+  }
+
+  if (worstMatchups !== undefined) {
+    durations.push(calculateFavouriteCharactersDuration(worstMatchups));
+  } else {
+    durations.push(WORST_MATCHUPS_DURATION);
   }
 
   if (hasHighestUpset) {

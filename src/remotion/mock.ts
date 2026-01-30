@@ -213,3 +213,27 @@ export const GAUNTLET_STATS = {
 export const DQ_STATS = {
   totalDQs: 3
 };
+
+export const WORST_MATCHUPS = [
+  {
+    characterName: 'Steve',
+    image: '/images/chara_1/steve.webp',
+    count: 10,
+    lossCount: 8,
+    looseRate: 80.0
+  },
+  {
+    characterName: 'Kazuya',
+    image: '/images/chara_1/kazuya.webp',
+    count: 8,
+    lossCount: 6,
+    looseRate: 75.0
+  },
+  {
+    characterName: 'Sonic',
+    image: '/images/chara_1/sonic.webp',
+    count: 7,
+    lossCount: 5,
+    looseRate: 71.4
+  }
+];

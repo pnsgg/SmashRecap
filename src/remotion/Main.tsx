@@ -23,6 +23,11 @@ import { MyPerformances, myPerformancesSchema } from './MyPerformances';
 import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
+import {
+  calculateWorstMatchupsDuration,
+  WorstMatchups,
+  worstMatchupsSchema
+} from './WorstMatchups';
 import { SPRITES as MASKASS_SPRITES } from './components/Maskass';
 import { PNSLogo } from './components/PNSLogo';
 import {
@@ -45,6 +50,7 @@ export const mainSchema = z.object({
   tournamentsProps: tournamentsSchema,
   performancesProps: myPerformancesSchema,
   favouriteCharactersProps: favouriteCharactersSchema,
+  worstMatchupsProps: worstMatchupsSchema,
   highestUpsetProps: highestUpsetSchema.optional(),
   game5WarriorProps: game5WarriorSchema,
   cleanSweepProps: cleanSweepSchema,
@@ -59,6 +65,7 @@ export const Main: React.FC<MainProps> = ({
   tournamentsProps: { attendance },
   performancesProps: { performances },
   favouriteCharactersProps: { characters },
+  worstMatchupsProps,
   highestUpsetProps,
   game5WarriorProps,
   cleanSweepProps,
@@ -67,7 +74,13 @@ export const Main: React.FC<MainProps> = ({
 }) => {
   const frame = useCurrentFrame();
 
-  const getFrames = ({ characters }: { characters: number }) => {
+  const getFrames = ({
+    characters,
+    worstMatchups
+  }: {
+    characters: number;
+    worstMatchups: number;
+  }) => {
     let currentFrame = 0;
 
     const fromThisIsMyRecap = currentFrame;
@@ -99,6 +112,12 @@ export const Main: React.FC<MainProps> = ({
     const durationCleanSweep = CLEAN_SWEEP_DURATION;
     currentFrame += durationCleanSweep;
 
+    const fromWorstMatchups = currentFrame;
+    const durationWorstMatchups = calculateWorstMatchupsDuration(worstMatchups);
+    if (worstMatchupsProps !== undefined) {
+      currentFrame += durationWorstMatchups;
+    }
+
     const fromDQ = currentFrame;
     const durationDQ = DQ_DURATION;
     currentFrame += durationDQ;
@@ -121,6 +140,8 @@ export const Main: React.FC<MainProps> = ({
       durationPerformances,
       fromFavouriteCharacters,
       durationFavouriteCharacters,
+      fromWorstMatchups,
+      durationWorstMatchups,
       fromHighestUpset,
       durationHighestUpset,
       fromGame5Warrior,
@@ -144,6 +165,8 @@ export const Main: React.FC<MainProps> = ({
     durationPerformances,
     fromFavouriteCharacters,
     durationFavouriteCharacters,
+    fromWorstMatchups,
+    durationWorstMatchups,
     fromHighestUpset,
     durationHighestUpset,
     fromGame5Warrior,
@@ -156,7 +179,10 @@ export const Main: React.FC<MainProps> = ({
     durationGauntlet,
     fromEndCard,
     durationEndCard
-  } = getFrames({ characters: characters?.length ?? 0 });
+  } = getFrames({
+    characters: characters?.length ?? 0,
+    worstMatchups: worstMatchupsProps?.matchups.length ?? 0
+  });
 
   const favStart = fromFavouriteCharacters;
 
@@ -207,6 +233,11 @@ export const Main: React.FC<MainProps> = ({
     characters.forEach((char) => {
       preloadImage(staticFile(char.image));
     });
+    if (worstMatchupsProps) {
+      worstMatchupsProps.matchups.forEach((char) => {
+        preloadImage(staticFile(char.image));
+      });
+    }
     if (highestUpsetProps && highestUpsetProps.opponent.avatar) {
       preloadImage(highestUpsetProps.opponent.avatar);
     }
@@ -260,6 +291,16 @@ export const Main: React.FC<MainProps> = ({
       <Sequence name="CleanSweep" from={fromCleanSweep} durationInFrames={durationCleanSweep}>
         <CleanSweep {...cleanSweepProps} />
       </Sequence>
+
+      {worstMatchupsProps && (
+        <Sequence
+          name="WorstMatchups"
+          from={fromWorstMatchups}
+          durationInFrames={durationWorstMatchups}
+        >
+          <WorstMatchups {...worstMatchupsProps} />
+        </Sequence>
+      )}
 
       <Sequence name="DQ" from={fromDQ} durationInFrames={durationDQ}>
         <DQ {...dqProps} />

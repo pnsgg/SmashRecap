@@ -605,3 +605,66 @@ export const computeTotalDQs = (events: Awaited<ReturnType<typeof getEvents>>): 
     })
     .filter(notNullNorUndefined).length;
 };
+
+/**
+ * Compute the worst matchups for the user (characters against whom they lose the most).
+ *
+ * @param events - The events to compute the matchups for
+ * @param limit - The number of matchups to return
+ * @returns An array of worst matchups
+ */
+export const computeWorstMatchups = (
+  events: Awaited<ReturnType<typeof getEvents>>,
+  limit: number
+): Array<{
+  characterName: string;
+  count: number;
+  lossCount: number;
+  looseRate: number;
+}> => {
+  const stats: Record<string, { wins: number; losses: number }> = {};
+
+  events.forEach((event) => {
+    const userEntrantId = event?.userEntrant?.id;
+    if (!userEntrantId) return;
+
+    event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
+      set?.games?.forEach((game) => {
+        if (!game?.winnerId) return;
+
+        const opponentSelection = game.selections?.find(
+          (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
+        );
+
+        if (!opponentSelection) return;
+
+        const opponentChar = opponentSelection.character?.name;
+        if (!opponentChar) return;
+
+        if (!stats[opponentChar]) {
+          stats[opponentChar] = { wins: 0, losses: 0 };
+        }
+
+        if (game.winnerId.toString() === userEntrantId.toString()) {
+          stats[opponentChar].wins++;
+        } else {
+          stats[opponentChar].losses++;
+        }
+      });
+    });
+  });
+
+  return Object.entries(stats)
+    .map(([char, { wins, losses }]) => {
+      const total = wins + losses;
+      return {
+        characterName: char,
+        count: total,
+        winCount: wins,
+        lossCount: losses,
+        looseRate: total > 0 ? (losses / total) * 100 : 0
+      };
+    })
+    .sort((a, b) => b.lossCount - a.lossCount) // Sort by number of losses DESC
+    .slice(0, limit);
+};

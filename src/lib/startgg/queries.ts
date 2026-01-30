@@ -133,6 +133,7 @@ export const getEvent = graphql(`
             displayScore
             winnerId
             games {
+              winnerId
               selections {
                 entrant {
                   id

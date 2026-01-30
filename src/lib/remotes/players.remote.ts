@@ -12,6 +12,7 @@ import {
   computeTotalDQs,
   computeTotalSets,
   computeTotalSetsToLastGame,
+  computeWorstMatchups,
   findHighestUpset,
   getEvents,
   getThisYearEvents,
@@ -127,6 +128,13 @@ type PlayerStats = {
     };
     cleansweeps: number;
   };
+  worstMatchups: {
+    characterName: string;
+    image: string;
+    count: number;
+    lossCount: number;
+    looseRate: number;
+  }[];
   dqs: number;
 };
 
@@ -200,6 +208,8 @@ export const getPlayerStats = query(
     // Count the number of DQs
     const totalDQs = computeTotalDQs(events);
 
+    const worstMatchups = computeWorstMatchups(events, 3);
+
     const result: PlayerStats = {
       year,
       user: userInfo,
@@ -219,6 +229,10 @@ export const getPlayerStats = query(
         lastgames: totalSetsToLastGame,
         cleansweeps: totalCleanSweeps
       },
+      worstMatchups: worstMatchups.map((matchup) => ({
+        ...matchup,
+        image: `/images/chara_1/${getFighterInfo(matchup.characterName).slug}.webp`
+      })),
       dqs: totalDQs
     };
 
