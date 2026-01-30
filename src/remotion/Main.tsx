@@ -149,7 +149,11 @@ export const Main: React.FC<MainProps> = ({
         </div>
       </Sequence>
 
-      <Sequence name="Performances" from={performancesFrame.from} durationInFrames={performancesFrame.duration}>
+      <Sequence
+        name="Performances"
+        from={performancesFrame.from}
+        durationInFrames={performancesFrame.duration}
+      >
         <MyPerformances performances={performances} />
       </Sequence>
 
@@ -171,7 +175,11 @@ export const Main: React.FC<MainProps> = ({
         </Sequence>
       )}
 
-      <Sequence name="Game5Warrior" from={game5Warrior.from} durationInFrames={game5Warrior.duration}>
+      <Sequence
+        name="Game5Warrior"
+        from={game5Warrior.from}
+        durationInFrames={game5Warrior.duration}
+      >
         <Game5Warrior {...game5WarriorProps} />
       </Sequence>
 

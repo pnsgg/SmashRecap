@@ -11,16 +11,16 @@ import { worstMatchupsSchema } from '../../remotion/WorstMatchups';
 import { z } from 'zod';
 
 export const mainSchema = z.object({
-    thisIsMyRecapProps: thisIsMyRecapSchema,
-    tournamentsProps: tournamentsSchema,
-    performancesProps: myPerformancesSchema,
-    favouriteCharactersProps: favouriteCharactersSchema,
-    worstMatchupsProps: worstMatchupsSchema,
-    highestUpsetProps: highestUpsetSchema.optional(),
-    game5WarriorProps: game5WarriorSchema,
-    cleanSweepProps: cleanSweepSchema,
-    dqProps: dqSchema,
-    gauntletProps: theGauntletSchema
+  thisIsMyRecapProps: thisIsMyRecapSchema,
+  tournamentsProps: tournamentsSchema,
+  performancesProps: myPerformancesSchema,
+  favouriteCharactersProps: favouriteCharactersSchema,
+  worstMatchupsProps: worstMatchupsSchema,
+  highestUpsetProps: highestUpsetSchema.optional(),
+  game5WarriorProps: game5WarriorSchema,
+  cleanSweepProps: cleanSweepSchema,
+  dqProps: dqSchema,
+  gauntletProps: theGauntletSchema
 });
 
 export type MainProps = z.infer<typeof mainSchema>;
