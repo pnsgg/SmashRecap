@@ -50,7 +50,7 @@ export const mainSchema = z.object({
   tournamentsProps: tournamentsSchema,
   performancesProps: myPerformancesSchema,
   favouriteCharactersProps: favouriteCharactersSchema,
-  worstMatchupsProps: worstMatchupsSchema.optional(),
+  worstMatchupsProps: worstMatchupsSchema,
   highestUpsetProps: highestUpsetSchema.optional(),
   game5WarriorProps: game5WarriorSchema,
   cleanSweepProps: cleanSweepSchema,
