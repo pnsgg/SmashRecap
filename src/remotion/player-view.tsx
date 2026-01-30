@@ -1,7 +1,7 @@
 import { Player, type PlayerRef } from '@remotion/player';
 import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 import { Main, type MainProps } from './Main';
-import { totalDuration } from './config';
+import { calculateTimeline } from './logic/timeline';
 
 // TODO: Define PlayerSchema type
 export type PlayerSchema = MainProps;
@@ -34,11 +34,7 @@ export const PlayerView = forwardRef((props: PlayerViewProps, ref) => {
     <Player
       ref={playerRef}
       component={Main}
-      durationInFrames={totalDuration({
-        characters: props.data.favouriteCharactersProps.characters.length,
-        hasHighestUpset: !!props.data.highestUpsetProps,
-        worstMatchups: props.data.worstMatchupsProps.matchups.length
-      })}
+      durationInFrames={calculateTimeline(props.data).totalDuration}
       fps={30}
       compositionHeight={600}
       compositionWidth={600}

@@ -13,11 +13,11 @@ import {
   PERFORMANCES_DURATION,
   THE_GAUNTLET_DURATION,
   THIS_IS_MY_RECAP_DURATION,
-  totalDuration,
   TOURNAMENTS_DURATION,
   DQ_DURATION
 } from './config';
 import { Main, mainSchema } from './Main';
+import { calculateTimeline } from './logic/timeline';
 
 import { EndCard } from './EndCard';
 import { MyPerformances, myPerformancesSchema } from './MyPerformances';
@@ -68,18 +68,33 @@ export const RemotionRoot: React.FC = () => {
         id="Main"
         component={Main}
         schema={mainSchema}
-        durationInFrames={totalDuration({
-          characters: FAVOURITE_CHARACTERS.length,
-          hasHighestUpset: !!HIGHEST_UPSET,
-          worstMatchups: WORST_MATCHUPS.length
-        })}
+        durationInFrames={calculateTimeline({
+          thisIsMyRecapProps: {
+            user: ME,
+            year: YEAR
+          },
+          tournamentsProps: {
+            attendance: ATTENDANCE,
+            year: YEAR
+          },
+          performancesProps: {
+            performances: PERFORMANCES
+          },
+          favouriteCharactersProps: {
+            characters: FAVOURITE_CHARACTERS
+          },
+          highestUpsetProps: HIGHEST_UPSET,
+          gauntletProps: GAUNTLET_STATS,
+          game5WarriorProps: GAME_5_STATS,
+          cleanSweepProps: CLEAN_SWEEP_STATS,
+          dqProps: DQ_STATS,
+          worstMatchupsProps: {
+            matchups: WORST_MATCHUPS
+          }
+        }).totalDuration}
         calculateMetadata={async ({ props }) => {
           return {
-            durationInFrames: totalDuration({
-              characters: props.favouriteCharactersProps.characters.length,
-              hasHighestUpset: !!props.highestUpsetProps,
-              worstMatchups: props.worstMatchupsProps.matchups.length
-            })
+            durationInFrames: calculateTimeline(props).totalDuration
           };
         }}
         fps={FPS}
@@ -109,8 +124,8 @@ export const RemotionRoot: React.FC = () => {
             matchups: WORST_MATCHUPS
           }
         }}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
+      // You can override these props for each render:
+      // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Composition
         id="HighestUpset"
