@@ -20,7 +20,6 @@ import { colors, makeFontVariationSettings, typography } from './styles';
 export const worstMatchupSchema = z.object({
   characterName: z.string(),
   count: z.number(),
-  winCount: z.number(),
   lossCount: z.number(),
   looseRate: z.number(),
   image: z.string()

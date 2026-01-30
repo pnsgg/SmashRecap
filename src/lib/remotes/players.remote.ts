@@ -132,7 +132,6 @@ type PlayerStats = {
     characterName: string;
     image: string;
     count: number;
-    winCount: number;
     lossCount: number;
     looseRate: number;
   }[];

@@ -219,7 +219,6 @@ export const WORST_MATCHUPS = [
     characterName: 'Steve',
     image: '/images/chara_1/steve.webp',
     count: 10,
-    winCount: 2,
     lossCount: 8,
     looseRate: 80.0
   },
@@ -227,7 +226,6 @@ export const WORST_MATCHUPS = [
     characterName: 'Kazuya',
     image: '/images/chara_1/kazuya.webp',
     count: 8,
-    winCount: 2,
     lossCount: 6,
     looseRate: 75.0
   },
@@ -235,7 +233,6 @@ export const WORST_MATCHUPS = [
     characterName: 'Sonic',
     image: '/images/chara_1/sonic.webp',
     count: 7,
-    winCount: 2,
     lossCount: 5,
     looseRate: 71.4
   }

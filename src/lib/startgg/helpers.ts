@@ -611,7 +611,7 @@ export const computeTotalDQs = (events: Awaited<ReturnType<typeof getEvents>>): 
  *
  * @param events - The events to compute the matchups for
  * @param limit - The number of matchups to return
- * @returns An array of the top 3 worst matchups
+ * @returns An array of worst matchups
  */
 export const computeWorstMatchups = (
   events: Awaited<ReturnType<typeof getEvents>>,
@@ -619,7 +619,6 @@ export const computeWorstMatchups = (
 ): Array<{
   characterName: string;
   count: number;
-  winCount: number;
   lossCount: number;
   looseRate: number;
 }> => {
@@ -633,14 +632,11 @@ export const computeWorstMatchups = (
       set?.games?.forEach((game) => {
         if (!game?.winnerId) return;
 
-        const userSelection = game.selections?.find(
-          (s) => s?.entrant?.id && s.entrant.id.toString() === userEntrantId.toString()
-        );
         const opponentSelection = game.selections?.find(
           (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
         );
 
-        if (!userSelection || !opponentSelection) return;
+        if (!opponentSelection) return;
 
         const opponentChar = opponentSelection.character?.name;
         if (!opponentChar) return;
