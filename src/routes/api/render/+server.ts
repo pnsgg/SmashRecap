@@ -1,4 +1,5 @@
 import { env } from '$env/dynamic/private';
+import { sanitizeFilename } from '$lib/server/sanitize';
 import { makeRecapUrlKey, redis } from '$lib/server/redis';
 import { mainSchema } from '$lib/schemas/stats';
 import { getFunctions, renderMediaOnLambda } from '@remotion/lambda/client';
@@ -48,7 +49,7 @@ export const POST: RequestHandler = async ({ request }) => {
     codec: 'vp9',
     downloadBehavior: {
       type: 'download',
-      fileName: results.data.filename
+      fileName: sanitizeFilename(results.data.filename)
     },
     inputProps
   });
