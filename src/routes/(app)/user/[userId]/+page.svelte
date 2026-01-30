@@ -162,7 +162,7 @@
           >
             {#if isDownloading}
               {#if renderingProgress !== undefined}
-                Downloading... {Math.round(renderingProgress * 100)}%
+                Progress: {Math.round(renderingProgress * 100)}%
               {:else}
                 Downloading...
               {/if}
@@ -180,7 +180,7 @@
               variant="secondary"
               size={mobile.current ? 'small' : 'medium'}
             >
-              Share on X
+              Share your SmashRecap on X
             </Button>
             <Button
               extended
@@ -192,7 +192,7 @@
               variant="secondary"
               size={mobile.current ? 'small' : 'medium'}
             >
-              Share on Bluesky
+              Share your SmashRecap on Bluesky
             </Button>
           </div>
         </div>
