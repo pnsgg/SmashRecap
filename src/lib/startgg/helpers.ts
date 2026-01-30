@@ -630,8 +630,6 @@ export const computeWorstMatchups = (
     if (!userEntrantId) return;
 
     event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
-      // If we don't have games, or games don't have winnerId, we might be limited.
-      // Filter games that have a winnerId
       set?.games?.forEach((game) => {
         if (!game?.winnerId) return;
 
