@@ -1,4 +1,4 @@
-import { preloadImage } from '@remotion/preload';
+import { preloadFont, preloadImage } from '@remotion/preload';
 import React, { useMemo } from 'react';
 import {
   AbsoluteFill,
@@ -8,23 +8,23 @@ import {
   staticFile,
   useCurrentFrame
 } from 'remotion';
-import { CleanSweep, cleanSweepSchema } from './CleanSweep';
-import { DQ, dqSchema } from './DQ';
+import { CleanSweep } from './CleanSweep';
+import { DQ } from './DQ';
 import { EndCard } from './EndCard';
-import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
-import { Game5Warrior, game5WarriorSchema } from './Game5Warrior';
-import { HighestUpset, highestUpsetSchema } from './HighestUpset';
-import { MyPerformances, myPerformancesSchema } from './MyPerformances';
-import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
-import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
-import { Tournaments, tournamentsSchema } from './Tournaments';
-import { WorstMatchups, worstMatchupsSchema } from './WorstMatchups';
+import { FavouriteCharacters } from './FavouriteCharacter';
+import { Game5Warrior } from './Game5Warrior';
+import { HighestUpset } from './HighestUpset';
+import { MyPerformances } from './MyPerformances';
+import { TheGauntlet } from './TheGauntlet';
+import { ThisIsMyRecap } from './ThisIsMyRecap';
+import { Tournaments } from './Tournaments';
+import { WorstMatchups } from './WorstMatchups';
 import { SPRITES as MASKASS_SPRITES } from './components/Maskass';
 import { PNSLogo } from './components/PNSLogo';
 import { FPS } from './config';
 import { ALL_FIGHTERS, getFighterInfo } from './constants';
-import { colors } from './styles';
 import { calculateTimeline } from './logic/timeline';
+import { colors } from './styles';
 
 import { type MainProps, mainSchema } from '../lib/schemas/stats';
 
@@ -113,6 +113,7 @@ export const Main: React.FC<MainProps> = ({
 
   // Preload assets
   useMemo(() => {
+    preloadFont('/fonts/Impact.woff2');
     preloadImage(user.image);
     performances.forEach((perf) => {
       if (perf.tournament.image) preloadImage(perf.tournament.image);
