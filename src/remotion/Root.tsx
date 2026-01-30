@@ -70,7 +70,8 @@ export const RemotionRoot: React.FC = () => {
         schema={mainSchema}
         durationInFrames={totalDuration({
           characters: FAVOURITE_CHARACTERS.length,
-          hasHighestUpset: !!HIGHEST_UPSET
+          hasHighestUpset: !!HIGHEST_UPSET,
+          worstMatchups: WORST_MATCHUPS.length
         })}
         fps={FPS}
         width={MAIN_COMPOSITION_WIDTH}
