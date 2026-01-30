@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
 import { makeRecapUrlKey, redis } from '$lib/server/redis';
-import { mainSchema } from '$remotion/Main';
+import { mainSchema } from '$lib/schemas/stats';
 import { getFunctions, renderMediaOnLambda } from '@remotion/lambda/client';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import 'dotenv/config';

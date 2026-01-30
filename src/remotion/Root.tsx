@@ -109,8 +109,8 @@ export const RemotionRoot: React.FC = () => {
             matchups: WORST_MATCHUPS
           }
         }}
-      // You can override these props for each render:
-      // https://www.remotion.dev/docs/parametrized-rendering
+        // You can override these props for each render:
+        // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Composition
         id="HighestUpset"
