@@ -17,6 +17,7 @@ import { FavouriteCharacters } from './FavouriteCharacter';
 import { Game5Warrior } from './Game5Warrior';
 import { HighestUpset } from './HighestUpset';
 import { MyPerformances } from './MyPerformances';
+import { Rivalries } from './Rivalries';
 import { TheGauntlet } from './TheGauntlet';
 import { ThisIsMyRecap } from './ThisIsMyRecap';
 import { Tournaments } from './Tournaments';
@@ -44,6 +45,7 @@ export const Main: React.FC<MainProps> = ({
   favouriteCharactersProps: { characters },
   worstMatchupsProps,
   highestUpsetProps,
+  rivalryProps,
   busterRunProps,
   game5WarriorProps,
   cleanSweepProps,
@@ -53,53 +55,27 @@ export const Main: React.FC<MainProps> = ({
 }) => {
   const frame = useCurrentFrame();
 
-  const { frames } = calculateTimeline({
+  const props = {
     thisIsMyRecapProps: { user, year },
-    tournamentsProps: { attendance, year },
+    tournamentsProps: { attendance, year: tournamentYear },
     performancesProps: { performances },
     favouriteCharactersProps: { characters },
     worstMatchupsProps,
     highestUpsetProps,
+    rivalryProps,
     game5WarriorProps,
     cleanSweepProps,
     dqProps,
     gauntletProps,
     dayOfWeekActivityProps,
     busterRunProps
-  });
+  };
 
-  const { bgPoints, bgColors, logoPoints, logoColors } = calculateColorTimeline(
-    frames,
-    {
-      thisIsMyRecapProps: { user, year },
-      tournamentsProps: { attendance, year },
-      performancesProps: { performances },
-      favouriteCharactersProps: { characters },
-      worstMatchupsProps,
-      highestUpsetProps,
-      game5WarriorProps,
-      cleanSweepProps,
-      dqProps,
-      gauntletProps,
-      dayOfWeekActivityProps,
-      busterRunProps
-    }
-  );
+  const { frames } = calculateTimeline(props);
 
-  const { opacityPoints, opacityValues } = calculateStocksOpacityTimeline(frames, {
-    thisIsMyRecapProps: { user, year },
-    tournamentsProps: { attendance, year },
-    performancesProps: { performances },
-    favouriteCharactersProps: { characters },
-    worstMatchupsProps,
-    highestUpsetProps,
-    game5WarriorProps,
-    cleanSweepProps,
-    dqProps,
-    gauntletProps,
-    dayOfWeekActivityProps,
-    busterRunProps
-  });
+  const { bgPoints, bgColors, logoPoints, logoColors } = calculateColorTimeline(frames, props);
+
+  const { opacityPoints, opacityValues } = calculateStocksOpacityTimeline(frames, props);
 
   const {
     thisIsMyRecap,
@@ -108,6 +84,7 @@ export const Main: React.FC<MainProps> = ({
     favouriteCharacters,
     dayOfWeekActivity,
     highestUpset,
+    rivalries,
     busterRun,
     game5Warrior,
     cleanSweep,
@@ -211,7 +188,11 @@ export const Main: React.FC<MainProps> = ({
           <HighestUpset {...highestUpsetProps} />
         </Sequence>
       )}
-
+      {rivalryProps && (
+        <Sequence name="Rivalries" from={rivalries.from} durationInFrames={rivalries.duration}>
+          <Rivalries {...rivalryProps} />
+        </Sequence>
+      )}
       {busterRunProps && (
         <Sequence name="BusterRun" from={busterRun.from} durationInFrames={busterRun.duration}>
           <BusterRun {...busterRunProps} />

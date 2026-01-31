@@ -144,7 +144,8 @@
     dayOfWeekActivityProps: {
       activity: stats.dayOfWeekActivity
     },
-    busterRunProps: stats.worstPerformance
+    busterRunProps: stats.worstPerformance,
+    rivalryProps: stats.rivalry
   }}
   {#if videoProps.tournamentsProps.attendance.reduce((acc, month) => acc + month.attendance, 0) > 0}
     <div class="my-recap">
@@ -154,6 +155,9 @@
 
       <div class="instructions">
         <div class="actions">
+          <Button onclick={() => alert(JSON.stringify(videoProps, null, 2))} extended>
+            Debug me
+          </Button>
           <Button
             bind:ref={downloadButton}
             id="download-button"

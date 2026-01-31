@@ -16,9 +16,12 @@ export const FAVOURITE_CHARACTER_DURATION = calculateFavouriteCharactersDuration
 export const WORST_MATCHUPS_DURATION = calculateWorstMatchupsDuration(WORST_MATCHUPS.length);
 
 export const HIGHEST_UPSET_DURATION = FPS * 5;
+export const RIVALRIES_DURATION = FPS * 5;
 export const GAME_5_WARRIOR_DURATION = FPS * 5;
 export const CLEAN_SWEEP_DURATION = FPS * 5;
 export const DQ_DURATION = FPS * 5;
+export const DAY_OF_WEEK_ACTIVITY_DURATION = FPS * 5;
+export const BUSTER_RUN_DURATION = FPS * 5;
 
 export const THE_GAUNTLET_DURATION = FPS * 7;
 export const END_CARD_DURATION = FPS * 3;

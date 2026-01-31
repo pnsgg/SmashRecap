@@ -16,7 +16,8 @@ import {
   THIS_IS_MY_RECAP_DURATION,
   TOURNAMENTS_DURATION,
   DAY_OF_WEEK_ACTIVITY_DURATION,
-  BUSTER_RUN_DURATION
+  BUSTER_RUN_DURATION,
+  RIVALRIES_DURATION
 } from './config';
 import { calculateTimeline } from './logic/timeline';
 import { Main, mainSchema } from './Main';
@@ -32,11 +33,13 @@ import { DQ, dqSchema } from './DQ';
 import { FavouriteCharacters, favouriteCharactersSchema } from './FavouriteCharacter';
 import { Game5Warrior, game5WarriorSchema } from './Game5Warrior';
 import { HighestUpset, highestUpsetSchema } from './HighestUpset';
+import { Rivalries, rivalrySchema } from './Rivalries';
 import {
   ATTENDANCE,
   CLEAN_SWEEP_STATS,
   DAY_OF_WEEK_STATS,
   BUSTER_RUN_STATS,
+  RIVALRY_STATS,
   DQ_STATS,
   FAVOURITE_CHARACTERS,
   GAME_5_STATS,
@@ -96,6 +99,7 @@ export const RemotionRoot: React.FC = () => {
               characters: FAVOURITE_CHARACTERS
             },
             highestUpsetProps: HIGHEST_UPSET,
+            rivalryProps: RIVALRY_STATS,
             gauntletProps: GAUNTLET_STATS,
             game5WarriorProps: GAME_5_STATS,
             cleanSweepProps: CLEAN_SWEEP_STATS,
@@ -131,6 +135,7 @@ export const RemotionRoot: React.FC = () => {
             characters: FAVOURITE_CHARACTERS
           },
           highestUpsetProps: HIGHEST_UPSET,
+          rivalryProps: RIVALRY_STATS,
           gauntletProps: GAUNTLET_STATS,
           game5WarriorProps: GAME_5_STATS,
           cleanSweepProps: CLEAN_SWEEP_STATS,
@@ -153,6 +158,17 @@ export const RemotionRoot: React.FC = () => {
         height={MAIN_COMPOSITION_HEIGHT}
         fps={FPS}
         defaultProps={HIGHEST_UPSET}
+      />
+
+      <Composition
+        id="Rivalries"
+        component={Rivalries}
+        schema={rivalrySchema}
+        durationInFrames={RIVALRIES_DURATION}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
+        defaultProps={RIVALRY_STATS}
       />
 
       <Composition
