@@ -278,3 +278,11 @@ export const RIVALRY_STATS = {
     image: 'https://images.start.gg/images/user/2613/image-abf07000a58994aef3b2172241f27951.jpg'
   }
 };
+
+export const GAME_STATS = {
+  won: 240,
+  lost: 160,
+  winRate: 60.0
+};
+
+export const TOTAL_SETS_MOCK = 200;
