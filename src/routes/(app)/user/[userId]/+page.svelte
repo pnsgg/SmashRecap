@@ -105,7 +105,7 @@
 </script>
 
 {#await getPlayerStats({ userId, year: 2025 })}
-  <div style="width: 100%">
+  <div class="loading-container">
     <p class="heading">Your recap for {YEAR} is loading...</p>
   </div>
 {:then stats}
@@ -140,6 +140,9 @@
     },
     dqProps: {
       totalDQs: stats.dqs
+    },
+    dayOfWeekActivityProps: {
+      activity: stats.dayOfWeekActivity
     }
   }}
   {#if videoProps.tournamentsProps.attendance.reduce((acc, month) => acc + month.attendance, 0) > 0}
@@ -280,6 +283,13 @@
         }
       }
     }
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
   }
 
   .no-stats {
