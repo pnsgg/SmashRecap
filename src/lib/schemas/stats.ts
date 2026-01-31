@@ -13,6 +13,12 @@ import { busterRunSchema } from '../../remotion/BusterRun';
 import { rivalrySchema } from '../../remotion/Rivalries';
 import { z } from 'zod';
 
+export const gameStatsSchema = z.object({
+  won: z.number(),
+  lost: z.number(),
+  winRate: z.number()
+});
+
 export const mainSchema = z.object({
   thisIsMyRecapProps: thisIsMyRecapSchema,
   tournamentsProps: tournamentsSchema,
@@ -26,7 +32,9 @@ export const mainSchema = z.object({
   dqProps: dqSchema,
   gauntletProps: theGauntletSchema,
   dayOfWeekActivityProps: dayOfWeekActivitySchema,
-  busterRunProps: busterRunSchema.optional()
+  busterRunProps: busterRunSchema.optional(),
+  gameStats: gameStatsSchema,
+  setsPlayed: z.number()
 });
 
 export type MainProps = z.infer<typeof mainSchema>;
