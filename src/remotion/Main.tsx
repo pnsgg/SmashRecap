@@ -76,7 +76,7 @@ export const Main: React.FC<MainProps> = ({
 
   const { frames } = calculateTimeline(props);
 
-  const { bgPoints, bgColors, logoPoints, logoColors } = calculateColorTimeline(frames, props);
+  const { bgPoints, bgColors, logoPoints, logoColors } = calculateColorTimeline(frames);
 
   const { opacityPoints, opacityValues } = calculateStocksOpacityTimeline(frames, props);
 
