@@ -143,7 +143,8 @@
     },
     dayOfWeekActivityProps: {
       activity: stats.dayOfWeekActivity
-    }
+    },
+    busterRunProps: stats.worstPerformance
   }}
   {#if videoProps.tournamentsProps.attendance.reduce((acc, month) => acc + month.attendance, 0) > 0}
     <div class="my-recap">
