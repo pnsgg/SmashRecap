@@ -851,7 +851,7 @@ export const computeGameStats = (
       const user = parsed.find((p) => aliases.has(p.name));
       const opponent = parsed.find((p) => !aliases.has(p.name));
 
-      if (user && opponent) {
+      if (user && opponent && !Number.isNaN(user.score) && !Number.isNaN(opponent.score)) {
         won += user.score;
         lost += opponent.score;
       }
