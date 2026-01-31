@@ -82,7 +82,8 @@ const CharacterColumn: React.FC<{
           fontSize: 24,
           whiteSpace: 'nowrap',
           overflow: 'hidden',
-          textOverflow: 'ellipsis'
+          textOverflow: 'ellipsis',
+          maxWidth: 150
         }}
       >
         {name}
@@ -173,7 +174,8 @@ const TournamentRow: React.FC<{
             fontSize: 20,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
+            maxWidth: 300
           }}
         >
           {name}
