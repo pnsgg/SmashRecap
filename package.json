@@ -15,7 +15,8 @@
     "remotion:studio": "remotion studio",
     "remotion:lambda:rms": "remotion lambda sites rmall -y",
     "lambda:deploy": "remotion lambda functions deploy",
-    "lambda:site": "remotion lambda sites create src/remotion/index.ts --site-name smashrecap"
+    "lambda:site": "remotion lambda sites create src/remotion/index.ts --site-name smashrecap",
+    "machine-translate": "inlang machine translate --project project.inlang"
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.0",
@@ -38,7 +39,9 @@
     "svelte-check": "^4.3.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.1",
-    "vite": "^7.2.6"
+    "vite": "^7.2.6",
+    "@inlang/paraglide-js": "^2.9.1",
+    "@inlang/cli": "^3.0.0"
   },
   "dependencies": {
     "@remotion/cli": "4.0.409",

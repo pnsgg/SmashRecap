@@ -32,3 +32,6 @@ remotion-bundle
 # Docker volumes
 redis/data
 minio/data
+
+# @inlang/paraglide
+project.inlang
