@@ -1,5 +1,6 @@
 <script lang="ts">
   import favicon from '$lib/assets/favicon.svg';
+  import FeaturedProfiles from '$lib/components/FeaturedProfiles.svelte';
   import Credits from '$lib/components/Credits.svelte';
   import Spotlight from '$lib/components/Spotlight.svelte';
   import '../../styles/app.css';
@@ -14,37 +15,40 @@
 <Spotlight fillOpacity={0.125} />
 
 <main>
-  {@render children()}
-  <Credits class="credits" />
+  <section id="hero">
+    {@render children()}
+  </section>
+
+  <section>
+    <FeaturedProfiles />
+  </section>
 </main>
+
+<Credits />
 
 <style lang="scss">
   main {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    min-height: 100svh;
+    section {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
 
-    padding: 2rem 1.25rem;
+      padding: 2rem 1.25rem;
 
-    @media screen and (min-width: 640px) {
-      flex-direction: row;
+      @media screen and (min-width: 640px) {
+        flex-direction: row;
 
-      margin: 0 auto;
-      max-width: 1400px;
-      align-items: center;
-      justify-content: space-between;
+        margin: 0 auto;
+        max-width: 1400px;
+        align-items: center;
+        justify-content: space-between;
+      }
     }
-  }
 
-  :global(.credits) {
-    @media screen and (min-width: 640px) {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      margin-bottom: 1.25rem;
+    section#hero {
+      @media screen and (min-width: 640px) {
+        padding-top: 8rem;
+      }
     }
   }
 </style>

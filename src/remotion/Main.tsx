@@ -121,7 +121,7 @@ export const Main: React.FC<MainProps> = ({
   // Preload assets
   useMemo(() => {
     preloadFont('/fonts/Impact.woff2');
-    preloadImage(user.image);
+    if (user.image) preloadImage(user.image);
     performances.forEach((perf) => {
       if (perf.tournament.image) preloadImage(perf.tournament.image);
     });

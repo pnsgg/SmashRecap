@@ -3,7 +3,7 @@ import { Img } from 'remotion';
 import { colors, makeFontVariationSettings } from '../styles';
 
 export type PlayerCardProps = {
-  image: string;
+  image: string | undefined;
   prefix?: string;
   gamerTag: string;
   country?: string;
@@ -65,15 +65,41 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
           marginRight: -12
         }}
       >
-        <Img
-          pauseWhenLoading
-          src={image}
-          style={{
-            transform: 'rotate(15deg)',
-            width: 220,
-            height: 220
-          }}
-        />
+        {image ? (
+          <Img
+            pauseWhenLoading
+            src={image}
+            style={{
+              transform: 'rotate(15deg)',
+              width: 220,
+              height: 220
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: 220,
+              height: 220,
+              backgroundColor: colors.nearlyBlack,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transform: 'rotate(15deg)'
+            }}
+          >
+            <span
+              style={{
+                fontSize: 100,
+                color: colors.redPns,
+                fontVariationSettings: makeFontVariationSettings({
+                  weight: 700
+                })
+              }}
+            >
+              {gamerTag.charAt(0).toUpperCase()}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Information */}

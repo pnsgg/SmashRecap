@@ -56,7 +56,7 @@ export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (game
           isUser: true,
           hideTest: true
         },
-        perPage: 100
+        perPage: 200
       }
     });
 
