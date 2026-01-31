@@ -32,7 +32,6 @@ import {
   calculateStocksOpacityTimeline,
   calculateTimeline
 } from './logic/timeline';
-import { colors } from './styles';
 
 import { type MainProps, mainSchema } from '../lib/schemas/stats';
 
@@ -51,7 +50,9 @@ export const Main: React.FC<MainProps> = ({
   cleanSweepProps,
   dqProps,
   gauntletProps,
-  dayOfWeekActivityProps
+  dayOfWeekActivityProps,
+  gameStats,
+  setsPlayed
 }) => {
   const frame = useCurrentFrame();
 
@@ -68,7 +69,9 @@ export const Main: React.FC<MainProps> = ({
     dqProps,
     gauntletProps,
     dayOfWeekActivityProps,
-    busterRunProps
+    busterRunProps,
+    gameStats,
+    setsPlayed
   };
 
   const { frames } = calculateTimeline(props);
@@ -149,7 +152,11 @@ export const Main: React.FC<MainProps> = ({
         <ThisIsMyRecap user={user} year={year} />
       </Sequence>
 
-      <Sequence name="Tournaments" from={tournaments.from} durationInFrames={tournaments.duration}>
+      <Sequence
+        name="Tournaments"
+        from={tournaments.from}
+        durationInFrames={tournaments.duration + performancesFrame.duration}
+      >
         <div style={{ filter: `blur(${blur}px)`, width: '100%', height: '100%' }}>
           <Tournaments attendance={attendance} year={year} />
         </div>
