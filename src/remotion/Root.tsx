@@ -1,6 +1,6 @@
 import { loadFont } from '@remotion/fonts';
 import React from 'react';
-import { Composition, staticFile } from 'remotion';
+import { Composition, staticFile, Folder } from 'remotion';
 import {
   CLEAN_SWEEP_DURATION,
   DQ_DURATION,
@@ -26,6 +26,7 @@ import { EndCard } from './EndCard';
 import { MyPerformances, myPerformancesSchema } from './MyPerformances';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
+import { VerticalStill } from './VerticalStill';
 
 import { CleanSweep, cleanSweepSchema } from './CleanSweep';
 import { WORST_MATCHUPS_DURATION } from './config';
@@ -48,7 +49,9 @@ import {
   ME,
   PERFORMANCES,
   WORST_MATCHUPS,
-  YEAR
+  YEAR,
+  GAME_STATS,
+  TOTAL_SETS_MOCK
 } from './mock';
 import { typography } from './styles';
 import './styles/remotion.css';
@@ -108,7 +111,9 @@ export const RemotionRoot: React.FC = () => {
               matchups: WORST_MATCHUPS
             },
             dayOfWeekActivityProps: DAY_OF_WEEK_STATS,
-            busterRunProps: BUSTER_RUN_STATS
+            busterRunProps: BUSTER_RUN_STATS,
+            gameStats: GAME_STATS,
+            setsPlayed: TOTAL_SETS_MOCK
           }).totalDuration
         }
         calculateMetadata={async ({ props }) => {
@@ -144,162 +149,204 @@ export const RemotionRoot: React.FC = () => {
             matchups: WORST_MATCHUPS
           },
           dayOfWeekActivityProps: DAY_OF_WEEK_STATS,
-          busterRunProps: BUSTER_RUN_STATS
+          busterRunProps: BUSTER_RUN_STATS,
+          gameStats: GAME_STATS,
+          setsPlayed: TOTAL_SETS_MOCK
         }}
-      // You can override these props for each render:
-      // https://www.remotion.dev/docs/parametrized-rendering
+        // You can override these props for each render:
+        // https://www.remotion.dev/docs/parametrized-rendering
       />
-      <Composition
-        id="HighestUpset"
-        component={HighestUpset}
-        schema={highestUpsetSchema}
-        durationInFrames={HIGHEST_UPSET_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={HIGHEST_UPSET}
-      />
+      <Folder name="Scenes">
+        <Composition
+          id="HighestUpset"
+          component={HighestUpset}
+          schema={highestUpsetSchema}
+          durationInFrames={HIGHEST_UPSET_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={HIGHEST_UPSET}
+        />
 
-      <Composition
-        id="Rivalries"
-        component={Rivalries}
-        schema={rivalrySchema}
-        durationInFrames={RIVALRIES_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={RIVALRY_STATS}
-      />
+        <Composition
+          id="Rivalries"
+          component={Rivalries}
+          schema={rivalrySchema}
+          durationInFrames={RIVALRIES_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={RIVALRY_STATS}
+        />
 
+        <Composition
+          id="TheGauntlet"
+          component={TheGauntlet}
+          schema={theGauntletSchema}
+          durationInFrames={THE_GAUNTLET_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={GAUNTLET_STATS}
+        />
+        <Composition
+          id="ThisIsMyRecap"
+          component={ThisIsMyRecap}
+          schema={thisIsMyRecapSchema}
+          durationInFrames={THIS_IS_MY_RECAP_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={{
+            year: YEAR,
+            user: ME
+          }}
+        />
+        <Composition
+          id="Tournaments"
+          component={Tournaments}
+          schema={tournamentsSchema}
+          durationInFrames={TOURNAMENTS_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={{
+            year: YEAR,
+            attendance: ATTENDANCE
+          }}
+        />
+        <Composition
+          id="Performances"
+          component={MyPerformances}
+          schema={myPerformancesSchema}
+          durationInFrames={PERFORMANCES_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={{
+            performances: PERFORMANCES
+          }}
+        />
+        <Composition
+          id="WorstMatchups"
+          component={WorstMatchups}
+          schema={worstMatchupsSchema}
+          durationInFrames={WORST_MATCHUPS_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={{
+            matchups: WORST_MATCHUPS
+          }}
+        />
+        <Composition
+          id="FavouriteCharacters"
+          component={FavouriteCharacters}
+          schema={favouriteCharactersSchema}
+          durationInFrames={FAVOURITE_CHARACTER_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={{
+            characters: FAVOURITE_CHARACTERS
+          }}
+        />
+        <Composition
+          id="Game5Warrior"
+          component={Game5Warrior}
+          schema={game5WarriorSchema}
+          durationInFrames={GAME_5_WARRIOR_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={GAME_5_STATS}
+        />
+        <Composition
+          id="CleanSweep"
+          component={CleanSweep}
+          schema={cleanSweepSchema}
+          durationInFrames={CLEAN_SWEEP_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={CLEAN_SWEEP_STATS}
+        />
+        <Composition
+          id="EndCard"
+          component={EndCard}
+          durationInFrames={END_CARD_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+        />
+        <Composition
+          id="DQ"
+          component={DQ}
+          schema={dqSchema}
+          durationInFrames={DQ_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={DQ_STATS}
+        />
+        <Composition
+          id="DayOfWeekActivity"
+          component={DayOfWeekActivity}
+          schema={dayOfWeekActivitySchema}
+          durationInFrames={DAY_OF_WEEK_ACTIVITY_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={DAY_OF_WEEK_STATS}
+        />
+        <Composition
+          id="BusterRun"
+          component={BusterRun}
+          schema={busterRunSchema}
+          durationInFrames={BUSTER_RUN_DURATION}
+          width={MAIN_COMPOSITION_WIDTH}
+          height={MAIN_COMPOSITION_HEIGHT}
+          fps={FPS}
+          defaultProps={BUSTER_RUN_STATS}
+        />
+      </Folder>
       <Composition
-        id="TheGauntlet"
-        component={TheGauntlet}
-        schema={theGauntletSchema}
-        durationInFrames={THE_GAUNTLET_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={GAUNTLET_STATS}
-      />
-      <Composition
-        id="ThisIsMyRecap"
-        component={ThisIsMyRecap}
-        schema={thisIsMyRecapSchema}
-        durationInFrames={THIS_IS_MY_RECAP_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
+        id="VerticalStill"
+        component={VerticalStill}
+        schema={mainSchema}
+        durationInFrames={1}
+        width={1080}
+        height={1440}
         fps={FPS}
         defaultProps={{
-          year: YEAR,
-          user: ME
+          thisIsMyRecapProps: {
+            user: ME,
+            year: YEAR
+          },
+          tournamentsProps: {
+            attendance: ATTENDANCE,
+            year: YEAR
+          },
+          performancesProps: {
+            performances: PERFORMANCES
+          },
+          favouriteCharactersProps: {
+            characters: FAVOURITE_CHARACTERS
+          },
+          highestUpsetProps: HIGHEST_UPSET,
+          rivalryProps: RIVALRY_STATS,
+          gauntletProps: GAUNTLET_STATS,
+          game5WarriorProps: GAME_5_STATS,
+          cleanSweepProps: CLEAN_SWEEP_STATS,
+          dqProps: DQ_STATS,
+          worstMatchupsProps: {
+            matchups: WORST_MATCHUPS
+          },
+          dayOfWeekActivityProps: DAY_OF_WEEK_STATS,
+          busterRunProps: BUSTER_RUN_STATS,
+          gameStats: GAME_STATS,
+          setsPlayed: TOTAL_SETS_MOCK
         }}
-      />
-      <Composition
-        id="Tournaments"
-        component={Tournaments}
-        schema={tournamentsSchema}
-        durationInFrames={TOURNAMENTS_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={{
-          year: YEAR,
-          attendance: ATTENDANCE
-        }}
-      />
-      <Composition
-        id="Performances"
-        component={MyPerformances}
-        schema={myPerformancesSchema}
-        durationInFrames={PERFORMANCES_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={{
-          performances: PERFORMANCES
-        }}
-      />
-      <Composition
-        id="WorstMatchups"
-        component={WorstMatchups}
-        schema={worstMatchupsSchema}
-        durationInFrames={WORST_MATCHUPS_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={{
-          matchups: WORST_MATCHUPS
-        }}
-      />
-      <Composition
-        id="FavouriteCharacters"
-        component={FavouriteCharacters}
-        schema={favouriteCharactersSchema}
-        durationInFrames={FAVOURITE_CHARACTER_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={{
-          characters: FAVOURITE_CHARACTERS
-        }}
-      />
-      <Composition
-        id="Game5Warrior"
-        component={Game5Warrior}
-        schema={game5WarriorSchema}
-        durationInFrames={GAME_5_WARRIOR_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={GAME_5_STATS}
-      />
-      <Composition
-        id="CleanSweep"
-        component={CleanSweep}
-        schema={cleanSweepSchema}
-        durationInFrames={CLEAN_SWEEP_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={CLEAN_SWEEP_STATS}
-      />
-      <Composition
-        id="EndCard"
-        component={EndCard}
-        durationInFrames={END_CARD_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-      />
-      <Composition
-        id="DQ"
-        component={DQ}
-        schema={dqSchema}
-        durationInFrames={DQ_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={DQ_STATS}
-      />
-      <Composition
-        id="DayOfWeekActivity"
-        component={DayOfWeekActivity}
-        schema={dayOfWeekActivitySchema}
-        durationInFrames={DAY_OF_WEEK_ACTIVITY_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={DAY_OF_WEEK_STATS}
-      />
-      <Composition
-        id="BusterRun"
-        component={BusterRun}
-        schema={busterRunSchema}
-        durationInFrames={BUSTER_RUN_DURATION}
-        width={MAIN_COMPOSITION_WIDTH}
-        height={MAIN_COMPOSITION_HEIGHT}
-        fps={FPS}
-        defaultProps={BUSTER_RUN_STATS}
       />
     </>
   );
