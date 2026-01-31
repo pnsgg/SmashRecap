@@ -7,7 +7,6 @@ import {
   DAY_OF_WEEK_ACTIVITY_DURATION,
   DQ_DURATION,
   END_CARD_DURATION,
-  FAVOURITE_CHARACTER_DURATION,
   FPS,
   GAME_5_WARRIOR_DURATION,
   HIGHEST_UPSET_DURATION,
@@ -15,8 +14,7 @@ import {
   PERFORMANCES_DURATION,
   THE_GAUNTLET_DURATION,
   THIS_IS_MY_RECAP_DURATION,
-  TOURNAMENTS_DURATION,
-  WORST_MATCHUPS_DURATION
+  TOURNAMENTS_DURATION
 } from '../config';
 import { colors } from '../styles';
 
@@ -47,7 +45,9 @@ export const calculateTimeline = (props: MainProps) => {
   currentFrame += durationPerformances;
 
   const fromFavouriteCharacters = currentFrame;
-  const durationFavouriteCharacters = FAVOURITE_CHARACTER_DURATION;
+  const durationFavouriteCharacters = calculateFavouriteCharactersDuration(
+    props.favouriteCharactersProps.characters.length
+  );
   currentFrame += durationFavouriteCharacters;
 
   const fromDayOfWeekActivity =
@@ -77,7 +77,9 @@ export const calculateTimeline = (props: MainProps) => {
   currentFrame += durationCleanSweep;
 
   const fromWorstMatchups = currentFrame;
-  const durationWorstMatchups = WORST_MATCHUPS_DURATION;
+  const durationWorstMatchups = calculateWorstMatchupsDuration(
+    props.worstMatchupsProps?.matchups.length ?? 0
+  );
   currentFrame += durationWorstMatchups;
 
   const fromDQ = currentFrame;
@@ -121,10 +123,9 @@ export const calculateTimeline = (props: MainProps) => {
  * Calculates the background and logo color interpolation points.
  *
  * @param frames - The frames object returned by calculateTimeline.
- * @param props - The main properties object.
  * @returns An object containing arrays for bgPoints, bgColors, logoPoints, and logoColors.
  */
-export const calculateColorTimeline = (frames: Record<string, Frame>, props: MainProps) => {
+export const calculateColorTimeline = (frames: Record<string, Frame>) => {
   const bgPoints: number[] = [];
   const bgColors: string[] = [];
   const logoPoints: number[] = [];
@@ -133,7 +134,12 @@ export const calculateColorTimeline = (frames: Record<string, Frame>, props: Mai
   // Define the base color for each segment
   const segmentConfig = [
     { key: 'thisIsMyRecap', color: colors.nearlyBlack, logo: colors.reallyWhite },
-    { key: 'tournaments', color: colors.reallyWhite, logo: colors.nearlyBlack },
+    {
+      key: 'tournaments',
+      color: colors.reallyWhite,
+      logo: colors.nearlyBlack,
+      delay: FPS / 2
+    },
     { key: 'performances', color: colors.reallyWhite, logo: colors.nearlyBlack },
     { key: 'favouriteCharacters', color: colors.nearlyBlack, logo: colors.reallyWhite },
     { key: 'dayOfWeekActivity', color: colors.reallyWhite, logo: colors.nearlyBlack },
@@ -156,15 +162,17 @@ export const calculateColorTimeline = (frames: Record<string, Frame>, props: Mai
     // Skip segments that don't exist or have no duration
     if (!frame || frame.duration === 0) return;
 
-    // Transition AT the start of the segment if color changed from previous visible segment
+    const delay = config.delay ?? 0;
+
+    // Transition at the start of the segment if color changed from previous visible segment
     if (config.color !== currentBg) {
-      bgPoints.push(frame.from - FPS / 2, frame.from);
+      bgPoints.push(frame.from + delay - FPS / 2, frame.from + delay);
       bgColors.push(currentBg, config.color);
       currentBg = config.color;
     }
 
     if (config.logo !== currentLogo) {
-      logoPoints.push(frame.from - FPS / 2, frame.from);
+      logoPoints.push(frame.from + delay - FPS / 2, frame.from + delay);
       logoColors.push(currentLogo, config.logo);
       currentLogo = config.logo;
     }
@@ -180,10 +188,7 @@ export const calculateColorTimeline = (frames: Record<string, Frame>, props: Mai
  * @param props - The main properties object.
  * @returns An object containing arrays for opacity interpolation (points and values).
  */
-export const calculateStocksOpacityTimeline = (
-  frames: Record<string, Frame>,
-  props: MainProps
-) => {
+export const calculateStocksOpacityTimeline = (frames: Record<string, Frame>, props: MainProps) => {
   const { gauntlet, endCard } = frames;
 
   const opacityPoints = [0];
