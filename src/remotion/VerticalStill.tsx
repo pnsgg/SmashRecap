@@ -267,7 +267,7 @@ export const VerticalStill: React.FC<MainProps> = ({
   const cleanSweeps = cleanSweepProps.totalSweeps;
   const dqs = dqProps.totalDQs;
 
-  const mostProductiveDay = dayOfWeekActivityProps.activity.reduce(
+  const mostActiveDay = dayOfWeekActivityProps.activity.reduce(
     (prev: { count: number; day: string }, current: { count: number; day: string }) =>
       prev.count > current.count ? prev : current
   ).day;
@@ -374,7 +374,7 @@ export const VerticalStill: React.FC<MainProps> = ({
 
           <Section title="Most Played">
             <div style={{ display: 'flex', flexDirection: 'row', gap: 12 }}>
-              {characters.slice(0, 3).map((char, i) => (
+              {characters.slice(0, 3).map((char) => (
                 <CharacterColumn
                   key={char.name}
                   name={char.name}
@@ -491,7 +491,7 @@ export const VerticalStill: React.FC<MainProps> = ({
         <QuickStatBox label="Clean Sweeps" value={cleanSweeps} />
         <QuickStatBox label="DQs" value={dqs} />
         <QuickStatBox label="Peak Month" value={monthNames[peakMonth] ?? peakMonth} />
-        <QuickStatBox label="Best Day" value={dayNames[mostProductiveDay] ?? mostProductiveDay} />
+        <QuickStatBox label="Best Day" value={dayNames[mostActiveDay] ?? mostActiveDay} />
       </div>
 
       <div
