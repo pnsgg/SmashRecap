@@ -946,6 +946,14 @@ export const computeWorstPerformance = (
   const worst = performances[0];
   if (!worst) return undefined;
 
+  const spr = seedingPerformanceRating(
+    worst.initialSeed!,
+    worst.finalPlacement!,
+    worst.bracketType as BracketType
+  );
+
+  if (spr === 0) return undefined;
+
   const date = unixToDate(worst.tournament?.startAt as number).toLocaleDateString('en-US', {
     month: 'short',
     day: '2-digit'
@@ -954,11 +962,7 @@ export const computeWorstPerformance = (
   return {
     finalPlacement: worst.finalPlacement!,
     initialSeed: worst.initialSeed!,
-    spr: seedingPerformanceRating(
-      worst.initialSeed!,
-      worst.finalPlacement!,
-      worst.bracketType as BracketType
-    ),
+    spr,
     tournament: {
       image: worst.tournament?.images?.[0]?.url ?? undefined,
       name: worst.tournament?.name as string,
