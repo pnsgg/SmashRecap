@@ -318,17 +318,19 @@ export const VerticalStill: React.FC<MainProps> = ({
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 24, zIndex: 1 }}>
-        <div
-          style={{
-            width: 120,
-            height: 120,
-            borderRadius: '50%',
-            overflow: 'hidden',
-            border: `4px solid ${colors.redPns}`
-          }}
-        >
-          <Img src={user.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        </div>
+        {user.image && (
+          <div
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: '50%',
+              overflow: 'hidden',
+              border: `4px solid ${colors.redPns}`
+            }}
+          >
+            <Img src={user.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+        )}
         <div>
           <h1 style={{ ...typography.heading, fontSize: 80, margin: 0, lineHeight: 1 }}>
             {user.gamerTag}

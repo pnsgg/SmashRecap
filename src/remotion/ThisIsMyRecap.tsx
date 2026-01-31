@@ -8,7 +8,7 @@ import { colors, makeFontVariationSettings, typography } from './styles';
 export const thisIsMyRecapSchema = z.object({
   year: z.number().min(1),
   user: z.object({
-    image: z.string().url(),
+    image: z.string().optional(),
     prefix: z.string().optional(),
     gamerTag: z.string(),
     country: z.string().optional(),
