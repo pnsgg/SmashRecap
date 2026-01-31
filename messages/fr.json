@@ -17,9 +17,10 @@
     "download_progress": "Progression : {progress}%",
     "downloading": "Téléchargement en cours...",
     "download_video": "Télécharger la vidéo",
+    "download_summary_image": "Télécharger l'image",
     "share_x": "Partager votre SmashRecap sur X",
     "share_bluesky": "Partager votre SmashRecap sur Bluesky",
-    "share_text": "Voici mon SmashRecap ! Obtenez le vôtre : {url}\n\n[Supprimez cet espace réservé, téléchargez et glissez votre vidéo MP4 ici]",
+    "share_text": "Voici mon SmashRecap ! Obtenez le vôtre : {url}",
     "recap_another": "Voir le récapitulatif d'un autre utilisateur",
     "try_another": "Essayer un autre utilisateur",
     "no_stats": "Aucune participation à un tournoi trouvée pour {year}.",
@@ -30,7 +31,11 @@
     "title": "Votre récapitulatif de l'année {year} sur Super Smash Bros. Ultimate",
     "description": "Découvrez votre parcours à travers les tournois, les batailles et les triomphes qui ont rendu votre année Smash inoubliable.",
     "be_first": "Soyez le premier à générer votre récapitulatif",
-    "recaps_generated": "+{count} récapitulatifs générés"
+    "recaps_generated": "+{count} récapitulatifs générés",
+    "featured_profiles": {
+      "title": "Profils en vedette",
+      "description": "Top 20 joueurs de l'UltRank 2025"
+    }
   },
   "common": {
     "or": "OU"
