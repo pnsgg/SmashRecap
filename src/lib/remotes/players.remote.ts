@@ -1,6 +1,6 @@
 import { query } from '$app/server';
 import { env } from '$env/dynamic/private';
-import { makerRecapStatsKey, redis } from '$lib/server/redis';
+import { makeRecapStatsKey, redis } from '$lib/server/redis';
 import { fetchStartGG } from '$lib/startgg/fetch';
 import {
   computeAliasesFromEvents,
@@ -159,7 +159,7 @@ export const getPlayerStats = query(
     year: v.pipe(v.number(), v.minValue(2000), v.maxValue(new Date().getFullYear()))
   }),
   async ({ userId, year }) => {
-    const key = makerRecapStatsKey(year, userId);
+    const key = makeRecapStatsKey(year, userId);
 
     if (env.ALLOW_CACHING === 'true') {
       const cached = await redis.get(key);
