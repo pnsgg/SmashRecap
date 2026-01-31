@@ -11,9 +11,7 @@
   let { data } = $props();
 
   const mobile = new IsMobile();
-
   const year = 2025;
-
   let searchOpen = $state(false);
 
   const onSearchSelection = (userId: number) => {
