@@ -12,6 +12,20 @@
     "error_title": "Error",
     "error_fetch_failed": "Failed to fetch player data"
   },
+  "recap": {
+    "loading": "Your recap for {year} is loading...",
+    "download_progress": "Progress: {progress}%",
+    "downloading": "Downloading...",
+    "download_video": "Download Video",
+    "share_x": "Share your SmashRecap on X",
+    "share_bluesky": "Share your SmashRecap on Bluesky",
+    "share_text": "This is my SmashRecap! Get your own: {url}\n\n[Delete this placeholder, download and drag your MP4 video in here]",
+    "recap_another": "Recap another user",
+    "try_another": "Try another user",
+    "no_stats": "No tournament attendance found for {year}.",
+    "no_stats_desc": "Recap cannot be generated.",
+    "render_failed": "Render failed: {error}"
+  },
   "home": {
     "title": "Your {year} Super Smash Bros. Ultimate year in review",
     "description": "Unwrap your journey through the tournaments, battles, and triumphs that made your Smash year unforgettable.",
