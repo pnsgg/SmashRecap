@@ -1,7 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { z } from 'zod';
-import { Stocks } from './components/Stocks';
 import { colors, makeFontVariationSettings, typography } from './styles';
 import { FPS } from './config';
 
@@ -36,14 +35,11 @@ export const DQ: React.FC<DQProps> = ({ totalDQs }) => {
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: colors.nearlyBlack,
         fontFamily: typography.fontFamily,
         color: colors.reallyWhite,
         justifyContent: 'center'
       }}
     >
-      <Stocks opacity={0.1} />
-
       <AbsoluteFill
         style={{
           justifyContent: 'center',
@@ -101,7 +97,6 @@ export const DQ: React.FC<DQProps> = ({ totalDQs }) => {
               textTransform: 'uppercase',
               maxWidth: 600,
               textAlign: 'center',
-              textShadow: `0 4px 10px ${colors.nearlyBlack}`,
               opacity: interpolate(enterSpring, [0, 1], [0, 1])
             }}
           >

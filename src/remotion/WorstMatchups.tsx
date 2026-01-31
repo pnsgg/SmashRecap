@@ -14,7 +14,6 @@ import {
   SubtitleTextWhite,
   TOTAL_DURATION
 } from './components/CharacterDisplay';
-import { Stocks } from './components/Stocks';
 import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const worstMatchupSchema = z.object({
@@ -72,7 +71,6 @@ export const WorstMatchups: React.FC<{
         fontFamily: typography.fontFamily
       }}
     >
-      <Stocks />
       <AbsoluteFill
         style={{
           justifyContent: 'center',

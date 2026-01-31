@@ -2,7 +2,6 @@ import React from 'react';
 import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
 import { z } from 'zod';
 import { Bar } from './components/Bar';
-import { Stocks } from './components/Stocks';
 import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const dayOfWeekActivitySchema = z.object({
@@ -43,12 +42,9 @@ export const DayOfWeekActivity: React.FC<DayOfWeekActivityProps> = ({ activity }
         fontFamily: typography.fontFamily,
         paddingLeft: 24,
         paddingRight: 24,
-        color: colors.nearlyBlack,
-        backgroundColor: 'white'
+        color: colors.nearlyBlack
       }}
     >
-      <Stocks opacity={0.04} />
-
       <h1
         style={{
           fontSize: 54,

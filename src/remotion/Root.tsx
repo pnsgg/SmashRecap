@@ -14,7 +14,9 @@ import {
   PERFORMANCES_DURATION,
   THE_GAUNTLET_DURATION,
   THIS_IS_MY_RECAP_DURATION,
-  TOURNAMENTS_DURATION
+  TOURNAMENTS_DURATION,
+  DAY_OF_WEEK_ACTIVITY_DURATION,
+  BUSTER_RUN_DURATION
 } from './config';
 import { calculateTimeline } from './logic/timeline';
 import { Main, mainSchema } from './Main';
@@ -33,6 +35,8 @@ import { HighestUpset, highestUpsetSchema } from './HighestUpset';
 import {
   ATTENDANCE,
   CLEAN_SWEEP_STATS,
+  DAY_OF_WEEK_STATS,
+  BUSTER_RUN_STATS,
   DQ_STATS,
   FAVOURITE_CHARACTERS,
   GAME_5_STATS,
@@ -47,6 +51,8 @@ import { typography } from './styles';
 import './styles/remotion.css';
 import { TheGauntlet, theGauntletSchema } from './TheGauntlet';
 import { WorstMatchups, worstMatchupsSchema } from './WorstMatchups';
+import { DayOfWeekActivity, dayOfWeekActivitySchema } from './DayOfWeekActivity';
+import { BusterRun, busterRunSchema } from './BusterRun';
 
 // Each <Composition> is an entry in the sidebar!
 
@@ -96,7 +102,9 @@ export const RemotionRoot: React.FC = () => {
             dqProps: DQ_STATS,
             worstMatchupsProps: {
               matchups: WORST_MATCHUPS
-            }
+            },
+            dayOfWeekActivityProps: DAY_OF_WEEK_STATS,
+            busterRunProps: BUSTER_RUN_STATS
           }).totalDuration
         }
         calculateMetadata={async ({ props }) => {
@@ -129,10 +137,12 @@ export const RemotionRoot: React.FC = () => {
           dqProps: DQ_STATS,
           worstMatchupsProps: {
             matchups: WORST_MATCHUPS
-          }
+          },
+          dayOfWeekActivityProps: DAY_OF_WEEK_STATS,
+          busterRunProps: BUSTER_RUN_STATS
         }}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
+      // You can override these props for each render:
+      // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Composition
         id="HighestUpset"
@@ -254,6 +264,26 @@ export const RemotionRoot: React.FC = () => {
         height={MAIN_COMPOSITION_HEIGHT}
         fps={FPS}
         defaultProps={DQ_STATS}
+      />
+      <Composition
+        id="DayOfWeekActivity"
+        component={DayOfWeekActivity}
+        schema={dayOfWeekActivitySchema}
+        durationInFrames={DAY_OF_WEEK_ACTIVITY_DURATION}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
+        defaultProps={DAY_OF_WEEK_STATS}
+      />
+      <Composition
+        id="BusterRun"
+        component={BusterRun}
+        schema={busterRunSchema}
+        durationInFrames={BUSTER_RUN_DURATION}
+        width={MAIN_COMPOSITION_WIDTH}
+        height={MAIN_COMPOSITION_HEIGHT}
+        fps={FPS}
+        defaultProps={BUSTER_RUN_STATS}
       />
     </>
   );
