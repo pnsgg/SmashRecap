@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
+import { AbsoluteFill } from 'remotion';
 import { z } from 'zod';
 import { Bar } from './components/Bar';
 import { colors, makeFontVariationSettings, typography } from './styles';
@@ -22,8 +22,7 @@ export const DayOfWeekActivity: React.FC<DayOfWeekActivityProps> = ({ activity }
   const GAP = 12;
   const maxBarHeight = 340;
 
-  /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-  const mostProductiveDay = activity.find((t) => t.count === highestCount)!.day;
+  const mostActiveDay = activity.find((t) => t.count === highestCount)!.day;
 
   const dayNames: Record<string, string> = {
     Mon: 'Monday',
@@ -59,7 +58,7 @@ export const DayOfWeekActivity: React.FC<DayOfWeekActivityProps> = ({ activity }
           margin: 0
         }}
       >
-        {dayNames[mostProductiveDay]} <br /> is my most productive day
+        {dayNames[mostActiveDay]} <br /> is my most active day
       </h1>
 
       <div

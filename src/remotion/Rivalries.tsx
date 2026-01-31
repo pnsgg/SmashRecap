@@ -48,7 +48,7 @@ export const Rivalries: React.FC<Rivalry> = ({ rival, nemesis }) => {
     delay
   }: {
     title: string;
-    data: any;
+    data: Rival;
     color: string;
     delay: number;
   }) => {
