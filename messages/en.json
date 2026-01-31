@@ -1,4 +1,29 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "example_message": "Hello world {username}"
+  "example_message": "Hello world {username}",
+  "actions": {
+    "continue_with_sgg": "Continue with start.gg",
+    "search_player": "Search for a player"
+  },
+  "search": {
+    "placeholder": "Search for a player...",
+    "searching": "Searching...",
+    "no_results": "No results found.",
+    "error_title": "Error",
+    "error_fetch_failed": "Failed to fetch player data"
+  },
+  "home": {
+    "title": "Your {year} Super Smash Bros. Ultimate year in review",
+    "description": "Unwrap your journey through the tournaments, battles, and triumphs that made your Smash year unforgettable.",
+    "be_first": "Be the first to generate your recap",
+    "recaps_generated": "+{count} recaps generated"
+  },
+  "common": {
+    "or": "OR"
+  },
+  "credits": {
+    "developed_by": "developed by",
+    "source_code": "source code",
+    "supported_by": "supported by"
+  }
 }

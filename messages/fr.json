@@ -1,0 +1,29 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "example_message": "Bonjour {username}",
+  "actions": {
+    "continue_with_sgg": "Continuer avec start.gg",
+    "search_player": "Rechercher un joueur"
+  },
+  "search": {
+    "placeholder": "Rechercher un joueur...",
+    "searching": "Recherche en cours...",
+    "no_results": "Aucun résultat trouvé.",
+    "error_title": "Erreur",
+    "error_fetch_failed": "Échec de la récupération des données du joueur"
+  },
+  "home": {
+    "title": "Votre récapitulatif de l'année {year} sur Super Smash Bros. Ultimate",
+    "description": "Découvrez votre parcours à travers les tournois, les batailles et les triomphes qui ont rendu votre année Smash inoubliable.",
+    "be_first": "Soyez le premier à générer votre récapitulatif",
+    "recaps_generated": "+{count} récapitulatifs générés"
+  },
+  "common": {
+    "or": "OU"
+  },
+  "credits": {
+    "developed_by": "développé par",
+    "source_code": "code source",
+    "supported_by": "soutenu par"
+  }
+}

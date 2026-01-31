@@ -4,6 +4,7 @@
   import MagnifyingGlass from 'phosphor-svelte/lib/MagnifyingGlass';
   import Spinner from 'phosphor-svelte/lib/Spinner';
   import { Debounced } from 'runed';
+  import * as m from '$lib/paraglide/messages';
 
   let {
     open = $bindable(false),
@@ -33,18 +34,18 @@
     <Command.Root class="command-root" shouldFilter={false}>
       <div class="input-wrapper">
         <MagnifyingGlass class="search-icon" size={20} />
-        <Command.Input bind:value placeholder="Search for a player..." class="command-input" />
+        <Command.Input bind:value placeholder={m['search.placeholder']()} class="command-input" />
       </div>
 
       <Command.List class="command-list">
         {#await searchPlayerQuery(debouncedValue.current)}
           <div class="loading-state">
             <Spinner class="spinner" size={24} />
-            <span>Searching...</span>
+            <span>{m['search.searching']()}</span>
           </div>
         {:then results}
           {#if results.length === 0 && value.length > 0}
-            <Command.Empty class="command-empty">No results found.</Command.Empty>
+            <Command.Empty class="command-empty">{m['search.no_results']()}</Command.Empty>
           {:else if results.length > 0}
             <Command.Group>
               {#each results as player (player.id)}
@@ -79,8 +80,8 @@
           {/if}
         {:catch}
           <div class="error-info">
-            <span class="error-title">Error</span>
-            <span class="error-message">Failed to fetch player data</span>
+            <span class="error-title">{m['search.error_title']()}</span>
+            <span class="error-message">{m['search.error_fetch_failed']()}</span>
           </div>
         {/await}
       </Command.List>
