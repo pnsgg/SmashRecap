@@ -38,4 +38,5 @@ static/videos
 
 
 # @inlang/paraglide
-project.inlang
+project.inlang/*
+!project.inlang/settings.json
