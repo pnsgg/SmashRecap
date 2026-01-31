@@ -237,3 +237,52 @@ export const WORST_MATCHUPS = [
     looseRate: 71.4
   }
 ];
+
+export const DAY_OF_WEEK_STATS = {
+  activity: [
+    { day: 'Mon', count: 5 },
+    { day: 'Tue', count: 8 },
+    { day: 'Wed', count: 3 },
+    { day: 'Thu', count: 12 },
+    { day: 'Fri', count: 20 },
+    { day: 'Sat', count: 45 },
+    { day: 'Sun', count: 30 }
+  ]
+};
+
+export const BUSTER_RUN_STATS = {
+  finalPlacement: 257,
+  initialSeed: 32,
+  spr: -5,
+  tournament: {
+    name: 'BloomBagarre',
+    date: 'Jan 30',
+    image:
+      'https://images.start.gg/images/tournament/867940/image-3a856b491f9df7c5d583d98188caa4ba.png',
+    location: 'Toulouse, France',
+    attendees: 3000
+  }
+};
+
+export const RIVALRY_STATS = {
+  rival: {
+    gamerTag: 'Sparg0',
+    wins: 5,
+    losses: 2,
+    image: 'https://images.start.gg/images/user/94369/image-6586d2783cd1fe8a1ed41c181517ad98.jpg'
+  },
+  nemesis: {
+    gamerTag: 'Glutonny',
+    wins: 0,
+    losses: 4,
+    image: 'https://images.start.gg/images/user/2613/image-abf07000a58994aef3b2172241f27951.jpg'
+  }
+};
+
+export const GAME_STATS = {
+  won: 240,
+  lost: 160,
+  winRate: 60.0
+};
+
+export const TOTAL_SETS_MOCK = 200;

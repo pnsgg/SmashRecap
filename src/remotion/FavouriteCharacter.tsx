@@ -14,7 +14,6 @@ import {
   type FavouriteCharacterType,
   TOTAL_DURATION
 } from './components/Character';
-import { Stocks } from './components/Stocks';
 import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const favouriteCharactersSchema = z.object({
@@ -62,7 +61,6 @@ export const FavouriteCharacters: React.FC<{
         fontFamily: typography.fontFamily
       }}
     >
-      <Stocks />
       <AbsoluteFill
         style={{
           justifyContent: 'center',

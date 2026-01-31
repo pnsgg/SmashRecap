@@ -13,7 +13,7 @@ const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 export default defineConfig(
   includeIgnoreFile(gitignorePath),
   {
-    ignores: ['src/graphql-env.d.ts']
+    ignores: ['src/graphql-env.d.ts', 'src/lib/paraglide']
   },
   js.configs.recommended,
   ...ts.configs.recommended,

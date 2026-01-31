@@ -9,7 +9,6 @@ import {
   useVideoConfig
 } from 'remotion';
 import { z } from 'zod';
-import { Stocks } from './components/Stocks';
 import { ALL_FIGHTERS, getFighterInfo } from './constants';
 import { colors, makeFontVariationSettings, typography } from './styles';
 
@@ -58,15 +57,12 @@ export const TheGauntlet: React.FC<TheGauntletProps> = ({ encountered }) => {
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: colors.nearlyBlack,
         fontFamily: typography.fontFamily,
         color: colors.reallyWhite,
         justifyContent: 'center',
         alignItems: 'center'
       }}
     >
-      <Stocks opacity={0.025} />
-
       {/* Title */}
       <div
         style={{

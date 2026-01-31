@@ -2,7 +2,6 @@ import React from 'react';
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { z } from 'zod';
 import { DigitReel, FONT_SIZE, FRAMES_PER_STEP } from './components/DigitReel';
-import { Stocks } from './components/Stocks';
 import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const cleanSweepSchema = z.object({
@@ -57,13 +56,10 @@ export const CleanSweep: React.FC<CleanSweepProps> = ({ totalSets, totalSweeps }
     <AbsoluteFill
       id="remotion-root"
       style={{
-        backgroundColor: colors.nearlyBlack,
         fontFamily: typography.fontFamily,
         color: colors.reallyWhite
       }}
     >
-      <Stocks opacity={0.1} />
-
       <div style={{ transform: `translateY(${containerY + enterY}px)`, width: '100%' }}>
         <div
           style={{
@@ -79,7 +75,6 @@ export const CleanSweep: React.FC<CleanSweepProps> = ({ totalSets, totalSweeps }
             style={{
               fontSize: FONT_SIZE,
               lineHeight: 1,
-              color: colors.reallyWhite,
               fontVariationSettings: makeFontVariationSettings({ width: 75, weight: 700 })
             }}
           >
@@ -95,8 +90,7 @@ export const CleanSweep: React.FC<CleanSweepProps> = ({ totalSets, totalSweeps }
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            textAlign: 'center',
-            color: colors.reallyWhite
+            textAlign: 'center'
           }}
         >
           <div
@@ -114,8 +108,7 @@ export const CleanSweep: React.FC<CleanSweepProps> = ({ totalSets, totalSweeps }
             style={{
               ...typography.heading2,
               textTransform: 'uppercase',
-              maxWidth: 600,
-              textShadow: `0 4px 10px ${colors.nearlyBlack}`
+              maxWidth: 600
             }}
           >
             sets were X-0

@@ -141,6 +141,11 @@ export const getEvent = graphql(`
                   players {
                     id
                     gamerTag
+                    user {
+                      images(type: "profile") {
+                        url
+                      }
+                    }
                   }
                   checkInSeed {
                     seedNum

@@ -2,7 +2,6 @@ import React from 'react';
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { z } from 'zod';
 import { PlayerCard } from './components/PlayerCard';
-import { Stocks } from './components/Stocks';
 
 import { colors, makeFontVariationSettings, typography } from './styles';
 
@@ -44,12 +43,9 @@ export const ThisIsMyRecap: React.FC<ThisIsMyRecapProps> = ({
     <AbsoluteFill
       id="remotion-root"
       style={{
-        backgroundColor: colors.nearlyBlack,
         fontFamily: typography.fontFamily
       }}
     >
-      <Stocks />
-
       <>
         <AbsoluteFill
           style={{

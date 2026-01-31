@@ -2,7 +2,6 @@ import React from 'react';
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { z } from 'zod';
 import { DigitReel, FONT_SIZE, FRAMES_PER_STEP } from './components/DigitReel';
-import { Stocks } from './components/Stocks';
 import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const game5WarriorSchema = z.object({
@@ -66,13 +65,10 @@ export const Game5Warrior: React.FC<Game5WarriorProps> = ({ totalSets, wins, win
     <AbsoluteFill
       id="remotion-root"
       style={{
-        backgroundColor: colors.nearlyBlack,
         fontFamily: typography.fontFamily,
         color: colors.reallyWhite
       }}
     >
-      <Stocks opacity={0.1} />
-
       <div style={{ transform: `translateY(${containerY + exitY}px)`, width: '100%' }}>
         <div style={{ height, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -82,8 +78,6 @@ export const Game5Warrior: React.FC<Game5WarriorProps> = ({ totalSets, wins, win
                 style={{
                   fontSize: FONT_SIZE,
                   lineHeight: 1,
-                  color: colors.reallyWhite,
-                  textShadow: `0px 4px 10px ${colors.nearlyBlack}`,
                   fontWeight: 900
                 }}
               >
@@ -119,8 +113,7 @@ export const Game5Warrior: React.FC<Game5WarriorProps> = ({ totalSets, wins, win
             style={{
               ...typography.heading2,
               textTransform: 'uppercase',
-              maxWidth: 600,
-              textShadow: `0 4px 10px ${colors.nearlyBlack}`
+              maxWidth: 600
             }}
           >
             <span>sets went to last game</span>
