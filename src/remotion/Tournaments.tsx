@@ -2,6 +2,7 @@ import React from 'react';
 import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
 import { z } from 'zod';
 import { Bar } from './components/Bar';
+import { TOURNAMENTS_DURATION } from './config';
 import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const tournamentsSchema = z.object({
@@ -25,7 +26,15 @@ export const Tournaments: React.FC<TournamentsProps> = ({ year, attendance }) =>
   const maxBarHeight = 362;
   const numberOfTournaments = attendance.reduce((acc, curr) => acc + curr.attendance, 0);
 
-  const titleOpacity = interpolate(frame, [120, 130], [1, 0.75]);
+  const titleOpacity = interpolate(
+    frame,
+    [TOURNAMENTS_DURATION - 10, TOURNAMENTS_DURATION],
+    [1, 0],
+    {
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp'
+    }
+  );
 
   return (
     <AbsoluteFill
