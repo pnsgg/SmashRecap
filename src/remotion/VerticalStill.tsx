@@ -83,7 +83,9 @@ const CharacterColumn: React.FC<{
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          maxWidth: 150
+          maxWidth: 150,
+          textAlign: 'center',
+          margin: '0 auto'
         }}
       >
         {name}
