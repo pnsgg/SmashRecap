@@ -19,6 +19,7 @@
   let player = $state<PlayerRef | undefined>();
   let downloadButton = $state<HTMLAnchorElement | undefined>();
   let isDownloading = $state(false);
+  let isDownloadingStill = $state(false);
   let renderingProgress = $state<number | undefined>(undefined);
   let downloadButtonProps = $state<ButtonProps>();
 
@@ -103,6 +104,33 @@
       }
     }
   };
+
+  const renderStill = async (stats: MainProps) => {
+    isDownloadingStill = true;
+
+    const filename =
+      `${stats.thisIsMyRecapProps.user.prefix ?? ''} ${stats.thisIsMyRecapProps.user.gamerTag}'s SmashRecap Summary ${stats.thisIsMyRecapProps.year}.png`.trim();
+
+    try {
+      const renderReq = await fetch(`/api/render/still`, {
+        method: 'POST',
+        body: JSON.stringify({ stats, userId })
+      });
+
+      if (!renderReq.ok) {
+        throw new Error('Failed to trigger still render');
+      }
+
+      const { url } = await renderReq.json();
+      const downloadUrl = `/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
+      downloadFromUrl(downloadUrl, filename);
+    } catch (e) {
+      console.error(e);
+      alert('Failed to download summary image');
+    } finally {
+      isDownloadingStill = false;
+    }
+  };
 </script>
 
 {#await getPlayerStats({ userId, year: 2025 })}
@@ -141,7 +169,14 @@
     },
     dqProps: {
       totalDQs: stats.dqs
-    }
+    },
+    dayOfWeekActivityProps: {
+      activity: stats.dayOfWeekActivity
+    },
+    busterRunProps: stats.worstPerformance,
+    rivalryProps: stats.rivalry,
+    gameStats: stats.gameStats,
+    setsPlayed: stats.sets.total
   }}
   {#if videoProps.tournamentsProps.attendance.reduce((acc, month) => acc + month.attendance, 0) > 0}
     <div class="my-recap">
@@ -151,13 +186,16 @@
 
       <div class="instructions">
         <div class="actions">
+          <Button onclick={() => alert(JSON.stringify(videoProps, null, 2))} extended>
+            Debug me
+          </Button>
           <Button
             bind:ref={downloadButton}
             id="download-button"
             extended
             size={mobile.current ? 'small' : 'medium'}
             onclick={() => renderRecap(videoProps)}
-            disabled={isDownloading}
+            disabled={isDownloading || isDownloadingStill}
             icon={Download}
             {...downloadButtonProps}
           >
@@ -171,12 +209,31 @@
               {m['recap.download_video']()}
             {/if}
           </Button>
+
+          <Button
+            extended
+            size={mobile.current ? 'small' : 'medium'}
+            onclick={() => renderStill(videoProps)}
+            disabled={isDownloading || isDownloadingStill}
+            icon={Download}
+            variant="secondary"
+          >
+            {#if isDownloadingStill}
+              Downloading...
+            {:else}
+              Download Summary Image
+            {/if}
+          </Button>
           <div class="posts">
             <Button
               extended
               target="_blank"
               href={createXIntent({
+<<<<<<< HEAD
                 text: m['recap.share_text']({ url: shareUrl })
+=======
+                text: `This is my SmashRecap! Get your own: ${shareUrl}`
+>>>>>>> main
               })}
               variant="secondary"
               size={mobile.current ? 'small' : 'medium'}
@@ -282,6 +339,13 @@
         }
       }
     }
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
   }
 
   .no-stats {

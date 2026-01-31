@@ -1,7 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, Img, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { z } from 'zod';
-import { Stocks } from './components/Stocks';
 import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const highestUpsetSchema = z.object({
@@ -95,7 +94,6 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: colors.nearlyBlack,
         fontFamily: typography.fontFamily,
         color: colors.reallyWhite,
         justifyContent: 'center',
@@ -103,8 +101,6 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({
         padding: 24
       }}
     >
-      <Stocks opacity={0.04} />
-
       {/* Main Content Container */}
       <AbsoluteFill
         style={{
@@ -205,7 +201,6 @@ export const HighestUpset: React.FC<z.infer<typeof highestUpsetSchema>> = ({
                   width: '100%',
                   height: '100%',
                   backfaceVisibility: 'hidden',
-                  backgroundColor: colors.nearlyBlack,
                   borderRadius: '50%',
                   border: `4px solid ${colors.silver}`,
                   display: 'flex',

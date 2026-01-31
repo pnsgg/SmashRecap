@@ -5,18 +5,43 @@ import {
   getPaginatedTournamentsEventsStartAt,
   getTournamentsEventsPageInfo
 } from '$lib/startgg/queries';
+import type { Rivalry } from '$remotion/Rivalries';
 
+/**
+ * Utility function to filter out null or undefined values.
+ *
+ * @param value - The value to check.
+ * @returns True if the value is neither null nor undefined.
+ */
 export const notNullNorUndefined = <T>(value: T | null | undefined) => {
   return value !== null && value !== undefined;
 };
 
+/**
+ * Converts a stargg timestamp (seconds) to a JavaScript Date object.
+ *
+ * @param unix - The Unix timestamp in seconds.
+ * @returns A Date object.
+ */
 export const unixToDate = (unix: number) => new Date(unix * 1000);
 
+export type TournamentAttendanceByMonth = {
+  month: string;
+  attendance: number;
+}[];
+
 /**
- * Given an array of dates, counts the number of occurrences of each month and returns an
- * object with the month names as keys and the counts as values.
+ * Groups tournament attendance by month based on event data.
+ *
+ * @param events - The list of events to process.
+ * @returns An array of objects containing the month name and the number of tournaments attended.
  */
-export function aggregateByMonth(startAts: number[]) {
+export function aggregateTournamentsByMonth(
+  events: Awaited<ReturnType<typeof getEvents>>
+): TournamentAttendanceByMonth {
+  const tournaments = events.map((event) => event?.tournament).filter(notNullNorUndefined);
+  const tournamentsStartAt = tournaments.map((t) => t?.startAt).filter(notNullNorUndefined);
+
   const monthNames = [
     'Jan',
     'Feb',
@@ -32,9 +57,9 @@ export function aggregateByMonth(startAts: number[]) {
     'Dec'
   ];
 
-  const counts = new Array(12).fill(0);
+  const counts: number[] = new Array(12).fill(0);
 
-  startAts.forEach((startAt) => {
+  tournamentsStartAt.forEach((startAt) => {
     const tournamentDate = unixToDate(startAt);
     const monthIndex = tournamentDate.getMonth();
 
@@ -157,10 +182,22 @@ export const seedingPerformanceRating = (seed: number, placement: number, bracke
   return expectedRFV - actualRFV;
 };
 
+export type PlayedCharacter = {
+  name: string;
+  count: number;
+};
+
+/**
+ * Computes the top 3 most played characters for the user across all events.
+ *
+ * @param events - The events to analyze for character selections.
+ * @param aliases - A set of aliases representing the user's gamer tags.
+ * @returns An array of the top 3 most played characters with their names and play counts.
+ */
 export const computeMostPlayedCharacters = (
   events: Awaited<ReturnType<typeof getEvents>>,
   aliases: Set<string>
-): Array<{ name: string; count: number }> => {
+): PlayedCharacter[] => {
   const selections = events
     .flatMap(
       (event) =>
@@ -236,7 +273,34 @@ export const parseMatch = (match: string): ParsedMatch | 'DQ' => {
   });
 };
 
-export const findHighestUpset = async (events: Awaited<ReturnType<typeof getEvents>>) => {
+export type HighestUpset = {
+  tournament: {
+    name: string;
+    date: string;
+    image: string | undefined;
+  };
+  opponent: {
+    gamerTag: string;
+    prefix: string | undefined;
+    avatar: string | undefined;
+  };
+  match: {
+    score: string;
+    factor: number;
+    round: string;
+  };
+};
+
+/**
+ * Finds the highest upset achieved by the user across all events.
+ * An upset is defined as a win over an opponent with a higher seed.
+ *
+ * @param events - The events to analyze for upsets.
+ * @returns Details about the highest upset match, or undefined if no upsets was found.
+ */
+export const findHighestUpset = async (
+  events: Awaited<ReturnType<typeof getEvents>>
+): Promise<HighestUpset | undefined> => {
   // Filter out sets won where an upset occurred
   const winningUpsetSets = events
     .flatMap((event) => {
@@ -517,6 +581,18 @@ export const computeAliasesFromEvents = (
   return aliases;
 };
 
+export type BestPerformances = {
+  finalPlacement: number;
+  initialSeed: number;
+  tournament: {
+    image: string | undefined;
+    name: string;
+    date: string;
+    location: string;
+    attendees: number;
+  };
+}[];
+
 /**
  * Compute the best performances (in term of SPR) of the user in the given events.
  *
@@ -527,7 +603,7 @@ export const computeAliasesFromEvents = (
 export const computeBestPerformances = (
   events: Awaited<ReturnType<typeof getEvents>>,
   topN: number
-) =>
+): BestPerformances =>
   events
     .map((event) => ({
       tournament: event?.tournament,
@@ -606,6 +682,13 @@ export const computeTotalDQs = (events: Awaited<ReturnType<typeof getEvents>>): 
     .filter(notNullNorUndefined).length;
 };
 
+export type WorstMatchup = {
+  characterName: string;
+  count: number;
+  lossCount: number;
+  looseRate: number;
+};
+
 /**
  * Compute the worst matchups for the user (characters against whom they lose the most).
  *
@@ -616,12 +699,7 @@ export const computeTotalDQs = (events: Awaited<ReturnType<typeof getEvents>>): 
 export const computeWorstMatchups = (
   events: Awaited<ReturnType<typeof getEvents>>,
   limit: number
-): Array<{
-  characterName: string;
-  count: number;
-  lossCount: number;
-  looseRate: number;
-}> => {
+): WorstMatchup[] => {
   const stats: Record<string, { wins: number; losses: number }> = {};
 
   events.forEach((event) => {
@@ -667,4 +745,230 @@ export const computeWorstMatchups = (
     })
     .sort((a, b) => b.lossCount - a.lossCount) // Sort by number of losses DESC
     .slice(0, limit);
+};
+
+/**
+ * Identifies the user's "Rival" and "Nemesis" based on match history.
+ *
+ * - Rival: The opponent played most frequently (minimum 3 sets).
+ * - Nemesis: The opponent with the worst win rate against the user (minimum 3 sets).
+ *
+ * @param events - The events to analyze for rivalries.
+ * @returns An object containing the identified rival and nemesis, if any.
+ */
+export const computeRivalries = (events: Awaited<ReturnType<typeof getEvents>>): Rivalry => {
+  type Player = NonNullable<
+    NonNullable<
+      NonNullable<
+        NonNullable<
+          NonNullable<
+            NonNullable<
+              NonNullable<
+                NonNullable<
+                  NonNullable<
+                    NonNullable<
+                      NonNullable<
+                        NonNullable<(typeof events)[number]>['userEntrant']
+                      >['paginatedSets']
+                    >['nodes']
+                  >[number]
+                >['games']
+              >[number]
+            >['selections']
+          >[number]
+        >['entrant']
+      >['players']
+    >[number]
+  >;
+  const opponents: Record<string, { wins: number; losses: number; player: Player }> = {};
+
+  events.forEach((event) => {
+    const userEntrantId = event?.userEntrant?.id;
+    if (!userEntrantId) return;
+
+    event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
+      if (!set?.winnerId || !set.games?.[0]?.selections) return;
+
+      const opponentSelection = set.games[0].selections.find(
+        (s) => s !== null && s.entrant?.id?.toString() !== userEntrantId.toString()
+      );
+
+      if (!opponentSelection?.entrant?.players?.[0]) return;
+
+      const opponentGamerTag = opponentSelection.entrant.players[0].gamerTag;
+      const opponentPlayer = opponentSelection.entrant.players[0];
+
+      if (opponentGamerTag) {
+        if (!opponents[opponentGamerTag]) {
+          opponents[opponentGamerTag] = { wins: 0, losses: 0, player: opponentPlayer };
+        }
+
+        if (set.winnerId.toString() === userEntrantId.toString()) {
+          opponents[opponentGamerTag].wins++;
+        } else {
+          opponents[opponentGamerTag].losses++;
+        }
+      }
+    });
+  });
+
+  const opponentsArray = Object.entries(opponents).map(([gamerTag, stats]) => ({
+    gamerTag,
+    wins: stats.wins,
+    losses: stats.losses,
+    image: stats.player.user?.images?.[0]?.url as string | undefined,
+    total: stats.wins + stats.losses
+  }));
+
+  const rival = opponentsArray.sort((a, b) => b.total - a.total)[0];
+  const nemesis = opponentsArray.sort((a, b) => b.losses - a.losses)[0];
+
+  return { rival, nemesis };
+};
+
+export type GameStats = { won: number; lost: number; winRate: number };
+
+/**
+ * Computes the total number of games won and lost by the user across all events.
+ *
+ * @param events - The events to compute game statistics for.
+ * @param aliases - A set of aliases representing the user's gamer tags.
+ * @returns An object containing total games won, lost, and the win rate.
+ */
+export const computeGameStats = (
+  events: Awaited<ReturnType<typeof getEvents>>,
+  aliases: Set<string>
+): GameStats => {
+  let won = 0;
+  let lost = 0;
+
+  events?.forEach((event) => {
+    event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
+      if (!set?.displayScore) return;
+      const parsed = parseMatch(set.displayScore);
+      if (parsed === 'DQ') return;
+
+      const user = parsed.find((p) => aliases.has(p.name));
+      const opponent = parsed.find((p) => !aliases.has(p.name));
+
+      if (user && opponent && !Number.isNaN(user.score) && !Number.isNaN(opponent.score)) {
+        won += user.score;
+        lost += opponent.score;
+      }
+    });
+  });
+
+  return {
+    won,
+    lost,
+    winRate: won + lost > 0 ? (won / (won + lost)) * 100 : 0
+  };
+};
+
+export type WeekActivity = { day: string; count: number }[];
+
+/**
+ * Aggregates tournament activity by day of the week.
+ *
+ * @param events - The events to analyze for activity.
+ * @returns An array of objects containing the day and the number of events attended on that day.
+ */
+export const computeDayOfWeekActivity = (
+  events: Awaited<ReturnType<typeof getEvents>>
+): WeekActivity => {
+  const counts = new Array(7).fill(0);
+
+  events.forEach((event) => {
+    if (event?.tournament?.startAt) {
+      const date = unixToDate(event.tournament.startAt);
+      counts[date.getDay()]++;
+    }
+  });
+
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+  return days.map((day, i) => ({ day, count: counts[i] }));
+};
+
+export type EventPerformance = {
+  finalPlacement: number;
+  initialSeed: number;
+  spr: number;
+  tournament: {
+    image: string | undefined;
+    name: string;
+    date: string;
+    location: string;
+    attendees: number;
+  };
+};
+
+/**
+ * Identifies the user's worst performance based on Seed Performance Rating (SPR).
+ * This represents the biggest "underperformance" where the player placed lowest relative to their seed.
+ *
+ * @param events - The events to analyze for performance.
+ * @returns The tournament details for the worst performance, or undefined.
+ */
+export const computeWorstPerformance = (
+  events: Awaited<ReturnType<typeof getEvents>>
+): EventPerformance | undefined => {
+  const performances = events
+    .map((event) => ({
+      tournament: event?.tournament,
+      bracketType: event?.userEntrant?.phaseGroups?.[0]?.bracketType,
+      initialSeed: event?.userEntrant?.checkInSeed?.seedNum,
+      finalPlacement: event?.userEntrant?.standing?.placement
+    }))
+    .filter(
+      (event) =>
+        event.initialSeed &&
+        event.finalPlacement &&
+        event.tournament?.city &&
+        event.tournament?.startAt &&
+        event.tournament?.numAttendees &&
+        (event.bracketType === 'SINGLE_ELIMINATION' || event.bracketType === 'DOUBLE_ELIMINATION')
+    )
+    .sort((a, b) => {
+      const sprA = seedingPerformanceRating(
+        a.initialSeed!,
+        a.finalPlacement!,
+        a.bracketType as BracketType
+      );
+      const sprB = seedingPerformanceRating(
+        b.initialSeed!,
+        b.finalPlacement!,
+        b.bracketType as BracketType
+      );
+      return sprA - sprB;
+    });
+
+  const worst = performances[0];
+  if (!worst) return undefined;
+
+  const spr = seedingPerformanceRating(
+    worst.initialSeed!,
+    worst.finalPlacement!,
+    worst.bracketType as BracketType
+  );
+
+  if (spr === 0) return undefined;
+
+  const date = unixToDate(worst.tournament?.startAt as number).toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit'
+  });
+
+  return {
+    finalPlacement: worst.finalPlacement!,
+    initialSeed: worst.initialSeed!,
+    spr,
+    tournament: {
+      image: worst.tournament?.images?.[0]?.url ?? undefined,
+      name: worst.tournament?.name as string,
+      date,
+      location: worst.tournament?.city as string,
+      attendees: worst.tournament?.numAttendees as number
+    }
+  };
 };

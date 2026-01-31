@@ -1,7 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Maskass } from './components/Maskass';
-import { Stocks } from './components/Stocks';
 import { colors, typography } from './styles';
 
 export const EndCard: React.FC = () => {
@@ -23,12 +22,9 @@ export const EndCard: React.FC = () => {
     <AbsoluteFill
       id="remotion-root"
       style={{
-        backgroundColor: colors.nearlyBlack,
         fontFamily: typography.fontFamily
       }}
     >
-      <Stocks />
-
       <AbsoluteFill
         style={{
           zIndex: 2,

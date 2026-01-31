@@ -1,25 +1,37 @@
 import { query } from '$app/server';
 import { env } from '$env/dynamic/private';
-import { makerRecapStatsKey, redis } from '$lib/server/redis';
+import { makeRecapStatsKey, redis } from '$lib/server/redis';
 import { fetchStartGG } from '$lib/startgg/fetch';
 import {
-  aggregateByMonth,
   computeAliasesFromEvents,
   computeBestPerformances,
   computeGauntlet,
+  computeGameStats,
   computeMostPlayedCharacters,
+  computeRivalries,
   computeTotalCleanSweeps,
   computeTotalDQs,
   computeTotalSets,
   computeTotalSetsToLastGame,
+  computeDayOfWeekActivity,
   computeWorstMatchups,
+  computeWorstPerformance,
   findHighestUpset,
   getEvents,
   getThisYearEvents,
-  notNullNorUndefined
+  type GameStats,
+  type EventPerformance,
+  type WeekActivity,
+  type HighestUpset,
+  type PlayedCharacter,
+  aggregateTournamentsByMonth,
+  type TournamentAttendanceByMonth,
+  type BestPerformances,
+  type WorstMatchup
 } from '$lib/startgg/helpers';
 import { getUserInfo, searchPlayerByGamerTag } from '$lib/startgg/queries';
 import { getFighterInfo } from '$remotion/constants';
+import type { Rivalry } from '$remotion/Rivalries';
 import { error } from '@sveltejs/kit';
 import * as v from 'valibot';
 
@@ -44,7 +56,7 @@ export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (game
           isUser: true,
           hideTest: true
         },
-        perPage: 100
+        perPage: 200
       }
     });
 
@@ -96,26 +108,12 @@ type PlayerStats = {
     };
   };
   gamerTagsThisYear: string[];
-  tournamentsByMonth: { month: string; attendance: number }[];
-  bestPerformances: {
-    finalPlacement: number;
-    initialSeed: number;
-    tournament: {
-      image: string | undefined;
-      name: string;
-      date: string;
-      location: string;
-      attendees: number;
-    };
-  }[];
-  highestUpset:
-    | {
-        tournament: { name: string; date: string; image: string | undefined };
-        opponent: { gamerTag: string; prefix: string | undefined; avatar: string | undefined };
-        match: { score: string; factor: number; round: string };
-      }
-    | undefined;
-  mostPlayedCharactersByPlayer: { image: string; name: string; count: number }[];
+  tournamentsByMonth: TournamentAttendanceByMonth;
+  bestPerformances: BestPerformances;
+  highestUpset: HighestUpset | undefined;
+  mostPlayedCharactersByPlayer: (PlayedCharacter & {
+    image: string;
+  })[];
   gauntlet: {
     encountered: string[];
   };
@@ -128,23 +126,40 @@ type PlayerStats = {
     };
     cleansweeps: number;
   };
-  worstMatchups: {
-    characterName: string;
+  worstMatchups: (WorstMatchup & {
     image: string;
-    count: number;
-    lossCount: number;
-    looseRate: number;
-  }[];
+  })[];
   dqs: number;
+  rivalry: Rivalry;
+  gameStats: GameStats;
+  dayOfWeekActivity: WeekActivity;
+  worstPerformance?: EventPerformance;
 };
 
+/**
+ * Retrieves comprehensive statistics for a player for a specific year.
+ *
+ * This query fetches user profile data, tournament dates, and match history to compute a wide range of statistics:
+ * - Tournament attendance by month
+ * - Best performances (placements)
+ * - Most played characters
+ * - "Gauntlet" (unique characters encountered)
+ * - Win/loss records (total sets, game win rate, clean sweeps, game 5s, DQs)
+ * - Worst matchups
+ * - Rivalries (most prevalent opponent and worst win rate)
+ * - Day of the week activity
+ * - "Buster" run (worst performance relative to seed)
+ *
+ * @param input - Object containing `userId` and `year`.
+ * @returns A `PlayerStats` object with all calculated metrics.
+ */
 export const getPlayerStats = query(
   v.object({
     userId: v.pipe(v.number(), v.minValue(1)),
     year: v.pipe(v.number(), v.minValue(2000), v.maxValue(new Date().getFullYear()))
   }),
   async ({ userId, year }) => {
-    const key = makerRecapStatsKey(year, userId);
+    const key = makeRecapStatsKey(year, userId);
 
     if (env.ALLOW_CACHING === 'true') {
       const cached = await redis.get(key);
@@ -177,9 +192,7 @@ export const getPlayerStats = query(
     const events = await getEvents(stringUserId, eventsIds);
 
     // Count the number of tournaments attended by month
-    const tournaments = events.map((event) => event?.tournament).filter(notNullNorUndefined);
-    const tournamentsStartAt = tournaments.map((t) => t?.startAt).filter(notNullNorUndefined);
-    const tournamentsByMonth = aggregateByMonth(tournamentsStartAt);
+    const tournamentsByMonth = aggregateTournamentsByMonth(events);
 
     // Compute stats
     const gamerTagsThisYear = computeAliasesFromEvents(events);
@@ -192,6 +205,10 @@ export const getPlayerStats = query(
     const totalDQs = computeTotalDQs(events);
     const worstMatchups = computeWorstMatchups(events, 3);
     const highestUpset = await findHighestUpset(events);
+    const rivalries = computeRivalries(events);
+    const gameStats = computeGameStats(events, gamerTagsThisYear);
+    const dayOfWeekActivity = computeDayOfWeekActivity(events);
+    const worstPerformance = computeWorstPerformance(events);
 
     const result: PlayerStats = {
       year,
@@ -216,7 +233,11 @@ export const getPlayerStats = query(
         ...matchup,
         image: `/images/chara_1/${getFighterInfo(matchup.characterName).slug}.webp`
       })),
-      dqs: totalDQs
+      dqs: totalDQs,
+      rivalry: rivalries,
+      gameStats,
+      dayOfWeekActivity,
+      worstPerformance
     };
 
     if (env.ALLOW_CACHING === 'true') {

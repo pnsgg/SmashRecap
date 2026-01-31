@@ -2,14 +2,13 @@ import React from 'react';
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { z } from 'zod';
 import { PlayerCard } from './components/PlayerCard';
-import { Stocks } from './components/Stocks';
 
 import { colors, makeFontVariationSettings, typography } from './styles';
 
 export const thisIsMyRecapSchema = z.object({
   year: z.number().min(1),
   user: z.object({
-    image: z.string().url(),
+    image: z.string().optional(),
     prefix: z.string().optional(),
     gamerTag: z.string(),
     country: z.string().optional(),
@@ -44,12 +43,9 @@ export const ThisIsMyRecap: React.FC<ThisIsMyRecapProps> = ({
     <AbsoluteFill
       id="remotion-root"
       style={{
-        backgroundColor: colors.nearlyBlack,
         fontFamily: typography.fontFamily
       }}
     >
-      <Stocks />
-
       <>
         <AbsoluteFill
           style={{

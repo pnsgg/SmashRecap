@@ -8,7 +8,16 @@ import { theGauntletSchema } from '../../remotion/TheGauntlet';
 import { thisIsMyRecapSchema } from '../../remotion/ThisIsMyRecap';
 import { tournamentsSchema } from '../../remotion/Tournaments';
 import { worstMatchupsSchema } from '../../remotion/WorstMatchups';
+import { dayOfWeekActivitySchema } from '../../remotion/DayOfWeekActivity';
+import { busterRunSchema } from '../../remotion/BusterRun';
+import { rivalrySchema } from '../../remotion/Rivalries';
 import { z } from 'zod';
+
+export const gameStatsSchema = z.object({
+  won: z.number(),
+  lost: z.number(),
+  winRate: z.number()
+});
 
 export const mainSchema = z.object({
   thisIsMyRecapProps: thisIsMyRecapSchema,
@@ -17,10 +26,15 @@ export const mainSchema = z.object({
   favouriteCharactersProps: favouriteCharactersSchema,
   worstMatchupsProps: worstMatchupsSchema,
   highestUpsetProps: highestUpsetSchema.optional(),
+  rivalryProps: rivalrySchema.optional(),
   game5WarriorProps: game5WarriorSchema,
   cleanSweepProps: cleanSweepSchema,
   dqProps: dqSchema,
-  gauntletProps: theGauntletSchema
+  gauntletProps: theGauntletSchema,
+  dayOfWeekActivityProps: dayOfWeekActivitySchema,
+  busterRunProps: busterRunSchema.optional(),
+  gameStats: gameStatsSchema,
+  setsPlayed: z.number()
 });
 
 export type MainProps = z.infer<typeof mainSchema>;
