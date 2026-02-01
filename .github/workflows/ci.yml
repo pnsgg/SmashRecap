@@ -36,6 +36,9 @@ jobs:
       - name: Linting & Formatting
         run: bun run lint
 
+      - name: Compile Paraglide
+        run: bun run paraglide:compile
+
       - name: Syntax & Type Check
         run: bun run check
 

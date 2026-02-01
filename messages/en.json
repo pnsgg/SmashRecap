@@ -1,0 +1,48 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "example_message": "Hello world {username}",
+  "actions": {
+    "continue_with_sgg": "Continue with start.gg",
+    "search_player": "Search for a player"
+  },
+  "search": {
+    "placeholder": "Search for a player...",
+    "searching": "Searching...",
+    "no_results": "No results found.",
+    "error_title": "Error",
+    "error_fetch_failed": "Failed to fetch player data"
+  },
+  "recap": {
+    "loading": "Your recap for {year} is loading...",
+    "download_progress": "Progress: {progress}%",
+    "downloading": "Downloading...",
+    "download_video": "Download Video",
+    "download_summary_image": "Download as Image",
+    "share_x": "Share your SmashRecap on X",
+    "share_bluesky": "Share your SmashRecap on Bluesky",
+    "share_text": "This is my SmashRecap! Get your own: {url}",
+    "recap_another": "Recap another user",
+    "try_another": "Try another user",
+    "no_stats": "No tournament attendance found for {year}.",
+    "no_stats_desc": "Recap cannot be generated.",
+    "render_failed": "Render failed: {error}"
+  },
+  "home": {
+    "title": "Your {year} Super Smash Bros. Ultimate year in review",
+    "description": "Unwrap your journey through the tournaments, battles, and triumphs that made your Smash year unforgettable.",
+    "be_first": "Be the first to generate your recap",
+    "recaps_generated": "+{count} recaps generated",
+    "featured_profiles": {
+      "title": "Featured Profiles",
+      "description": "Top 20 players from UltRank 2025"
+    }
+  },
+  "common": {
+    "or": "OR"
+  },
+  "credits": {
+    "developed_by": "developed by",
+    "source_code": "source code",
+    "supported_by": "supported by"
+  }
+}

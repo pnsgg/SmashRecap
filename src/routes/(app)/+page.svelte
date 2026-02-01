@@ -7,6 +7,7 @@
   import StartggIcon from '$lib/components/icons/StartggIcon.svelte';
   import SearchPlayer from '$lib/components/SearchPlayer.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
+  import * as m from '$lib/paraglide/messages';
 
   let { data } = $props();
 
@@ -30,20 +31,19 @@
       <span>#SmashRecap</span>
     </div>
     <h1 class:heading={!mobile.current} class:heading2={mobile.current}>
-      Your {year} Smash Bros. Ultimate year in review
+      {m['home.title']({ year })}
     </h1>
   </div>
   <p>
-    Unwrap your journey through the tournaments, battles, and triumphs that made your Smash year
-    unforgettable.
+    {m['home.description']()}
   </p>
   <div class="actions">
     <Button extended href="/login" icon={StartggIcon} size={mobile.current ? 'small' : 'medium'}>
-      Continue with start.gg
+      {m['actions.continue_with_sgg']()}
     </Button>
     <div class="divider">
       <hr />
-      <span class="small-text">OR</span>
+      <span class="small-text">{m['common.or']()}</span>
       <hr />
     </div>
     <Button
@@ -54,7 +54,7 @@
       onmousedown={() => (searchOpen = true)}
       ontouchstart={() => (searchOpen = true)}
     >
-      Search for a player
+      {m['actions.search_player']()}
     </Button>
   </div>
 </div>
@@ -63,9 +63,9 @@
 
 <div class="preview">
   {#if data.totalRecaps === 0}
-    <p class="small-text">Be the first to generate your recap</p>
+    <p class="small-text">{m['home.be_first']()}</p>
   {:else}
-    <p class="small-text">+{data.totalRecaps} recaps generated</p>
+    <p class="small-text">{m['home.recaps_generated']({ count: data.totalRecaps })}</p>
   {/if}
   <div id="remotion-root">
     <video autoplay muted loop playsinline src="/videos/Main.webm"></video>

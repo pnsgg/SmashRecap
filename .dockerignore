@@ -32,3 +32,11 @@ out
 # Docker volumes
 redis/data
 minio/data
+
+# Static assets
+static/videos
+
+
+# @inlang/paraglide
+project.inlang/*
+!project.inlang/settings.json

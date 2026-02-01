@@ -1,5 +1,6 @@
 <script lang="ts">
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
+  import * as m from '$lib/paraglide/messages';
 
   const mobile = new IsMobile();
 
@@ -33,8 +34,10 @@
 
 <section class="featured-profiles">
   <div class="header">
-    <h2 class:heading={!mobile.current} class:heading2={mobile.current}>Featured Profiles</h2>
-    <p class="small-text">Top 20 players from UltRank 2025</p>
+    <h2 class:heading={!mobile.current} class:heading2={mobile.current}>
+      {m['home.featured_profiles.title']()}
+    </h2>
+    <p class="small-text">{m['home.featured_profiles.description']()}</p>
   </div>
 
   <div class="grid">

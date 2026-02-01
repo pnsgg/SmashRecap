@@ -10,6 +10,7 @@
   import { YEAR } from '$remotion/mock';
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
   import type { PlayerRef } from '@remotion/player';
+  import * as m from '$lib/paraglide/messages';
 
   let { data } = $props();
 
@@ -24,6 +25,7 @@
 
   let userId = $derived(data.userId);
   let shareUrl = $derived(page.url.href);
+  let isDebug = $derived(page.url.searchParams.get('debug') === 'true');
 
   const downloadFromUrl = (url: string, name: string): void => {
     const a = document.createElement('a');
@@ -81,7 +83,7 @@
       try {
         const progress = await checkProgress();
         if (progress.type === 'error') {
-          alert('Render failed: ' + progress.message);
+          alert(m['recap.render_failed']({ error: progress.message }));
           isDownloading = false;
           renderingProgress = undefined;
           return;
@@ -134,7 +136,7 @@
 
 {#await getPlayerStats({ userId, year: 2025 })}
   <div class="loading-container">
-    <p class="heading">Your recap for {YEAR} is loading...</p>
+    <p class="heading">{m['recap.loading']({ year: YEAR })}</p>
   </div>
 {:then stats}
   {@const videoProps: MainProps = {
@@ -185,9 +187,11 @@
 
       <div class="instructions">
         <div class="actions">
-          <Button onclick={() => alert(JSON.stringify(videoProps, null, 2))} extended>
-            Debug me
-          </Button>
+          {#if isDebug}
+            <Button onclick={() => alert(JSON.stringify(videoProps, null, 2))} extended>
+              Debug me
+            </Button>
+          {/if}
           <Button
             bind:ref={downloadButton}
             id="download-button"
@@ -200,12 +204,12 @@
           >
             {#if isDownloading}
               {#if renderingProgress !== undefined}
-                Progress: {Math.round(renderingProgress * 100)}%
+                {m['recap.download_progress']({ progress: Math.round(renderingProgress * 100) })}
               {:else}
-                Downloading...
+                {m['recap.downloading']()}
               {/if}
             {:else}
-              Download Video
+              {m['recap.download_video']()}
             {/if}
           </Button>
 
@@ -218,9 +222,9 @@
             variant="secondary"
           >
             {#if isDownloadingStill}
-              Downloading...
+              {m['recap.downloading']()}
             {:else}
-              Download Summary Image
+              {m['recap.download_summary_image']()}
             {/if}
           </Button>
           <div class="posts">
@@ -228,24 +232,24 @@
               extended
               target="_blank"
               href={createXIntent({
-                text: `This is my SmashRecap! Get your own: ${shareUrl}`
+                text: m['recap.share_text']({ url: shareUrl })
               })}
               variant="secondary"
               size={mobile.current ? 'small' : 'medium'}
             >
-              Share your SmashRecap on X
+              {m['recap.share_x']()}
             </Button>
             <Button
               extended
               target="_blank"
               href={createBlueSkyIntent({
-                text: `This is my SmashRecap! Get your own: ${shareUrl}`,
+                text: m['recap.share_text']({ url: shareUrl }),
                 isMobile: data.userAgentInfo.isMobile
               })}
               variant="secondary"
               size={mobile.current ? 'small' : 'medium'}
             >
-              Share your SmashRecap on Bluesky
+              {m['recap.share_bluesky']()}
             </Button>
           </div>
         </div>
@@ -255,18 +259,19 @@
           size={mobile.current ? 'small' : 'medium'}
           variant="tertiary"
         >
-          Recap another user
+          {m['recap.recap_another']()}
         </Button>
       </div>
     </div>
   {:else}
     <div class="no-stats">
       <p class="heading">
-        No tournament attendance found for {YEAR}. <br /> Recap cannot be generated.
+        {m['recap.no_stats']({ year: YEAR })} <br />
+        {m['recap.no_stats_desc']()}
       </p>
       <div style="display: flex; justify-content: center; margin-top: 1.5rem;">
         <Button href={resolve('/')} size={mobile.current ? 'small' : 'medium'} variant="tertiary">
-          Try another user
+          {m['recap.try_another']()}
         </Button>
       </div>
     </div>
