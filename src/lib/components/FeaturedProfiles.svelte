@@ -30,6 +30,10 @@
     { name: 'Wrath', id: 52384, imageUrl: '/images/recaps/Wrath.webp' },
     { name: 'Tea', id: 399160, imageUrl: '/images/recaps/Tea.webp' }
   ];
+
+  type FeaturedProfile = (typeof players)[number];
+
+  const urlToRecap = (player: FeaturedProfile) => `/user/${player.id}`;
 </script>
 
 <section class="featured-profiles">
@@ -42,7 +46,12 @@
 
   <div class="grid">
     {#each players as player (player.id)}
-      <img src={player.imageUrl} alt="" />
+      <a href={urlToRecap(player)} class="profile-link">
+        <img
+          src={player.imageUrl}
+          alt={m['home.featured_profiles.profile_alt']({ name: player.name })}
+        />
+      </a>
     {/each}
   </div>
 </section>
