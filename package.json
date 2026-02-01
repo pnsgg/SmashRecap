@@ -16,7 +16,7 @@
     "remotion:lambda:rms": "remotion lambda sites rmall -y",
     "lambda:deploy": "remotion lambda functions deploy",
     "lambda:site": "remotion lambda sites create src/remotion/index.ts --site-name smashrecap",
-    "machine-translate": "inlang machine translate --project project.inlang"
+    "paraglide:compile": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide"
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.0",
