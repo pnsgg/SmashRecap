@@ -25,6 +25,7 @@
 
   let userId = $derived(data.userId);
   let shareUrl = $derived(page.url.href);
+  let isDebug = $derived(page.url.searchParams.get('debug') === 'true');
 
   const downloadFromUrl = (url: string, name: string): void => {
     const a = document.createElement('a');
@@ -134,7 +135,7 @@
 </script>
 
 {#await getPlayerStats({ userId, year: 2025 })}
-  <div style="width: 100%">
+  <div class="loading-container">
     <p class="heading">{m['recap.loading']({ year: YEAR })}</p>
   </div>
 {:then stats}
@@ -186,9 +187,11 @@
 
       <div class="instructions">
         <div class="actions">
-          <Button onclick={() => alert(JSON.stringify(videoProps, null, 2))} extended>
-            Debug me
-          </Button>
+          {#if isDebug}
+            <Button onclick={() => alert(JSON.stringify(videoProps, null, 2))} extended>
+              Debug me
+            </Button>
+          {/if}
           <Button
             bind:ref={downloadButton}
             id="download-button"
@@ -219,9 +222,9 @@
             variant="secondary"
           >
             {#if isDownloadingStill}
-              Downloading...
+              {m['recap.downloading']()}
             {:else}
-              Download Summary Image
+              {m['recap.download_summary_image']()}
             {/if}
           </Button>
           <div class="posts">
@@ -229,11 +232,7 @@
               extended
               target="_blank"
               href={createXIntent({
-<<<<<<< HEAD
                 text: m['recap.share_text']({ url: shareUrl })
-=======
-                text: `This is my SmashRecap! Get your own: ${shareUrl}`
->>>>>>> main
               })}
               variant="secondary"
               size={mobile.current ? 'small' : 'medium'}
