@@ -292,9 +292,14 @@
   .content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: normal;
     align-items: center;
     min-height: calc(100svh - 2 * 2rem);
+    padding: 1rem 1rem 0 1rem;
+
+    @media screen and (min-width: 768px) {
+      justify-content: center;
+    }
   }
 
   p.heading {
@@ -306,6 +311,7 @@
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
+    width: 100%;
 
     @media screen and (min-width: 768px) {
       flex-direction: row;
@@ -313,7 +319,6 @@
       justify-content: space-between;
 
       margin: 0 auto;
-      width: 100%;
       max-width: 1000px;
       padding: 2rem;
 
@@ -335,11 +340,12 @@
     .instructions {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       width: 100%;
+      gap: 0.5rem;
       flex: 1;
 
       @media screen and (min-width: 768px) {
+        justify-content: space-between;
       }
 
       .actions {
