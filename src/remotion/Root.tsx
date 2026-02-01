@@ -154,8 +154,8 @@ export const RemotionRoot: React.FC = () => {
           gameStats: GAME_STATS,
           setsPlayed: TOTAL_SETS_MOCK
         }}
-      // You can override these props for each render:
-      // https://www.remotion.dev/docs/parametrized-rendering
+        // You can override these props for each render:
+        // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Folder name="Scenes">
         <Composition
