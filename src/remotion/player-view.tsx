@@ -43,8 +43,8 @@ export const PlayerView = forwardRef((props: PlayerViewProps, ref) => {
       autoPlay={props.autoPlay}
       controls={true}
       showVolumeControls={false}
-      allowFullscreen={false}
-      doubleClickToFullscreen={false}
+      allowFullscreen
+      doubleClickToFullscreen
       style={{ width: '100%' }}
       initiallyMuted={false}
       moveToBeginningWhenEnded={false}
