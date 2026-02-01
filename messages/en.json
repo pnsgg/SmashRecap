@@ -43,6 +43,9 @@
   "credits": {
     "developed_by": "developed by",
     "source_code": "source code",
-    "supported_by": "supported by"
+    "supported_by": "supported by",
+    "aria_developed_by": "Visit @le_grld on X",
+    "aria_source_code": "View the source code on GitHub",
+    "aria_supported_by": "Visit the PNS website"
   }
 }
