@@ -1,6 +1,5 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { resolve } from '$app/paths';
   import { Button } from '$lib/components/Button';
   import FeaturedProfiles from '$lib/components/FeaturedProfiles.svelte';
   import MagnifyingGlass from '$lib/components/icons/MagnifyingGlass.svelte';
@@ -19,8 +18,6 @@
 
   const onSearchSelection = (userId: number) => {
     goto(localizeHref(`/user/${userId}`));
-    goto(
-
   };
 </script>
 
