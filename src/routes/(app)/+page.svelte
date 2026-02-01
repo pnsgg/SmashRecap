@@ -9,6 +9,7 @@
   import SearchPlayer from '$lib/components/SearchPlayer.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import * as m from '$lib/paraglide/messages';
+  import { localizeHref } from '$lib/paraglide/runtime.js';
 
   let { data } = $props();
 
@@ -17,11 +18,7 @@
   let searchOpen = $state(false);
 
   const onSearchSelection = (userId: number) => {
-    goto(
-      resolve('/(app)/user/[userId]', {
-        userId: userId.toString()
-      })
-    );
+    goto(localizeHref(`/user/${userId}`));
   };
 </script>
 

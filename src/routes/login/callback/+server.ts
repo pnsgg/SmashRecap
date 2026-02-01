@@ -2,6 +2,7 @@ import { startgg } from '$lib/server/startgg';
 import { error, redirect } from '@sveltejs/kit';
 
 import type { RequestHandler } from './$types';
+import { localizeHref } from '$lib/paraglide/runtime';
 
 export const GET: RequestHandler = async ({ url, cookies }) => {
   const code = url.searchParams.get('code');
@@ -28,5 +29,5 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
     maxAge: token.expires_in
   });
 
-  return redirect(302, `/user/${userId}`);
+  return redirect(302, localizeHref(`/user/${userId}`));
 };

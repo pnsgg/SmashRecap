@@ -1,6 +1,7 @@
 <script lang="ts">
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import * as m from '$lib/paraglide/messages';
+  import { localizeHref } from '$lib/paraglide/runtime';
 
   const mobile = new IsMobile();
 
@@ -46,7 +47,7 @@
 
   <div class="grid">
     {#each players as player (player.id)}
-      <a href={urlToRecap(player)} class="profile-link">
+      <a href={localizeHref(urlToRecap(player))} class="profile-link">
         <img
           src={player.imageUrl}
           alt={m['home.featured_profiles.profile_alt']({ name: player.name })}

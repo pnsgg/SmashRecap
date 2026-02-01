@@ -11,6 +11,7 @@
   import PlayerViewWrapper from '$remotion/PlayerViewWrapper.svelte';
   import type { PlayerRef } from '@remotion/player';
   import * as m from '$lib/paraglide/messages';
+  import { localizeHref } from '$lib/paraglide/runtime.js';
 
   let { data } = $props();
 
@@ -256,7 +257,7 @@
           </div>
           <Button
             extended
-            href={resolve('/')}
+            href={localizeHref('/')}
             size={mobile.current ? 'small' : 'medium'}
             variant="tertiary"
           >
