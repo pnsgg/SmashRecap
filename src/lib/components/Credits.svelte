@@ -34,11 +34,17 @@
 <style lang="scss">
   .credits {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    gap: 2.25rem;
+    gap: 1rem;
     padding-bottom: 2rem;
     padding-left: 2rem;
     padding-right: 2rem;
+
+    @media screen and (min-width: 768px) {
+      flex-direction: row;
+      gap: 2.25rem;
+    }
 
     .credit {
       display: inline-flex;
