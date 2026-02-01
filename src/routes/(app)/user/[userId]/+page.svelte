@@ -156,8 +156,8 @@
     },
     highestUpsetProps: stats.highestUpset,
     game5WarriorProps: {
-      totalSets: stats.sets.total,
-      wins: stats.sets.lastgames.count,
+      totalSets: stats.sets.lastgames.count,
+      wins: stats.sets.lastgames.winCount,
       winRate: stats.sets.lastgames.winRate
     },
     worstMatchupsProps: {

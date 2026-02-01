@@ -264,6 +264,18 @@ export const parseMatch = (match: string): ParsedMatch | 'DQ' => {
     const lastSpaceIndex = part.lastIndexOf(' ');
 
     const name = part.slice(0, lastSpaceIndex);
+    const slice = part.slice(lastSpaceIndex + 1, part.length);
+    if (slice === 'L')
+      return {
+        name,
+        score: 0
+      };
+    if (slice === 'W')
+      return {
+        name,
+        score: 1
+      };
+
     const score = parseInt(part.slice(lastSpaceIndex + 1, part.length), 10);
 
     return {
@@ -851,7 +863,7 @@ export const computeGameStats = (
       const user = parsed.find((p) => aliases.has(p.name));
       const opponent = parsed.find((p) => !aliases.has(p.name));
 
-      if (user && opponent && !Number.isNaN(user.score) && !Number.isNaN(opponent.score)) {
+      if (user && opponent) {
         won += user.score;
         lost += opponent.score;
       }
