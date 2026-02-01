@@ -36,6 +36,9 @@
     display: flex;
     justify-content: center;
     gap: 2.25rem;
+    padding-bottom: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
 
     .credit {
       display: inline-flex;
