@@ -134,12 +134,13 @@
   };
 </script>
 
-{#await getPlayerStats({ userId, year: 2025 })}
-  <div class="loading-container">
-    <p class="heading">{m['recap.loading']({ year: YEAR })}</p>
-  </div>
-{:then stats}
-  {@const videoProps: MainProps = {
+<div class="content">
+  {#await getPlayerStats({ userId, year: 2025 })}
+    <div class="loading-container">
+      <p class="heading">{m['recap.loading']({ year: YEAR })}</p>
+    </div>
+  {:then stats}
+    {@const videoProps: MainProps = {
     thisIsMyRecapProps: {
       year: stats.year,
       user: stats.user
@@ -179,106 +180,122 @@
     gameStats: stats.gameStats,
     setsPlayed: stats.sets.total
   }}
-  {#if videoProps.tournamentsProps.attendance.reduce((acc, month) => acc + month.attendance, 0) > 0}
-    <div class="my-recap">
-      <div id="remotion-root">
-        <PlayerViewWrapper bind:player data={videoProps} autoPlay />
-      </div>
-
-      <div class="instructions">
-        <div class="actions">
-          {#if isDebug}
-            <Button onclick={() => alert(JSON.stringify(videoProps, null, 2))} extended>
-              Debug me
-            </Button>
-          {/if}
-          <Button
-            bind:ref={downloadButton}
-            id="download-button"
-            extended
-            size={mobile.current ? 'small' : 'medium'}
-            onclick={() => renderRecap(videoProps)}
-            disabled={isDownloading || isDownloadingStill}
-            icon={Download}
-            {...downloadButtonProps}
-          >
-            {#if isDownloading}
-              {#if renderingProgress !== undefined}
-                {m['recap.download_progress']({ progress: Math.round(renderingProgress * 100) })}
-              {:else}
-                {m['recap.downloading']()}
-              {/if}
-            {:else}
-              {m['recap.download_video']()}
-            {/if}
-          </Button>
-
-          <Button
-            extended
-            size={mobile.current ? 'small' : 'medium'}
-            onclick={() => renderStill(videoProps)}
-            disabled={isDownloading || isDownloadingStill}
-            icon={Download}
-            variant="secondary"
-          >
-            {#if isDownloadingStill}
-              {m['recap.downloading']()}
-            {:else}
-              {m['recap.download_summary_image']()}
-            {/if}
-          </Button>
-          <div class="posts">
-            <Button
-              extended
-              target="_blank"
-              href={createXIntent({
-                text: m['recap.share_text']({ url: shareUrl })
-              })}
-              variant="secondary"
-              size={mobile.current ? 'small' : 'medium'}
-            >
-              {m['recap.share_x']()}
-            </Button>
-            <Button
-              extended
-              target="_blank"
-              href={createBlueSkyIntent({
-                text: m['recap.share_text']({ url: shareUrl }),
-                isMobile: data.userAgentInfo.isMobile
-              })}
-              variant="secondary"
-              size={mobile.current ? 'small' : 'medium'}
-            >
-              {m['recap.share_bluesky']()}
-            </Button>
-          </div>
+    {#if videoProps.tournamentsProps.attendance.reduce((acc, month) => acc + month.attendance, 0) > 0}
+      <div class="my-recap">
+        <div id="remotion-root">
+          <PlayerViewWrapper bind:player data={videoProps} autoPlay />
         </div>
-        <Button
-          extended
-          href={resolve('/')}
-          size={mobile.current ? 'small' : 'medium'}
-          variant="tertiary"
-        >
-          {m['recap.recap_another']()}
-        </Button>
+
+        <div class="instructions">
+          <div class="actions">
+            {#if isDebug}
+              <Button onclick={() => alert(JSON.stringify(videoProps, null, 2))} extended>
+                Debug me
+              </Button>
+            {/if}
+            <Button
+              bind:ref={downloadButton}
+              id="download-button"
+              extended
+              size={mobile.current ? 'small' : 'medium'}
+              onclick={() => renderRecap(videoProps)}
+              disabled={isDownloading || isDownloadingStill}
+              icon={Download}
+              {...downloadButtonProps}
+            >
+              {#if isDownloading}
+                {#if renderingProgress !== undefined}
+                  {m['recap.download_progress']({ progress: Math.round(renderingProgress * 100) })}
+                {:else}
+                  {m['recap.downloading']()}
+                {/if}
+              {:else}
+                {m['recap.download_video']()}
+              {/if}
+            </Button>
+
+            <Button
+              extended
+              size={mobile.current ? 'small' : 'medium'}
+              onclick={() => renderStill(videoProps)}
+              disabled={isDownloading || isDownloadingStill}
+              icon={Download}
+              variant="secondary"
+            >
+              {#if isDownloadingStill}
+                {m['recap.downloading']()}
+              {:else}
+                {m['recap.download_summary_image']()}
+              {/if}
+            </Button>
+            <div class="posts">
+              <Button
+                extended
+                target="_blank"
+                href={createXIntent({
+                  text: m['recap.share_text']({ url: shareUrl })
+                })}
+                variant="secondary"
+                size={mobile.current ? 'small' : 'medium'}
+              >
+                {m['recap.share_x']()}
+              </Button>
+              <Button
+                extended
+                target="_blank"
+                href={createBlueSkyIntent({
+                  text: m['recap.share_text']({ url: shareUrl }),
+                  isMobile: data.userAgentInfo.isMobile
+                })}
+                variant="secondary"
+                size={mobile.current ? 'small' : 'medium'}
+              >
+                {m['recap.share_bluesky']()}
+              </Button>
+            </div>
+          </div>
+          <Button
+            extended
+            href={resolve('/')}
+            size={mobile.current ? 'small' : 'medium'}
+            variant="tertiary"
+          >
+            {m['recap.recap_another']()}
+          </Button>
+        </div>
       </div>
-    </div>
-  {:else}
-    <div class="no-stats">
-      <p class="heading">
-        {m['recap.no_stats']({ year: YEAR })} <br />
-        {m['recap.no_stats_desc']()}
-      </p>
-      <div style="display: flex; justify-content: center; margin-top: 1.5rem;">
-        <Button href={resolve('/')} size={mobile.current ? 'small' : 'medium'} variant="tertiary">
-          {m['recap.try_another']()}
-        </Button>
+    {:else}
+      <div class="no-stats">
+        <p class="heading">
+          {m['recap.no_stats']({ year: YEAR })} <br />
+          {m['recap.no_stats_desc']()}
+        </p>
+        <div style="display: flex; justify-content: center; margin-top: 1.5rem;">
+          <Button href={resolve('/')} size={mobile.current ? 'small' : 'medium'} variant="tertiary">
+            {m['recap.try_another']()}
+          </Button>
+        </div>
       </div>
+    {/if}
+  {:catch error}
+    <div class="loading-container">
+      <p class="heading">{error.message}</p>
+      <Button href={resolve('/')} size={mobile.current ? 'small' : 'medium'} variant="tertiary">
+        {m['recap.try_another']()}
+      </Button>
     </div>
-  {/if}
-{/await}
+  {/await}
+</div>
 
 <style lang="scss">
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100svh - 2 * 2rem);
+  }
+
   p.heading {
     text-align: center;
   }
@@ -288,13 +305,11 @@
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
-    min-height: calc(100svh - 2 * 2rem);
 
     @media screen and (min-width: 768px) {
       flex-direction: row;
       align-items: stretch;
       justify-content: space-between;
-      min-height: auto;
 
       margin: 0 auto;
       width: 100%;
@@ -342,9 +357,16 @@
 
   .loading-container {
     display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
     justify-content: center;
     align-items: center;
+    height: 90svh;
     flex: 1;
+
+    p {
+      padding: 0 1rem;
+    }
   }
 
   .no-stats {
