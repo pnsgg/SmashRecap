@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { Button } from '$lib/components/Button';
+  import { localizeHref } from '$lib/paraglide/runtime';
 
   const statusCode = page.status;
   const message = page.error?.message;
@@ -17,9 +18,9 @@
   </div>
 
   {#if statusCode === 404}
-    <Button href="/">Go upstage</Button>
+    <Button href={localizeHref('/')}>Go upstage</Button>
   {:else}
-    <Button href="/">Go back</Button>
+    <Button href={localizeHref('/')}>Go back</Button>
   {/if}
 </main>
 
