@@ -76,7 +76,7 @@
       <p class="small-text">{m['home.recaps_generated']({ count: data.totalRecaps })}</p>
     {/if}
     <div id="remotion-root">
-      <video autoplay muted loop playsinline src="/videos/Main.webm"></video>
+      <video autoplay muted loop playsinline src="/videos/Glutonny.webm"></video>
     </div>
   </div>
 </section>
