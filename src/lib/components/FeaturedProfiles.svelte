@@ -5,30 +5,30 @@
   const mobile = new IsMobile();
 
   const players = [
-    { name: 'ドラ右 (Doramigi)', id: 1815290, imageUrl: '/images/recaps/ドラ右.png' },
-    { name: 'Miya', id: 1002311, imageUrl: '/images/recaps/Miya.png' },
-    { name: 'あcola (acola)', id: 1787719, imageUrl: '/images/recaps/あcola.png' },
-    { name: 'Hurt', id: 836465, imageUrl: '/images/recaps/Hurt.png' },
-    { name: 'Sparg0', id: 94369, imageUrl: '/images/recaps/Sparg0.png' },
-    { name: 'Sonix', id: 165614, imageUrl: '/images/recaps/Sonix.png' },
-    { name: 'Syrup', id: 767151, imageUrl: '/images/recaps/Syrup.png' },
-    { name: 'Zomba', id: 252388, imageUrl: '/images/recaps/Zomba.png' },
-    { name: 'カルメロ (Carmelo)', id: 2262042, imageUrl: '/images/recaps/カルメロ.png' },
-    { name: 'らる (Raru)', id: 1787715, imageUrl: '/images/recaps/らる.png' },
-    { name: 'Shuton', id: 134839, imageUrl: '/images/recaps/Shuton.png' },
-    { name: 'Tweek', id: 10213, imageUrl: '/images/recaps/Tweek.png' },
-    { name: 'Glutonny', id: 2613, imageUrl: '/images/recaps/Glutonny.png' },
-    { name: 'MkLeo', id: 41259, imageUrl: '/images/recaps/MkLeo.png' },
+    { name: 'ドラ右 (Doramigi)', id: 1815290, imageUrl: '/images/recaps/ドラ右.webp' },
+    { name: 'Miya', id: 1002311, imageUrl: '/images/recaps/Miya.webp' },
+    { name: 'あcola (acola)', id: 1787719, imageUrl: '/images/recaps/あcola.webp' },
+    { name: 'Hurt', id: 836465, imageUrl: '/images/recaps/Hurt.webp' },
+    { name: 'Sparg0', id: 94369, imageUrl: '/images/recaps/Sparg0.webp' },
+    { name: 'Sonix', id: 165614, imageUrl: '/images/recaps/Sonix.webp' },
+    { name: 'Syrup', id: 767151, imageUrl: '/images/recaps/Syrup.webp' },
+    { name: 'Zomba', id: 252388, imageUrl: '/images/recaps/Zomba.webp' },
+    { name: 'カルメロ (Carmelo)', id: 2262042, imageUrl: '/images/recaps/カルメロ.webp' },
+    { name: 'らる (Raru)', id: 1787715, imageUrl: '/images/recaps/らる.webp' },
+    { name: 'Shuton', id: 134839, imageUrl: '/images/recaps/Shuton.webp' },
+    { name: 'Tweek', id: 10213, imageUrl: '/images/recaps/Tweek.webp' },
+    { name: 'Glutonny', id: 2613, imageUrl: '/images/recaps/Glutonny.webp' },
+    { name: 'MkLeo', id: 41259, imageUrl: '/images/recaps/MkLeo.webp' },
     {
       name: 'たまPだいふく (TamaPDaifuku)',
       id: 1816581,
-      imageUrl: '/images/recaps/たまPだいふく.png'
+      imageUrl: '/images/recaps/たまPだいふく.webp'
     },
-    { name: 'Light', id: 95011, imageUrl: '/images/recaps/Light.png' },
-    { name: 'Peabnut', id: 37364, imageUrl: '/images/recaps/Peabnut.png' },
-    { name: 'Asimo', id: 964831, imageUrl: '/images/recaps/Asimo.png' },
-    { name: 'Wrath', id: 52384, imageUrl: '/images/recaps/Wrath.png' },
-    { name: 'Tea', id: 399160, imageUrl: '/images/recaps/Tea.png' }
+    { name: 'Light', id: 95011, imageUrl: '/images/recaps/Light.webp' },
+    { name: 'Peabnut', id: 37364, imageUrl: '/images/recaps/Peabnut.webp' },
+    { name: 'Asimo', id: 964831, imageUrl: '/images/recaps/Asimo.webp' },
+    { name: 'Wrath', id: 52384, imageUrl: '/images/recaps/Wrath.webp' },
+    { name: 'Tea', id: 399160, imageUrl: '/images/recaps/Tea.webp' }
   ];
 </script>
 
