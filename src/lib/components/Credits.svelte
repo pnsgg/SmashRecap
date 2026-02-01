@@ -11,7 +11,7 @@
 <div class="credits" {...props}>
   <div class="credit">
     <span class="small-text">{m['credits.developed_by']()}</span>
-    <a href="https://x/@le_grld" aria-label={m['credits.aria_developed_by']()}>
+    <a href="https://x.com/le_grld" aria-label={m['credits.aria_developed_by']()}>
       <img src="/images/x.svg" alt="X icon" width="20" height="20" />
       <span class="paragraph">@le_grld</span>
     </a>

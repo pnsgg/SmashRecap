@@ -17,7 +17,7 @@
     "download_progress": "Progression : {progress}%",
     "downloading": "Téléchargement en cours...",
     "download_video": "Télécharger la vidéo",
-    "download_summary_image": "Télécharger l'image",
+    "download_summary_image": "Télécharger l'image récapitulative",
     "share_x": "Partager votre SmashRecap sur X",
     "share_bluesky": "Partager votre SmashRecap sur Bluesky",
     "share_text": "Voici mon SmashRecap ! Obtenez le vôtre : {url}",
@@ -34,7 +34,8 @@
     "recaps_generated": "+{count} récapitulatifs générés",
     "featured_profiles": {
       "title": "Profils en vedette",
-      "description": "Top 20 joueurs de l'UltRank 2025"
+      "description": "Top 20 joueurs de l'UltRank 2025",
+      "profile_alt": "Voir le récapitulatif 2025 de {name}"
     }
   },
   "common": {
