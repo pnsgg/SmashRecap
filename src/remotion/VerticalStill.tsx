@@ -30,9 +30,9 @@ const Section: React.FC<{
           textTransform: 'uppercase',
           marginBottom:
             title === 'Most Played' ||
-            title === 'Best Results' ||
-            title === 'Personal Demons' ||
-            title === 'Rivalries'
+              title === 'Best Results' ||
+              title === 'Personal Demons' ||
+              title === 'Rivalries'
               ? 8
               : 0
         }}
@@ -336,6 +336,11 @@ export const VerticalStill: React.FC<MainProps> = ({
           </div>
         )}
         <div>
+          {user.prefix && (
+            <div style={{ ...typography.heading, fontSize: 32, color: colors.silver, marginBottom: 4 }}>
+              {user.prefix}
+            </div>
+          )}
           <h1 style={{ ...typography.heading, fontSize: 80, margin: 0, lineHeight: 1 }}>
             {user.gamerTag}
           </h1>
