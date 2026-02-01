@@ -38,7 +38,13 @@
     {m['home.description']()}
   </p>
   <div class="actions">
-    <Button extended href="/login" icon={StartggIcon} size={mobile.current ? 'small' : 'medium'}>
+    <Button
+      extended
+      href="/login"
+      icon={StartggIcon}
+      size={mobile.current ? 'small' : 'medium'}
+      aria-label={m['actions.continue_with_sgg']()}
+    >
       {m['actions.continue_with_sgg']()}
     </Button>
     <div class="divider">

@@ -11,21 +11,21 @@
 <div class="credits" {...props}>
   <div class="credit">
     <span class="small-text">{m['credits.developed_by']()}</span>
-    <a href="https://x/@le_grld">
+    <a href="https://x/@le_grld" aria-label={m['credits.aria_developed_by']()}>
       <img src="/images/x.svg" alt="X icon" width="20" height="20" />
       <span class="paragraph">@le_grld</span>
     </a>
   </div>
   <div class="credit">
     <span class="small-text">{m['credits.source_code']()}</span>
-    <a href="https://github.com/pnsgg/smashrecap">
+    <a href="https://github.com/pnsgg/smashrecap" aria-label={m['credits.aria_source_code']()}>
       <img src="/images/github-mark-white.svg" alt="X icon" width="20" height="20" />
       <span class="paragraph">GitHub</span>
     </a>
   </div>
   <div class="credit">
     <span class="small-text">{m['credits.supported_by']()}</span>
-    <a href="https://pns.gg">
+    <a href="https://pns.gg" aria-label={m['credits.aria_supported_by']()}>
       <PNS />
     </a>
   </div>
