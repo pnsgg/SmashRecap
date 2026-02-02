@@ -23,8 +23,14 @@ export const Bar: React.FC<BarProps> = ({ label, value, isHighest, maxHeight, in
     }
   });
 
-  const displayedValue = Math.round(interpolate(progress, [0, 1], [0, value]));
-  const currentHeight = interpolate(progress, [0, 1], [0, maxHeight]);
+  const displayedValue = Math.round(
+    interpolate(progress, [0, 1], [0, value], {
+      extrapolateRight: 'identity'
+    })
+  );
+  const currentHeight = interpolate(progress, [0, 1], [0, maxHeight], {
+    extrapolateRight: 'identity'
+  });
 
   return (
     <div

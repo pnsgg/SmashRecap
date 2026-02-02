@@ -60,7 +60,7 @@ const MyPerformanceCard: React.FC<
     }
   });
 
-  const translateX = interpolate(progress, [0, 1], [200, 0]);
+  const translateX = Math.floor(interpolate(progress, [0, 1], [200, 0]));
   const opacity = interpolate(progress, [0, 1], [0, 1]);
 
   const placementColor = useMemo(() => {

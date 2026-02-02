@@ -31,8 +31,7 @@ export const Tournaments: React.FC<TournamentsProps> = ({ year, attendance }) =>
     [TOURNAMENTS_DURATION - 10, TOURNAMENTS_DURATION],
     [1, 0],
     {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp'
+      extrapolateLeft: 'clamp'
     }
   );
 
