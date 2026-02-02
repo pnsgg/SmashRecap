@@ -1,6 +1,9 @@
 services:
   app:
-    image: ghcr.io/pnsgg/smashrecap:latest
+    # image: ghcr.io/pnsgg/smashrecap:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     pull_policy: always
     ports:
       - '3001:3000'
