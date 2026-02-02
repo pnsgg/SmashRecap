@@ -36,8 +36,17 @@ export const ThisIsMyRecap: React.FC<ThisIsMyRecapProps> = ({
     }
   });
 
-  const titleTranslateY = interpolate(entrance, [0, 1], [-height, 0]);
-  const cardTranslateY = interpolate(entrance, [0, 1], [height, height * 0.3]);
+  const titleTranslateY = Math.ceil(
+    interpolate(entrance, [0, 1], [-height, 0], {
+      extrapolateRight: 'clamp'
+    })
+  );
+  const cardTranslateY = Math.floor(
+    interpolate(entrance, [0, 1], [height, height * 0.3], {
+      extrapolateLeft: 'identity',
+      extrapolateRight: 'clamp'
+    })
+  );
 
   return (
     <AbsoluteFill
