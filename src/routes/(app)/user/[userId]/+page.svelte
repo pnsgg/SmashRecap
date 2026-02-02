@@ -156,7 +156,7 @@
     favouriteCharactersProps: {
       characters: stats.mostPlayedCharactersByPlayer
     },
-    highestUpsetProps: stats.highestUpset,
+    highestUpsetProps: stats.highestUpset ?? null,
     game5WarriorProps: {
       totalSets: stats.sets.lastgames.count,
       wins: stats.sets.lastgames.winCount,
@@ -176,8 +176,8 @@
     dayOfWeekActivityProps: {
       activity: stats.dayOfWeekActivity
     },
-    busterRunProps: stats.worstPerformance,
-    rivalryProps: stats.rivalry,
+    busterRunProps: stats.worstPerformance ?? null,
+    rivalryProps: stats.rivalry ?? null,
     gameStats: stats.gameStats,
     setsPlayed: stats.sets.total
   }}

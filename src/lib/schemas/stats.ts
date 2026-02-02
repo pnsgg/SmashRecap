@@ -25,14 +25,14 @@ export const mainSchema = z.object({
   performancesProps: myPerformancesSchema,
   favouriteCharactersProps: favouriteCharactersSchema,
   worstMatchupsProps: worstMatchupsSchema,
-  highestUpsetProps: highestUpsetSchema.optional(),
-  rivalryProps: rivalrySchema.optional(),
+  highestUpsetProps: highestUpsetSchema.optional().nullable(),
+  rivalryProps: rivalrySchema.optional().nullable(),
   game5WarriorProps: game5WarriorSchema,
   cleanSweepProps: cleanSweepSchema,
   dqProps: dqSchema,
   gauntletProps: theGauntletSchema,
   dayOfWeekActivityProps: dayOfWeekActivitySchema,
-  busterRunProps: busterRunSchema.optional(),
+  busterRunProps: busterRunSchema.optional().nullable(),
   gameStats: gameStatsSchema,
   setsPlayed: z.number()
 });
