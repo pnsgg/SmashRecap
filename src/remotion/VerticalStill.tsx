@@ -30,9 +30,9 @@ const Section: React.FC<{
           textTransform: 'uppercase',
           marginBottom:
             title === 'Most Played' ||
-              title === 'Best Results' ||
-              title === 'Personal Demons' ||
-              title === 'Rivalries'
+            title === 'Best Results' ||
+            title === 'Personal Demons' ||
+            title === 'Rivalries'
               ? 8
               : 0
         }}
