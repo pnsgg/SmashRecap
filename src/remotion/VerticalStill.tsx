@@ -254,7 +254,6 @@ export const VerticalStill: React.FC<MainProps> = ({
   gauntletProps,
   game5WarriorProps,
   cleanSweepProps,
-  dayOfWeekActivityProps,
   highestUpsetProps,
   worstMatchupsProps,
   busterRunProps,
@@ -319,7 +318,7 @@ export const VerticalStill: React.FC<MainProps> = ({
               fontVariationSettings: makeFontVariationSettings({ weight: 700 })
             }}
           >
-            {year} SMASH RECAP
+            {year} SMASHRECAP
           </div>
         </div>
         <div style={{ marginLeft: 'auto' }}>
