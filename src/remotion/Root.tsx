@@ -26,6 +26,7 @@ import { EndCard } from './EndCard';
 import { MyPerformances, myPerformancesSchema } from './MyPerformances';
 import { ThisIsMyRecap, thisIsMyRecapSchema } from './ThisIsMyRecap';
 import { Tournaments, tournamentsSchema } from './Tournaments';
+import { Trailer } from './Trailer';
 import { VerticalStill } from './VerticalStill';
 
 import { CleanSweep, cleanSweepSchema } from './CleanSweep';
@@ -153,8 +154,8 @@ export const RemotionRoot: React.FC = () => {
           gameStats: GAME_STATS,
           setsPlayed: TOTAL_SETS_MOCK
         }}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
+      // You can override these props for each render:
+      // https://www.remotion.dev/docs/parametrized-rendering
       />
       <Folder name="Scenes">
         <Composition
@@ -310,6 +311,22 @@ export const RemotionRoot: React.FC = () => {
           defaultProps={BUSTER_RUN_STATS}
         />
       </Folder>
+      <Composition
+        id="Trailer"
+        component={Trailer}
+        durationInFrames={450}
+        width={1920}
+        height={1080}
+        fps={FPS}
+      />
+      <Composition
+        id="TrailerVertical"
+        component={Trailer}
+        durationInFrames={450}
+        width={1080}
+        height={1920}
+        fps={FPS}
+      />
       <Composition
         id="VerticalStill"
         component={VerticalStill}
