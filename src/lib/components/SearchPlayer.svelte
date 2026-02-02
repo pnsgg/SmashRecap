@@ -5,13 +5,12 @@
   import Spinner from 'phosphor-svelte/lib/Spinner';
   import { Debounced } from 'runed';
   import * as m from '$lib/paraglide/messages';
+  import { localizeHref } from '$lib/paraglide/runtime';
 
   let {
-    open = $bindable(false),
-    onSelect
+    open = $bindable(false)
   }: {
     open: boolean;
-    onSelect?: (id: number) => void;
   } = $props();
 
   let value = $state('');
@@ -49,13 +48,10 @@
           {:else if results.length > 0}
             <Command.Group>
               {#each results as player (player.id)}
-                <Command.Item
-                  class="command-item"
+                <Command.LinkItem
+                  class="command-link"
+                  href={localizeHref(`/user/${player.id}`)}
                   value={player.id.toString()}
-                  onSelect={() => {
-                    onSelect?.(player.id);
-                    open = false;
-                  }}
                 >
                   <div class="player-item-content">
                     {#if player.image}
@@ -74,7 +70,7 @@
                       {/if}
                     </div>
                   </div>
-                </Command.Item>
+                </Command.LinkItem>
               {/each}
             </Command.Group>
           {/if}
@@ -155,7 +151,8 @@
           animation: spin 1s linear infinite;
         }
 
-        :global(.command-item) {
+        :global(.command-link) {
+          text-decoration: none;
           padding: 0.75rem 1rem;
           cursor: pointer;
           font-size: 1rem;

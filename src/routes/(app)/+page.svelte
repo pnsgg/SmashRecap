@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
   import { Button } from '$lib/components/Button';
   import FeaturedProfiles from '$lib/components/FeaturedProfiles.svelte';
   import MagnifyingGlass from '$lib/components/icons/MagnifyingGlass.svelte';
@@ -8,20 +7,15 @@
   import SearchPlayer from '$lib/components/SearchPlayer.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import * as m from '$lib/paraglide/messages';
-  import { localizeHref } from '$lib/paraglide/runtime.js';
 
   let { data } = $props();
 
   const mobile = new IsMobile();
   const year = 2025;
   let searchOpen = $state(false);
-
-  const onSearchSelection = (userId: number) => {
-    goto(localizeHref(`/user/${userId}`));
-  };
 </script>
 
-<SearchPlayer bind:open={searchOpen} onSelect={onSearchSelection} />
+<SearchPlayer bind:open={searchOpen} />
 
 <section id="hero">
   <div class="info">
