@@ -179,7 +179,7 @@
     busterRunProps: stats.worstPerformance ?? null,
     rivalryProps: stats.rivalry ?? null,
     gameStats: stats.gameStats,
-    setsPlayed: stats.sets.total
+    setsPlayed: stats.sets.total,
   }}
     {#if videoProps.tournamentsProps.attendance.reduce((acc, month) => acc + month.attendance, 0) > 0}
       <div class="my-recap">

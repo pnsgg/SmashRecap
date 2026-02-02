@@ -254,7 +254,6 @@ export const VerticalStill: React.FC<MainProps> = ({
   gauntletProps,
   game5WarriorProps,
   cleanSweepProps,
-  dayOfWeekActivityProps,
   highestUpsetProps,
   worstMatchupsProps,
   busterRunProps,
@@ -270,41 +269,6 @@ export const VerticalStill: React.FC<MainProps> = ({
   const fightersFaced = gauntletProps?.encountered.length ?? 0;
   const cleanSweeps = cleanSweepProps.totalSweeps;
   const dqs = dqProps.totalDQs;
-
-  const mostActiveDay = dayOfWeekActivityProps.activity.reduce(
-    (prev: { count: number; day: string }, current: { count: number; day: string }) =>
-      prev.count > current.count ? prev : current
-  ).day;
-
-  const peakMonth = attendance.reduce(
-    (prev, current) => (prev.attendance > current.attendance ? prev : current),
-    attendance[0]
-  ).month;
-
-  const monthNames: Record<string, string> = {
-    Jan: 'January',
-    Feb: 'February',
-    Mar: 'March',
-    Apr: 'April',
-    May: 'May',
-    Jun: 'June',
-    Jul: 'July',
-    Aug: 'August',
-    Sep: 'September',
-    Oct: 'October',
-    Nov: 'November',
-    Dec: 'December'
-  };
-
-  const dayNames: Record<string, string> = {
-    Mon: 'Monday',
-    Tue: 'Tuesday',
-    Wed: 'Wednesday',
-    Thu: 'Thursday',
-    Fri: 'Friday',
-    Sat: 'Saturday',
-    Sun: 'Sunday'
-  };
 
   return (
     <AbsoluteFill
@@ -354,7 +318,7 @@ export const VerticalStill: React.FC<MainProps> = ({
               fontVariationSettings: makeFontVariationSettings({ weight: 700 })
             }}
           >
-            {year} SMASH RECAP
+            {year} SMASHRECAP
           </div>
         </div>
         <div style={{ marginLeft: 'auto' }}>
@@ -488,23 +452,18 @@ export const VerticalStill: React.FC<MainProps> = ({
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
+          gridTemplateColumns: 'repeat(3, 1fr)',
           gap: 16,
           zIndex: 1,
           paddingTop: 8
         }}
       >
         <QuickStatBox label="Sets Played" value={setsPlayed} />
-        <QuickStatBox label="Game Record" value={`${gameStats.won}W - ${gameStats.lost}L`} />
         <QuickStatBox label="Win Rate" value={`${winRate.toFixed(1)}%`} />
         <QuickStatBox label="Game 5 Sets" value={game5WarriorProps.totalSets} />
-        <QuickStatBox label="G5 Win Rate" value={`${game5WarriorProps.winRate.toFixed(1)}%`} />
-
         <QuickStatBox label="Fighters Faced" value={`${fightersFaced}/${ALL_FIGHTERS.length}`} />
         <QuickStatBox label="Clean Sweeps" value={cleanSweeps} />
         <QuickStatBox label="DQs" value={dqs} />
-        <QuickStatBox label="Peak Month" value={monthNames[peakMonth] ?? peakMonth} />
-        <QuickStatBox label="Best Day" value={dayNames[mostActiveDay] ?? mostActiveDay} />
       </div>
 
       <div
@@ -514,7 +473,8 @@ export const VerticalStill: React.FC<MainProps> = ({
           fontSize: 24,
           zIndex: 1,
           borderTop: '1px solid rgba(255,255,255,0.1)',
-          paddingTop: 24
+          paddingTop: 24,
+          marginTop: 'auto'
         }}
       >
         Get your SmashRecap at recap.pns.gg
