@@ -1,10 +1,11 @@
 import { dev } from '$app/environment';
 import { getPlayerStats } from '$lib/remotes/players.remote';
 import type { MainProps } from '$remotion/Main';
-import { fail, json } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 
 export const GET = async ({ params }) => {
-  if (!dev) return fail(404);
+  if (!dev) error(404);
+  if (!params.userId) error(404);
 
   const userId = parseInt(params.userId);
   const year = 2025;
