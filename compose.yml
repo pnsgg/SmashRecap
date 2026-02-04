@@ -26,4 +26,4 @@ services:
       - '6379:6379'
     volumes:
       - /mnt/drive/smashrecap/redis/data:/data
-    command: redis-server --appendonly yes
+    command: redis-server --appendonly yes --appendfsync everysec
