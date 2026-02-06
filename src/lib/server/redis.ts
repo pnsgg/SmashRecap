@@ -1,7 +1,9 @@
 import { env } from '$env/dynamic/private';
+import { building } from '$app/environment';
 import Redis from 'ioredis';
 
-export const redis = new Redis(env.REDIS_URL as string);
+const options = building ? { lazyConnect: true } : {};
+export const redis = new Redis(env.REDIS_URL as string, options);
 
 /**
  * Creates a key pointing to a video URL for the user's recap for a given year
