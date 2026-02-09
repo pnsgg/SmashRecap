@@ -3,30 +3,30 @@ import { env } from '$env/dynamic/private';
 import { makeRecapStatsKey, redis } from '$lib/server/redis';
 import { fetchStartGG } from '$lib/startgg/fetch';
 import {
+  aggregateTournamentsByMonth,
   computeAliasesFromEvents,
   computeBestPerformances,
-  computeGauntlet,
+  computeDayOfWeekActivity,
   computeGameStats,
+  computeGauntlet,
   computeMostPlayedCharacters,
   computeRivalries,
   computeTotalCleanSweeps,
   computeTotalDQs,
   computeTotalSets,
   computeTotalSetsToLastGame,
-  computeDayOfWeekActivity,
   computeWorstMatchups,
   computeWorstPerformance,
   findHighestUpset,
   getEvents,
   getThisYearEvents,
-  type GameStats,
+  type BestPerformances,
   type EventPerformance,
-  type WeekActivity,
+  type GameStats,
   type HighestUpset,
   type PlayedCharacter,
-  aggregateTournamentsByMonth,
   type TournamentAttendanceByMonth,
-  type BestPerformances,
+  type WeekActivity,
   type WorstMatchup
 } from '$lib/startgg/helpers';
 import { getUserInfo, searchPlayerByGamerTag } from '$lib/startgg/queries';
