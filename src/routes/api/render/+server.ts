@@ -1,5 +1,5 @@
 import { env } from '$env/dynamic/private';
-import { sanitizeFilename } from '$lib/server/sanitize';
+
 import { makeRecapUrlKey, redis } from '$lib/server/redis';
 import { mainSchema } from '$lib/schemas/stats';
 import { getFunctions, renderMediaOnLambda } from '@remotion/lambda/client';
@@ -9,8 +9,7 @@ import { z } from 'zod';
 
 const schema = z.object({
   userSlug: z.string(),
-  stats: mainSchema,
-  filename: z.string()
+  stats: mainSchema
 });
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -49,7 +48,7 @@ export const POST: RequestHandler = async ({ request }) => {
     codec: 'vp9',
     downloadBehavior: {
       type: 'download',
-      fileName: sanitizeFilename(results.data.filename)
+      fileName: 'video.mp4'
     },
     inputProps
   });

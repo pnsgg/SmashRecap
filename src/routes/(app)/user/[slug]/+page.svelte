@@ -47,7 +47,7 @@
     // Trigger the render
     const renderReq = await fetch(`/api/render`, {
       method: 'POST',
-      body: JSON.stringify({ stats, userSlug, filename, year })
+      body: JSON.stringify({ stats, userSlug, year })
     });
 
     if (!renderReq.ok) {
@@ -94,7 +94,7 @@
           isDownloading = false;
           renderingProgress = undefined;
 
-          const downloadUrl = `/api/download?url=${encodeURIComponent(progress.url)}&filename=${encodeURIComponent(filename)}`;
+          const downloadUrl = `/api/download?url=${encodeURIComponent(progress.url)}`;
           downloadFromUrl(downloadUrl, filename);
           break;
         }
@@ -124,7 +124,7 @@
       }
 
       const { url } = await renderReq.json();
-      const downloadUrl = `/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
+      const downloadUrl = `/api/download?url=${encodeURIComponent(url)}`;
       downloadFromUrl(downloadUrl, filename);
     } catch (e) {
       console.error(e);
