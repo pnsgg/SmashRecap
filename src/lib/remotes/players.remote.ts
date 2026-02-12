@@ -63,12 +63,12 @@ export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (game
     return (
       res.data.players?.nodes
         ?.map((player) => {
-          // By design a user always has an id and a gamerTag
+          // By design a user always has a gamerTag and a slug
           // Typescript skill issue here
-          if (!player?.user?.id || !player?.gamerTag) return null;
+          if (!player?.gamerTag || !player?.user?.slug) return null;
 
           return {
-            id: parseInt(player.user.id),
+            slug: player.user.slug,
             gamerTag: player.gamerTag,
             prefix: player.prefix,
             image: player.user.images?.[0]?.url || '',
@@ -87,12 +87,12 @@ export const searchPlayerQuery = query(v.pipe(v.string(), v.trim()), async (game
 });
 
 export type PlayerResult = {
-  id: number;
+  slug: string;
   gamerTag: string;
   image: string;
   country: string;
   nbEvent: number;
-  lastEvent: number;
+  lastEvent?: number;
 };
 
 type PlayerStats = {
@@ -155,11 +155,11 @@ type PlayerStats = {
  */
 export const getPlayerStats = query(
   v.object({
-    userId: v.pipe(v.number(), v.minValue(1)),
+    slug: v.pipe(v.string(), v.minLength(1)),
     year: v.pipe(v.number(), v.minValue(2000), v.maxValue(new Date().getFullYear()))
   }),
-  async ({ userId, year }) => {
-    const key = makeRecapStatsKey(year, userId);
+  async ({ slug, year }) => {
+    const key = makeRecapStatsKey(year, slug);
 
     if (env.ALLOW_CACHING === 'true') {
       const cached = await redis.get(key);
@@ -169,7 +169,7 @@ export const getPlayerStats = query(
     // Get userinfo
     const {
       data: { user }
-    } = await fetchStartGG(getUserInfo, { userId: userId.toString() });
+    } = await fetchStartGG(getUserInfo, { slug });
     if (!user) error(404, 'User not found');
 
     const userInfo = {
@@ -185,11 +185,15 @@ export const getPlayerStats = query(
       }
     };
 
-    const stringUserId = userId.toString();
+    const userId = user.id;
+
+    if (!userId) {
+      error(500, 'User ID not found');
+    }
 
     // Get attended events
-    const eventsIds = await getThisYearEvents(stringUserId, year);
-    const events = await getEvents(stringUserId, eventsIds);
+    const eventsIds = await getThisYearEvents(slug, year);
+    const events = await getEvents(userId, eventsIds);
 
     // Count the number of tournaments attended by month
     const tournamentsByMonth = aggregateTournamentsByMonth(events);
