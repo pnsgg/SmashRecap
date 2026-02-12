@@ -24,7 +24,7 @@
   let renderingProgress = $state<number | undefined>(undefined);
   let downloadButtonProps = $state<ButtonProps>();
 
-  let userId = $derived(data.userId);
+  let userSlug = $derived(data.userSlug);
   let shareUrl = $derived(page.url.href);
   let isDebug = $derived(page.url.searchParams.get('debug') === 'true');
 
@@ -68,7 +68,7 @@
     const checkProgress = async () => {
       const progressReq = await fetch('/api/render/progress', {
         method: 'POST',
-        body: JSON.stringify({ renderId, bucketName, userId: data.userId, year })
+        body: JSON.stringify({ renderId, bucketName, userId: userSlug, year })
       });
 
       if (!progressReq.ok) {
