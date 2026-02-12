@@ -24,7 +24,7 @@
   let renderingProgress = $state<number | undefined>(undefined);
   let downloadButtonProps = $state<ButtonProps>();
 
-  let userId = $derived(data.userId);
+  let userSlug = $derived(data.userSlug);
   let shareUrl = $derived(page.url.href);
   let isDebug = $derived(page.url.searchParams.get('debug') === 'true');
 
@@ -47,7 +47,7 @@
     // Trigger the render
     const renderReq = await fetch(`/api/render`, {
       method: 'POST',
-      body: JSON.stringify({ stats, userId, filename, year })
+      body: JSON.stringify({ stats, userSlug, filename, year })
     });
 
     if (!renderReq.ok) {
@@ -68,7 +68,7 @@
     const checkProgress = async () => {
       const progressReq = await fetch('/api/render/progress', {
         method: 'POST',
-        body: JSON.stringify({ renderId, bucketName, userId: data.userId, year })
+        body: JSON.stringify({ renderId, bucketName, userSlug, year })
       });
 
       if (!progressReq.ok) {
@@ -116,7 +116,7 @@
     try {
       const renderReq = await fetch(`/api/render/still`, {
         method: 'POST',
-        body: JSON.stringify({ stats, userId })
+        body: JSON.stringify({ stats, userSlug })
       });
 
       if (!renderReq.ok) {
@@ -136,7 +136,7 @@
 </script>
 
 <div class="content">
-  {#await getPlayerStats({ userId, year: 2025 })}
+  {#await getPlayerStats({ slug: userSlug, year: 2025 })}
     <div class="loading-container">
       <p class="heading">{m['recap.loading']({ year: YEAR })}</p>
     </div>

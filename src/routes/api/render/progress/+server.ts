@@ -7,7 +7,7 @@ const schema = z.object({
   renderId: z.string(),
   bucketName: z.string(),
   year: z.number(),
-  userId: z.number()
+  userSlug: z.string()
 });
 
 export const POST = async ({ request }) => {
@@ -20,7 +20,7 @@ export const POST = async ({ request }) => {
     });
   }
 
-  const { renderId, bucketName, year, userId } = result.data;
+  const { renderId, bucketName, year, userSlug } = result.data;
 
   const functionName = speculateFunctionName({
     diskSizeInMb: 2048,
@@ -50,7 +50,7 @@ export const POST = async ({ request }) => {
 
   if (renderProgress.done && renderProgress.outputFile) {
     // Store the outputFile URL into redis
-    await redis.set(makeRecapUrlKey(year, userId), renderProgress.outputFile);
+    await redis.set(makeRecapUrlKey(year, userSlug), renderProgress.outputFile);
 
     return json({
       type: 'done',

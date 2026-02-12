@@ -16,6 +16,7 @@ export const searchPlayerByGamerTag = graphql(`
         gamerTag
         user {
           id
+          slug
           location {
             country
           }
@@ -33,17 +34,18 @@ export const searchPlayerByGamerTag = graphql(`
   }
 `);
 
-export const getUserById = graphql(`
-  query GetUserById($id: ID!) {
-    user(id: $id) {
+export const getUserBySlug = graphql(`
+  query GetUserBySlug($slug: String!) {
+    user(slug: $slug) {
       id
+      slug
     }
   }
 `);
 
 export const getTournamentsEventsPageInfo = graphql(`
-  query GetTournamentsEventsPageInfo($userId: ID!) {
-    user(id: $userId) {
+  query GetTournamentsEventsPageInfo($slug: String!) {
+    user(slug: $slug) {
       events(
         query: {
           filter: { videogameId: [1386], eventType: 1, past: true, upcoming: false }
@@ -60,8 +62,8 @@ export const getTournamentsEventsPageInfo = graphql(`
 `);
 
 export const getPaginatedTournamentsEventsStartAt = graphql(`
-  query GetTournamentsEventsStartAt($userId: ID!, $page: Int!) {
-    user(id: $userId) {
+  query GetTournamentsEventsStartAt($slug: String!, $page: Int!) {
+    user(slug: $slug) {
       events(
         query: {
           filter: { videogameId: [1386], eventType: 1 }
@@ -79,8 +81,9 @@ export const getPaginatedTournamentsEventsStartAt = graphql(`
 `);
 
 export const getUserInfo = graphql(`
-  query GetUserInfo($userId: ID!) {
-    user(id: $userId) {
+  query GetUserInfo($slug: String!) {
+    user(slug: $slug) {
+      id
       images(type: "profile") {
         url
       }

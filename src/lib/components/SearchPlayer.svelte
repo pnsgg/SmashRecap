@@ -47,11 +47,12 @@
             <Command.Empty class="command-empty">{m['search.no_results']()}</Command.Empty>
           {:else if results.length > 0}
             <Command.Group>
-              {#each results as player (player.id)}
+              {#each results as player (player.slug)}
+                {@const slug = player.slug.replace('user/', '')}
                 <Command.LinkItem
                   class="command-link"
-                  href={localizeHref(`/user/${player.id}`)}
-                  value={player.id.toString()}
+                  href={localizeHref(`/user/${slug}`)}
+                  value={player.slug}
                 >
                   <div class="player-item-content">
                     {#if player.image}

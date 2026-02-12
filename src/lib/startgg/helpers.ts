@@ -78,14 +78,14 @@ export function aggregateTournamentsByMonth(
  * Given a user ID and a year, fetches all events for that user in the specified year.
  * It retrieves the page info to determine the total number of pages and then fetches
  * each page of events until it reaches events from previous years.
- * @param userId The ID of the user whose events to fetch.
+ * @param slug The slug of the user whose events to fetch.
  * @param year The year for which to fetch events.
  * @returns An array of events for the specified user in the specified year.
  */
-export const getThisYearEvents = async (userId: string, year: number) => {
+export const getThisYearEvents = async (slug: string, year: number) => {
   // Get page info
   const tournamentEventsPageInfoRes = await fetchStartGG(getTournamentsEventsPageInfo, {
-    userId
+    slug
   });
 
   const pages = tournamentEventsPageInfoRes.data?.user?.events?.pageInfo?.totalPages;
@@ -97,7 +97,7 @@ export const getThisYearEvents = async (userId: string, year: number) => {
   for (let page = 1; page <= pages && shouldContinue; page++) {
     const paginatedTournamentsEventsRes = await fetchStartGG(getPaginatedTournamentsEventsStartAt, {
       page: page,
-      userId
+      slug
     });
 
     const pageEvents = paginatedTournamentsEventsRes?.data.user?.events?.nodes || [];

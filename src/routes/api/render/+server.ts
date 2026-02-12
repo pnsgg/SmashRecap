@@ -8,7 +8,7 @@ import 'dotenv/config';
 import { z } from 'zod';
 
 const schema = z.object({
-  userId: z.number(),
+  userSlug: z.string(),
   stats: mainSchema,
   filename: z.string()
 });
@@ -23,7 +23,7 @@ export const POST: RequestHandler = async ({ request }) => {
   }
 
   // Check if a render is not available
-  const key = makeRecapUrlKey(results.data.stats.thisIsMyRecapProps.year, results.data.userId);
+  const key = makeRecapUrlKey(results.data.stats.thisIsMyRecapProps.year, results.data.userSlug);
   const videoUrl = await redis.get(key);
   if (videoUrl) {
     return json({

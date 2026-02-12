@@ -7,7 +7,7 @@ import 'dotenv/config';
 import { z } from 'zod';
 
 const schema = z.object({
-  userId: z.number(),
+  userSlug: z.string(),
   stats: mainSchema
 });
 
@@ -20,11 +20,11 @@ export const POST: RequestHandler = async ({ request }) => {
     });
   }
 
-  const { userId, stats } = results.data;
+  const { userSlug, stats } = results.data;
   const year = stats.thisIsMyRecapProps.year;
 
   // Check if a render is available in cache
-  const key = makeStillUrlKey(year, userId);
+  const key = makeStillUrlKey(year, userSlug);
   const cachedUrl = await redis.get(key);
   if (cachedUrl) {
     return json({
