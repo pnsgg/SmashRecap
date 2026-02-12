@@ -401,9 +401,9 @@ export const findHighestUpset = async (
             name: bestUpset.tournament.name!,
             date: bestUpset.tournament.startAt
               ? unixToDate(bestUpset.tournament.startAt).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric'
-              })
+                  month: 'short',
+                  day: 'numeric'
+                })
               : '',
             image: bestUpset.tournament.images?.[0]?.url ?? undefined
           },
@@ -416,9 +416,9 @@ export const findHighestUpset = async (
             score:
               match !== 'DQ'
                 ? match
-                  .map((m) => m.score)
-                  .sort((a, b) => b - a)
-                  .join(' - ')
+                    .map((m) => m.score)
+                    .sort((a, b) => b - a)
+                    .join(' - ')
                 : 'DQ',
             factor: bestUpset.factor,
             round: bestUpset.set.fullRoundText!
