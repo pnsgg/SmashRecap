@@ -6,35 +6,47 @@
   const mobile = new IsMobile();
 
   const players = [
-    { name: 'ドラ右 (Doramigi)', id: 1815290, imageUrl: '/images/recaps/ドラ右.webp' },
-    { name: 'Miya', id: 1002311, imageUrl: '/images/recaps/Miya.webp' },
-    { name: 'あcola (acola)', id: 1787719, imageUrl: '/images/recaps/あcola.webp' },
-    { name: 'Hurt', id: 836465, imageUrl: '/images/recaps/Hurt.webp' },
-    { name: 'Sparg0', id: 94369, imageUrl: '/images/recaps/Sparg0.webp' },
-    { name: 'Sonix', id: 165614, imageUrl: '/images/recaps/Sonix.webp' },
-    { name: 'Syrup', id: 767151, imageUrl: '/images/recaps/Syrup.webp' },
-    { name: 'Zomba', id: 252388, imageUrl: '/images/recaps/Zomba.webp' },
-    { name: 'カルメロ (Carmelo)', id: 2262042, imageUrl: '/images/recaps/カルメロ.webp' },
-    { name: 'らる (Raru)', id: 1787715, imageUrl: '/images/recaps/らる.webp' },
-    { name: 'Shuton', id: 134839, imageUrl: '/images/recaps/Shuton.webp' },
-    { name: 'Tweek', id: 10213, imageUrl: '/images/recaps/Tweek.webp' },
-    { name: 'Glutonny', id: 2613, imageUrl: '/images/recaps/Glutonny.webp' },
-    { name: 'MkLeo', id: 41259, imageUrl: '/images/recaps/MkLeo.webp' },
+    {
+      name: 'ドラ右 (Doramigi)',
+      slug: '82f63ee2',
+      imageUrl: '/images/recaps/ドラ右.webp'
+    },
+    { name: 'Miya', slug: 'd8016ec8', imageUrl: '/images/recaps/Miya.webp' },
+    {
+      name: 'あcola (acola)',
+      slug: '830dec1e',
+      imageUrl: '/images/recaps/あcola.webp'
+    },
+    { name: 'Hurt', slug: '9b4e3c26', imageUrl: '/images/recaps/Hurt.webp' },
+    { name: 'Sparg0', slug: 'b5230de8', imageUrl: '/images/recaps/Sparg0.webp' },
+    { name: 'Sonix', slug: '0301d9f0', imageUrl: '/images/recaps/Sonix.webp' },
+    { name: 'Syrup', slug: '0f333fd3', imageUrl: '/images/recaps/Syrup.webp' },
+    { name: 'Zomba', slug: '880cbc79', imageUrl: '/images/recaps/Zomba.webp' },
+    {
+      name: 'カルメロ (Carmelo)',
+      slug: '9e3d38c6',
+      imageUrl: '/images/recaps/カルメロ.webp'
+    },
+    { name: 'らる (Raru)', slug: '50b1e9a9', imageUrl: '/images/recaps/らる.webp' },
+    { name: 'Shuton', slug: '993a6b60', imageUrl: '/images/recaps/Shuton.webp' },
+    { name: 'Tweek', slug: '0d650c15', imageUrl: '/images/recaps/Tweek.webp' },
+    { name: 'Glutonny', slug: '7611d833', imageUrl: '/images/recaps/Glutonny.webp' },
+    { name: 'MkLeo', slug: '3f297e74', imageUrl: '/images/recaps/MkLeo.webp' },
     {
       name: 'たまPだいふく (TamaPDaifuku)',
-      id: 1816581,
+      slug: 'f2633635',
       imageUrl: '/images/recaps/たまPだいふく.webp'
     },
-    { name: 'Light', id: 95011, imageUrl: '/images/recaps/Light.webp' },
-    { name: 'Peabnut', id: 37364, imageUrl: '/images/recaps/Peabnut.webp' },
-    { name: 'Asimo', id: 964831, imageUrl: '/images/recaps/Asimo.webp' },
-    { name: 'Wrath', id: 52384, imageUrl: '/images/recaps/Wrath.webp' },
-    { name: 'Tea', id: 399160, imageUrl: '/images/recaps/Tea.webp' }
+    { name: 'Light', slug: 'e2974569', imageUrl: '/images/recaps/Light.webp' },
+    { name: 'Peabnut', slug: '9160966b', imageUrl: '/images/recaps/Peabnut.webp' },
+    { name: 'Asimo', slug: 'ffa84c87', imageUrl: '/images/recaps/Asimo.webp' },
+    { name: 'Wrath', slug: '9e90ab19', imageUrl: '/images/recaps/Wrath.webp' },
+    { name: 'Tea', slug: 'ab90c078', imageUrl: '/images/recaps/Tea.webp' }
   ];
 
   type FeaturedProfile = (typeof players)[number];
 
-  const urlToRecap = (player: FeaturedProfile) => `/user/${player.id}`;
+  const urlToRecap = (player: FeaturedProfile) => `/user/${player.slug}`;
 </script>
 
 <section class="featured-profiles">
@@ -46,7 +58,7 @@
   </div>
 
   <div class="grid">
-    {#each players as player (player.id)}
+    {#each players as player (player.slug)}
       <a href={localizeHref(urlToRecap(player))} class="profile-link">
         <img
           src={player.imageUrl}
