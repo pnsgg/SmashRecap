@@ -53,6 +53,7 @@
                   class="command-link"
                   href={localizeHref(`/user/${slug}`)}
                   value={player.slug}
+                  data-sveltekit-preload-data="tap"
                 >
                   <div class="player-item-content">
                     {#if player.image}
