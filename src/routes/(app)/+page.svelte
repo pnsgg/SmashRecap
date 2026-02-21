@@ -7,12 +7,18 @@
   import SearchPlayer from '$lib/components/SearchPlayer.svelte';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import * as m from '$lib/paraglide/messages';
+  import { onMount } from 'svelte';
 
   let { data } = $props();
 
   const mobile = new IsMobile();
   const year = 2025;
   let searchOpen = $state(false);
+
+  let videoSrc = $state<string | undefined>();
+  onMount(() => {
+    videoSrc = '/videos/Glutonny.webm';
+  });
 </script>
 
 <SearchPlayer bind:open={searchOpen} />
@@ -66,7 +72,15 @@
       <p class="small-text">{m['home.recaps_generated']({ count: data.totalRecaps })}</p>
     {/if}
     <div id="remotion-root">
-      <video autoplay muted loop playsinline src="/videos/Glutonny.webm"></video>
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        src={videoSrc}
+        poster="/images/recaps/GlutonnyPoster.webp"
+        aria-label="Preview of a SmashRecap video"
+      ></video>
     </div>
   </div>
 </section>

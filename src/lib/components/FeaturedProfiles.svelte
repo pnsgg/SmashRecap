@@ -63,6 +63,7 @@
         <img
           src={player.imageUrl}
           alt={m['home.featured_profiles.profile_alt']({ name: player.name })}
+          loading="lazy"
         />
       </a>
     {/each}
