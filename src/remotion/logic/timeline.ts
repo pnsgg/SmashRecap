@@ -214,14 +214,14 @@ export const calculateStocksOpacityTimeline = (frames: Record<string, Frame>, pr
   const { gauntlet, endCard } = frames;
 
   const opacityPoints = [0];
-  const opacityValues = [0.04];
+  const opacityValues = [0.15];
 
   if (gauntlet.duration > 0) {
     opacityPoints.push(gauntlet.from - FPS / 2, gauntlet.from);
-    opacityValues.push(0.04, 0.02);
+    opacityValues.push(0.15, 0.02);
 
     opacityPoints.push(endCard.from, endCard.from + FPS / 2);
-    opacityValues.push(0.02, 0.04);
+    opacityValues.push(0.02, 0.15);
   }
 
   // Ensure at least 2 points for interpolation

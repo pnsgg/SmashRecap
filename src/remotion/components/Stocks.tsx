@@ -5,7 +5,7 @@ export const Stocks: React.FC<{ opacity?: number }> = ({ opacity = 0.125 }) => {
   return (
     <AbsoluteFill
       style={{
-        backgroundImage: `url(${staticFile('/images/stocks.svg')})`,
+        backgroundImage: `url(${staticFile('/images/stocks.png')})`,
         backgroundSize: '100% auto',
         backgroundRepeat: 'repeat-y',
         opacity
