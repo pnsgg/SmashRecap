@@ -282,7 +282,7 @@ export const VerticalStill: React.FC<MainProps> = ({
         gap: 16
       }}
     >
-      <Stocks opacity={0.04} />
+      <Stocks opacity={0.04} type="svg" />
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 24, zIndex: 1 }}>
