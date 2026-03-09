@@ -50,30 +50,34 @@ export const calculateTimeline = (props: MainProps) => {
   );
   currentFrame += durationFavouriteCharacters;
 
-  const fromDayOfWeekActivity =
-    props.dayOfWeekActivityProps !== undefined ? currentFrame : currentFrame;
-  const durationDayOfWeekActivity =
-    props.dayOfWeekActivityProps !== undefined ? DAY_OF_WEEK_ACTIVITY_DURATION : 0;
+  const hasDayOfWeekActivity = props.dayOfWeekActivityProps.activity.some((a) => a.count > 0);
+  const fromDayOfWeekActivity = currentFrame;
+  const durationDayOfWeekActivity = hasDayOfWeekActivity ? DAY_OF_WEEK_ACTIVITY_DURATION : 0;
   currentFrame += durationDayOfWeekActivity;
 
-  const fromHighestUpset = props.highestUpsetProps !== undefined ? currentFrame : currentFrame;
-  const durationHighestUpset = props.highestUpsetProps !== undefined ? HIGHEST_UPSET_DURATION : 0;
+  const hasHighestUpset = !!props.highestUpsetProps;
+  const fromHighestUpset = currentFrame;
+  const durationHighestUpset = hasHighestUpset ? HIGHEST_UPSET_DURATION : 0;
   currentFrame += durationHighestUpset;
 
-  const fromRivalries = props.rivalryProps !== undefined ? currentFrame : currentFrame;
-  const durationRivalries = props.rivalryProps !== undefined ? RIVALRIES_DURATION : 0;
+  const hasRivalries = !!(props.rivalryProps?.rival || props.rivalryProps?.nemesis);
+  const fromRivalries = currentFrame;
+  const durationRivalries = hasRivalries ? RIVALRIES_DURATION : 0;
   currentFrame += durationRivalries;
 
-  const fromBusterRun = props.busterRunProps !== undefined ? currentFrame : currentFrame;
-  const durationBusterRun = props.busterRunProps !== undefined ? BUSTER_RUN_DURATION : 0;
+  const hasBusterRun = !!props.busterRunProps;
+  const fromBusterRun = currentFrame;
+  const durationBusterRun = hasBusterRun ? BUSTER_RUN_DURATION : 0;
   currentFrame += durationBusterRun;
 
+  const hasGame5Warrior = props.game5WarriorProps.totalSets > 0;
   const fromGame5Warrior = currentFrame;
-  const durationGame5Warrior = GAME_5_WARRIOR_DURATION;
+  const durationGame5Warrior = hasGame5Warrior ? GAME_5_WARRIOR_DURATION : 0;
   currentFrame += durationGame5Warrior;
 
+  const hasCleanSweep = props.cleanSweepProps.totalSweeps > 0;
   const fromCleanSweep = currentFrame;
-  const durationCleanSweep = CLEAN_SWEEP_DURATION;
+  const durationCleanSweep = hasCleanSweep ? CLEAN_SWEEP_DURATION : 0;
   currentFrame += durationCleanSweep;
 
   const fromWorstMatchups = currentFrame;
@@ -82,12 +86,14 @@ export const calculateTimeline = (props: MainProps) => {
   );
   currentFrame += durationWorstMatchups;
 
+  const hasDQ = props.dqProps.totalDQs > 0;
   const fromDQ = currentFrame;
-  const durationDQ = DQ_DURATION;
+  const durationDQ = hasDQ ? DQ_DURATION : 0;
   currentFrame += durationDQ;
 
+  const hasGauntlet = props.gauntletProps.encountered.length > 0;
   const fromGauntlet = currentFrame;
-  const durationGauntlet = THE_GAUNTLET_DURATION;
+  const durationGauntlet = hasGauntlet ? THE_GAUNTLET_DURATION : 0;
   currentFrame += durationGauntlet;
 
   const fromEndCard = currentFrame;
@@ -178,6 +184,22 @@ export const calculateColorTimeline = (frames: Record<string, Frame>) => {
     }
   });
 
+  if (bgPoints.length === 0) {
+    bgPoints.push(0, 1);
+    bgColors.push(colors.nearlyBlack, colors.nearlyBlack);
+  } else if (bgPoints.length === 1) {
+    bgPoints.push(bgPoints[0] + 1);
+    bgColors.push(bgColors[0]);
+  }
+
+  if (logoPoints.length === 0) {
+    logoPoints.push(0, 1);
+    logoColors.push(colors.reallyWhite, colors.reallyWhite);
+  } else if (logoPoints.length === 1) {
+    logoPoints.push(logoPoints[0] + 1);
+    logoColors.push(logoColors[0]);
+  }
+
   return { bgPoints, bgColors, logoPoints, logoColors };
 };
 
@@ -194,12 +216,18 @@ export const calculateStocksOpacityTimeline = (frames: Record<string, Frame>, pr
   const opacityPoints = [0];
   const opacityValues = [0.04];
 
-  if (props.gauntletProps !== undefined) {
+  if (gauntlet.duration > 0) {
     opacityPoints.push(gauntlet.from - FPS / 2, gauntlet.from);
     opacityValues.push(0.04, 0.02);
 
     opacityPoints.push(endCard.from, endCard.from + FPS / 2);
     opacityValues.push(0.02, 0.04);
+  }
+
+  // Ensure at least 2 points for interpolation
+  if (opacityPoints.length === 1) {
+    opacityPoints.push(1);
+    opacityValues.push(opacityValues[0]);
   }
 
   return { opacityPoints, opacityValues };
