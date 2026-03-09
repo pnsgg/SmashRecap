@@ -170,23 +170,27 @@ export const Main: React.FC<MainProps> = ({
         <MyPerformances performances={performances} />
       </Sequence>
 
-      <Sequence
-        name="FavouriteCharacters"
-        from={favouriteCharacters.from}
-        durationInFrames={favouriteCharacters.duration}
-      >
-        <FavouriteCharacters characters={characters} />
-      </Sequence>
+      {favouriteCharacters.duration > 0 && (
+        <Sequence
+          name="FavouriteCharacters"
+          from={favouriteCharacters.from}
+          durationInFrames={favouriteCharacters.duration}
+        >
+          <FavouriteCharacters characters={characters} />
+        </Sequence>
+      )}
 
-      <Sequence
-        name="DayOfWeekActivity"
-        from={dayOfWeekActivity.from}
-        durationInFrames={dayOfWeekActivity.duration}
-      >
-        <DayOfWeekActivity {...dayOfWeekActivityProps} />
-      </Sequence>
+      {dayOfWeekActivity.duration > 0 && (
+        <Sequence
+          name="DayOfWeekActivity"
+          from={dayOfWeekActivity.from}
+          durationInFrames={dayOfWeekActivity.duration}
+        >
+          <DayOfWeekActivity {...dayOfWeekActivityProps} />
+        </Sequence>
+      )}
 
-      {highestUpsetProps && (
+      {highestUpsetProps && highestUpset.duration > 0 && (
         <Sequence
           name="HighestUpset"
           from={highestUpset.from}
@@ -195,30 +199,34 @@ export const Main: React.FC<MainProps> = ({
           <HighestUpset {...highestUpsetProps} />
         </Sequence>
       )}
-      {rivalryProps && (
+      {rivalryProps && rivalries.duration > 0 && (
         <Sequence name="Rivalries" from={rivalries.from} durationInFrames={rivalries.duration}>
           <Rivalries {...rivalryProps} />
         </Sequence>
       )}
-      {busterRunProps && (
+      {busterRunProps && busterRun.duration > 0 && (
         <Sequence name="BusterRun" from={busterRun.from} durationInFrames={busterRun.duration}>
           <BusterRun {...busterRunProps} />
         </Sequence>
       )}
 
-      <Sequence
-        name="Game5Warrior"
-        from={game5Warrior.from}
-        durationInFrames={game5Warrior.duration}
-      >
-        <Game5Warrior {...game5WarriorProps} />
-      </Sequence>
+      {game5Warrior.duration > 0 && (
+        <Sequence
+          name="Game5Warrior"
+          from={game5Warrior.from}
+          durationInFrames={game5Warrior.duration}
+        >
+          <Game5Warrior {...game5WarriorProps} />
+        </Sequence>
+      )}
 
-      <Sequence name="CleanSweep" from={cleanSweep.from} durationInFrames={cleanSweep.duration}>
-        <CleanSweep {...cleanSweepProps} />
-      </Sequence>
+      {cleanSweep.duration > 0 && (
+        <Sequence name="CleanSweep" from={cleanSweep.from} durationInFrames={cleanSweep.duration}>
+          <CleanSweep {...cleanSweepProps} />
+        </Sequence>
+      )}
 
-      {worstMatchupsProps && (
+      {worstMatchupsProps && worstMatchups.duration > 0 && (
         <Sequence
           name="WorstMatchups"
           from={worstMatchups.from}
@@ -228,11 +236,13 @@ export const Main: React.FC<MainProps> = ({
         </Sequence>
       )}
 
-      <Sequence name="DQ" from={dq.from} durationInFrames={dq.duration}>
-        <DQ {...dqProps} />
-      </Sequence>
+      {dq.duration > 0 && (
+        <Sequence name="DQ" from={dq.from} durationInFrames={dq.duration}>
+          <DQ {...dqProps} />
+        </Sequence>
+      )}
 
-      {gauntletProps && (
+      {gauntletProps && gauntlet.duration > 0 && (
         <Sequence name="TheGauntlet" from={gauntlet.from} durationInFrames={gauntlet.duration}>
           <TheGauntlet {...gauntletProps} />
         </Sequence>

@@ -20,6 +20,7 @@ import {
   findHighestUpset,
   getEvents,
   getThisYearEvents,
+  notNullNorUndefined,
   type BestPerformances,
   type EventPerformance,
   type GameStats,
@@ -195,22 +196,33 @@ export const getPlayerStats = query(
     const eventsIds = await getThisYearEvents(slug, year);
     const events = await getEvents(userId, eventsIds);
 
+    const userEntrantIds = new Map<string, string>(
+      events
+        .map((event) => {
+          if (event?.id && event.userEntrant?.id) {
+            return [event.id, event.userEntrant.id];
+          }
+          return null;
+        })
+        .filter(notNullNorUndefined) as [string, string][]
+    );
+
     // Count the number of tournaments attended by month
     const tournamentsByMonth = aggregateTournamentsByMonth(events);
 
     // Compute stats
     const gamerTagsThisYear = computeAliasesFromEvents(events);
     const bestPerformances = computeBestPerformances(events, 5);
-    const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(events, gamerTagsThisYear);
+    const mostPlayedCharactersByPlayer = computeMostPlayedCharacters(events, userEntrantIds);
     const totalSets = computeTotalSets(events);
-    const totalSetsToLastGame = computeTotalSetsToLastGame(events, gamerTagsThisYear);
-    const totalCleanSweeps = computeTotalCleanSweeps(events, gamerTagsThisYear);
-    const encounteredCharacters = computeGauntlet(events);
+    const totalSetsToLastGame = computeTotalSetsToLastGame(events, userEntrantIds);
+    const totalCleanSweeps = computeTotalCleanSweeps(events, userEntrantIds);
+    const encounteredCharacters = computeGauntlet(events, userEntrantIds);
     const totalDQs = computeTotalDQs(events);
-    const worstMatchups = computeWorstMatchups(events, 3);
-    const highestUpset = await findHighestUpset(events);
-    const rivalries = computeRivalries(events);
-    const gameStats = computeGameStats(events, gamerTagsThisYear);
+    const worstMatchups = computeWorstMatchups(events, userEntrantIds, 3);
+    const highestUpset = await findHighestUpset(events, userEntrantIds);
+    const rivalries = computeRivalries(events, userEntrantIds);
+    const gameStats = computeGameStats(events, userEntrantIds);
     const dayOfWeekActivity = computeDayOfWeekActivity(events);
     const worstPerformance = computeWorstPerformance(events);
 
@@ -221,10 +233,19 @@ export const getPlayerStats = query(
       tournamentsByMonth,
       bestPerformances,
       highestUpset,
-      mostPlayedCharactersByPlayer: mostPlayedCharactersByPlayer.map((character) => ({
-        ...character,
-        image: `/images/chara_1/${getFighterInfo(character.name).slug}.webp`
-      })),
+      mostPlayedCharactersByPlayer: mostPlayedCharactersByPlayer
+        .filter((char) => {
+          try {
+            getFighterInfo(char.name);
+            return true;
+          } catch {
+            return false;
+          }
+        })
+        .map((character) => ({
+          ...character,
+          image: `/images/chara_1/${getFighterInfo(character.name).slug}.webp`
+        })),
       gauntlet: {
         encountered: Array.from(encounteredCharacters.values())
       },
@@ -233,10 +254,19 @@ export const getPlayerStats = query(
         lastgames: totalSetsToLastGame,
         cleansweeps: totalCleanSweeps
       },
-      worstMatchups: worstMatchups.map((matchup) => ({
-        ...matchup,
-        image: `/images/chara_1/${getFighterInfo(matchup.characterName).slug}.webp`
-      })),
+      worstMatchups: worstMatchups.matchups
+        .filter((matchup) => {
+          try {
+            getFighterInfo(matchup.characterName);
+            return true;
+          } catch {
+            return false;
+          }
+        })
+        .map((matchup) => ({
+          ...matchup,
+          image: `/images/chara_1/${getFighterInfo(matchup.characterName).slug}.webp`
+        })),
       dqs: totalDQs,
       rivalry: rivalries,
       gameStats,

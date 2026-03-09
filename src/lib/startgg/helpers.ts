@@ -196,17 +196,24 @@ export type PlayedCharacter = {
  */
 export const computeMostPlayedCharacters = (
   events: Awaited<ReturnType<typeof getEvents>>,
-  aliases: Set<string>
+  userEntrantIds: Map<string, string> // eventId -> userEntrantId
 ): PlayedCharacter[] => {
   const selections = events
-    .flatMap(
-      (event) =>
+    .flatMap((event) => {
+      const userEntrantId = userEntrantIds.get(event?.id || '');
+      if (!userEntrantId) return [];
+
+      return (
         event?.userEntrant?.paginatedSets?.nodes?.flatMap((set) =>
-          set?.games?.flatMap((game) => game?.selections)
+          set?.games?.flatMap((game) =>
+            game?.selections
+              ?.filter((s) => s?.entrant?.id?.toString() === userEntrantId.toString())
+              .filter(notNullNorUndefined)
+          )
         ) || []
-    )
-    .filter(notNullNorUndefined)
-    .filter((selection) => selection?.entrant?.name && aliases.has(selection?.entrant?.name));
+      ).filter(notNullNorUndefined);
+    })
+    .filter(notNullNorUndefined);
 
   const characterCounts = selections.reduce(
     (acc, selection) => {
@@ -311,30 +318,36 @@ export type HighestUpset = {
  * @returns Details about the highest upset match, or undefined if no upsets was found.
  */
 export const findHighestUpset = async (
-  events: Awaited<ReturnType<typeof getEvents>>
+  events: Awaited<ReturnType<typeof getEvents>>,
+  userEntrantIds: Map<string, string>
 ): Promise<HighestUpset | undefined> => {
   // Filter out sets won where an upset occurred
   const winningUpsetSets = events
     .flatMap((event) => {
-      const userEntrantId = event?.userEntrant?.id;
+      const userEntrantId = userEntrantIds.get(event?.id || '');
       if (!userEntrantId) return [];
 
+      if (!event?.userEntrant?.paginatedSets?.nodes) return [];
+
       return (
-        event.userEntrant?.paginatedSets?.nodes
+        event.userEntrant.paginatedSets.nodes
           ?.filter((set) => {
-            if (!set?.winnerId || set.winnerId.toString() !== userEntrantId.toString())
+            if (
+              !set?.winnerId ||
+              !set.slots ||
+              set.winnerId.toString() !== userEntrantId.toString()
+            )
               return false;
 
-            const firstGame = set.games?.[0];
-            if (!firstGame?.selections) return false;
+            const userSlot = set.slots.find(
+              (s) => s?.entrant?.id?.toString() === userEntrantId.toString()
+            );
+            const opponentSlot = set.slots.find(
+              (s) => s?.entrant?.id?.toString() !== userEntrantId.toString()
+            );
 
-            const userSeed = firstGame.selections.find(
-              (s) => s?.entrant?.id && s.entrant.id.toString() === userEntrantId.toString()
-            )?.entrant?.checkInSeed?.seedNum;
-
-            const opponentSeed = firstGame.selections.find(
-              (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
-            )?.entrant?.checkInSeed?.seedNum;
+            const userSeed = userSlot?.entrant?.checkInSeed?.seedNum;
+            const opponentSeed = opponentSlot?.entrant?.checkInSeed?.seedNum;
 
             return (
               notNullNorUndefined(userSeed) &&
@@ -345,21 +358,17 @@ export const findHighestUpset = async (
           .filter(notNullNorUndefined)
           // Map to include necessary data for upset factor calculation
           .map((set) => {
-            const firstGame = set.games?.[0];
-            if (!firstGame?.selections) return null;
-
-            const userSelection = firstGame.selections.find(
-              (s) => s?.entrant?.id && s.entrant.id.toString() === userEntrantId.toString()
+            const userSlot = set.slots!.find(
+              (s) => s?.entrant?.id?.toString() === userEntrantId.toString()
+            );
+            const opponentSlot = set.slots!.find(
+              (s) => s?.entrant?.id?.toString() !== userEntrantId.toString()
             );
 
-            const opponentSelection = firstGame.selections.find(
-              (s) => s?.entrant?.id && s.entrant.id.toString() !== userEntrantId.toString()
-            );
+            if (!userSlot || !opponentSlot) return null;
 
-            if (!userSelection || !opponentSelection) return null;
-
-            const userSeed = userSelection.entrant?.checkInSeed?.seedNum;
-            const opponentSeed = opponentSelection.entrant?.checkInSeed?.seedNum;
+            const userSeed = userSlot.entrant?.checkInSeed?.seedNum;
+            const opponentSeed = opponentSlot.entrant?.checkInSeed?.seedNum;
 
             if (!notNullNorUndefined(userSeed) || !notNullNorUndefined(opponentSeed)) return null;
 
@@ -372,16 +381,17 @@ export const findHighestUpset = async (
               return null;
             }
 
-            if (!notNullNorUndefined(opponentSelection?.entrant?.id)) return null;
+            if (!event?.tournament) return null;
+            if (!notNullNorUndefined(opponentSlot?.entrant?.id)) return null;
 
             return {
               set,
-              tournament: event.tournament!,
+              tournament: event.tournament,
               factor: upsetFactor(userSeed, opponentSeed, rawBracketType),
-              opponentEntrantId: opponentSelection?.entrant?.id
+              opponentEntrantId: opponentSlot?.entrant?.id
             };
           })
-          .filter(notNullNorUndefined)
+          .filter(notNullNorUndefined) || []
       );
     })
     .filter(notNullNorUndefined);
@@ -401,9 +411,9 @@ export const findHighestUpset = async (
             name: bestUpset.tournament.name!,
             date: bestUpset.tournament.startAt
               ? unixToDate(bestUpset.tournament.startAt).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric'
-                })
+                month: 'short',
+                day: 'numeric'
+              })
               : '',
             image: bestUpset.tournament.images?.[0]?.url ?? undefined
           },
@@ -416,9 +426,9 @@ export const findHighestUpset = async (
             score:
               match !== 'DQ'
                 ? match
-                    .map((m) => m.score)
-                    .sort((a, b) => b - a)
-                    .join(' - ')
+                  .map((m) => m.score)
+                  .sort((a, b) => b - a)
+                  .join(' - ')
                 : 'DQ',
             factor: bestUpset.factor,
             round: bestUpset.set.fullRoundText!
@@ -437,11 +447,14 @@ export const findHighestUpset = async (
  * @param events - The events to compute the gauntlet for
  * @returns A set of characters encountered in the events
  */
-export const computeGauntlet = (events: Awaited<ReturnType<typeof getEvents>>): Set<string> => {
+export const computeGauntlet = (
+  events: Awaited<ReturnType<typeof getEvents>>,
+  userEntrantIds: Map<string, string>
+): Set<string> => {
   const encounteredCharacters = new Set<string>();
 
   events.forEach((event) => {
-    const userEntrantId = event?.userEntrant?.id;
+    const userEntrantId = userEntrantIds.get(event?.id || '');
     if (!userEntrantId) return;
 
     event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
@@ -449,7 +462,7 @@ export const computeGauntlet = (events: Awaited<ReturnType<typeof getEvents>>): 
         game?.selections?.forEach((selection) => {
           if (
             selection?.entrant?.id &&
-            selection.entrant.id !== userEntrantId &&
+            selection.entrant.id.toString() !== userEntrantId.toString() &&
             selection?.character?.name
           ) {
             encounteredCharacters.add(selection.character.name);
@@ -471,27 +484,38 @@ export const computeGauntlet = (events: Awaited<ReturnType<typeof getEvents>>): 
  */
 export const computeTotalCleanSweeps = (
   events: Awaited<ReturnType<typeof getEvents>>,
-  aliases: Set<string>
+  userEntrantIds: Map<string, string>
 ): number => {
   return events
-    ?.flatMap(
-      (event) => event?.userEntrant?.paginatedSets?.nodes?.map((set) => set?.displayScore) || []
-    )
-    .filter(notNullNorUndefined)
-    .map(parseMatch)
-    .filter((match) => match !== 'DQ')
-    .filter((match) => {
-      // Ensure that one of the players is the user
-      return match.some((player) => aliases.has(player.name));
+    .flatMap((event) => {
+      const userEntrantId = userEntrantIds.get(event?.id || '');
+      if (!userEntrantId) return [];
+
+      return (
+        event?.userEntrant?.paginatedSets?.nodes
+          ?.map((set) => {
+            if (!set?.displayScore || !set.slots) return null;
+            const parsed = parseMatch(set.displayScore);
+            if (parsed === 'DQ') return null;
+
+            const userSlotIndex = set.slots.findIndex(
+              (s) => s?.entrant?.id?.toString() === userEntrantId.toString()
+            );
+            if (userSlotIndex === -1) return null;
+
+            const opponentSlotIndex = userSlotIndex === 0 ? 1 : 0;
+            const userScore = parsed[userSlotIndex]?.score;
+            const opponentScore = parsed[opponentSlotIndex]?.score;
+
+            if (userScore !== undefined && opponentScore === 0) {
+              return 1;
+            }
+            return 0;
+          })
+          .filter(notNullNorUndefined) || []
+      );
     })
-    .map(([p1, p2]) => {
-      const opponentPlayer = aliases.has(p1.name) ? p2 : p1;
-      if (opponentPlayer.score === 0) {
-        return 1 as number;
-      }
-      return 0 as number;
-    })
-    .reduce((acc, val) => acc + val, 0);
+    .reduce((acc, val) => acc + val, 0 as number);
 };
 
 /**
@@ -517,30 +541,40 @@ export const computeTotalSets = (events: Awaited<ReturnType<typeof getEvents>>):
  */
 export const computeTotalSetsToLastGame = (
   events: Awaited<ReturnType<typeof getEvents>>,
-  aliases: Set<string>
+  userEntrantIds: Map<string, string>
 ): { count: number; winCount: number; winRate: number } => {
   const sets = events
-    ?.flatMap(
-      (event) => event?.userEntrant?.paginatedSets?.nodes?.map((set) => set?.displayScore) || []
-    )
-    .filter(notNullNorUndefined)
-    .map(parseMatch)
-    .filter((match) => match !== 'DQ')
-    .filter((match) => {
-      // Ensure that one of the players is the user
-      return match.some((player) => aliases.has(player.name));
-    })
-    .map(([p1, p2]) => {
-      const user = aliases.has(p1.name) ? p1 : p2;
-      const opponent = aliases.has(p1.name) ? p2 : p1;
+    .flatMap((event) => {
+      const userEntrantId = userEntrantIds.get(event?.id || '');
+      if (!userEntrantId) return [];
 
-      const isLastGame = Math.abs(p1.score - p2.score) === 1;
-      const won = user.score > opponent.score;
+      return (
+        event?.userEntrant?.paginatedSets?.nodes
+          ?.map((set) => {
+            if (!set?.displayScore || !set.slots) return null;
+            const parsed = parseMatch(set.displayScore);
+            if (parsed === 'DQ') return null;
 
-      return {
-        isLastGame,
-        won
-      };
+            const userSlotIndex = set.slots.findIndex(
+              (s) => s?.entrant?.id?.toString() === userEntrantId.toString()
+            );
+            if (userSlotIndex === -1) return null;
+
+            const opponentSlotIndex = userSlotIndex === 0 ? 1 : 0;
+            const p1 = parsed[0];
+            const p2 = parsed[1];
+            if (!p1 || !p2) return null;
+
+            const userScore = parsed[userSlotIndex].score;
+            const opponentScore = parsed[opponentSlotIndex].score;
+
+            const isLastGame = Math.abs(p1.score - p2.score) === 1;
+            const won = userScore > opponentScore;
+
+            return { isLastGame, won };
+          })
+          .filter(notNullNorUndefined) || []
+      );
     })
     .filter(({ isLastGame }) => isLastGame);
 
@@ -710,12 +744,13 @@ export type WorstMatchup = {
  */
 export const computeWorstMatchups = (
   events: Awaited<ReturnType<typeof getEvents>>,
+  userEntrantIds: Map<string, string>,
   limit: number
-): WorstMatchup[] => {
+): { matchups: WorstMatchup[] } => {
   const stats: Record<string, { wins: number; losses: number }> = {};
 
   events.forEach((event) => {
-    const userEntrantId = event?.userEntrant?.id;
+    const userEntrantId = userEntrantIds.get(event?.id || '');
     if (!userEntrantId) return;
 
     event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
@@ -744,19 +779,20 @@ export const computeWorstMatchups = (
     });
   });
 
-  return Object.entries(stats)
+  const matchups = Object.entries(stats)
     .map(([char, { wins, losses }]) => {
       const total = wins + losses;
       return {
         characterName: char,
         count: total,
-        winCount: wins,
         lossCount: losses,
         looseRate: total > 0 ? (losses / total) * 100 : 0
       };
     })
-    .sort((a, b) => b.lossCount - a.lossCount) // Sort by number of losses DESC
+    .sort((a, b) => b.lossCount - a.lossCount)
     .slice(0, limit);
+
+  return { matchups };
 };
 
 /**
@@ -768,7 +804,10 @@ export const computeWorstMatchups = (
  * @param events - The events to analyze for rivalries.
  * @returns An object containing the identified rival and nemesis, if any.
  */
-export const computeRivalries = (events: Awaited<ReturnType<typeof getEvents>>): Rivalry => {
+export const computeRivalries = (
+  events: Awaited<ReturnType<typeof getEvents>>,
+  userEntrantIds: Map<string, string>
+): Rivalry => {
   type Player = NonNullable<
     NonNullable<
       NonNullable<
@@ -795,24 +834,24 @@ export const computeRivalries = (events: Awaited<ReturnType<typeof getEvents>>):
   const opponents: Record<string, { wins: number; losses: number; player: Player }> = {};
 
   events.forEach((event) => {
-    const userEntrantId = event?.userEntrant?.id;
+    const userEntrantId = userEntrantIds.get(event?.id || '');
     if (!userEntrantId) return;
 
     event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
-      if (!set?.winnerId || !set.games?.[0]?.selections) return;
+      if (!set?.winnerId || !set.slots) return;
 
-      const opponentSelection = set.games[0].selections.find(
-        (s) => s !== null && s.entrant?.id?.toString() !== userEntrantId.toString()
+      const opponentSlot = set.slots.find(
+        (s) => s?.entrant?.id?.toString() !== userEntrantId.toString()
       );
 
-      if (!opponentSelection?.entrant?.players?.[0]) return;
+      if (!opponentSlot?.entrant) return;
 
-      const opponentGamerTag = opponentSelection.entrant.players[0].gamerTag;
-      const opponentPlayer = opponentSelection.entrant.players[0];
+      const opponentGamerTag = opponentSlot.entrant.name;
+      const opponentPlayer = opponentSlot.entrant.players?.[0];
 
       if (opponentGamerTag) {
         if (!opponents[opponentGamerTag]) {
-          opponents[opponentGamerTag] = { wins: 0, losses: 0, player: opponentPlayer };
+          opponents[opponentGamerTag] = { wins: 0, losses: 0, player: opponentPlayer as Player };
         }
 
         if (set.winnerId.toString() === userEntrantId.toString()) {
@@ -828,7 +867,7 @@ export const computeRivalries = (events: Awaited<ReturnType<typeof getEvents>>):
     gamerTag,
     wins: stats.wins,
     losses: stats.losses,
-    image: stats.player.user?.images?.[0]?.url as string | undefined,
+    image: stats.player?.user?.images?.[0]?.url as string | undefined,
     total: stats.wins + stats.losses
   }));
 
@@ -849,19 +888,28 @@ export type GameStats = { won: number; lost: number; winRate: number };
  */
 export const computeGameStats = (
   events: Awaited<ReturnType<typeof getEvents>>,
-  aliases: Set<string>
+  userEntrantIds: Map<string, string>
 ): GameStats => {
   let won = 0;
   let lost = 0;
 
   events?.forEach((event) => {
+    const userEntrantId = userEntrantIds.get(event?.id || '');
+    if (!userEntrantId) return;
+
     event?.userEntrant?.paginatedSets?.nodes?.forEach((set) => {
-      if (!set?.displayScore) return;
+      if (!set?.displayScore || !set.slots) return;
       const parsed = parseMatch(set.displayScore);
       if (parsed === 'DQ') return;
 
-      const user = parsed.find((p) => aliases.has(p.name));
-      const opponent = parsed.find((p) => !aliases.has(p.name));
+      const userSlotIndex = set.slots.findIndex(
+        (s) => s?.entrant?.id?.toString() === userEntrantId.toString()
+      );
+      if (userSlotIndex === -1) return;
+
+      const opponentSlotIndex = userSlotIndex === 0 ? 1 : 0;
+      const user = parsed[userSlotIndex];
+      const opponent = parsed[opponentSlotIndex];
 
       if (user && opponent) {
         won += user.score;

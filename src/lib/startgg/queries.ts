@@ -106,6 +106,7 @@ export const getUserInfo = graphql(`
 export const getEvent = graphql(`
   query GetEvent($eventId: ID!, $userId: ID!) {
     event(id: $eventId) {
+      id
       tournament {
         images(type: "profile") {
           url
@@ -135,12 +136,33 @@ export const getEvent = graphql(`
             fullRoundText
             displayScore
             winnerId
+            slots {
+              entrant {
+                id
+                name
+                checkInSeed {
+                  seedNum
+                }
+                players {
+                  id
+                  gamerTag
+                  user {
+                    images(type: "profile") {
+                      url
+                    }
+                  }
+                }
+              }
+            }
             games {
               winnerId
               selections {
                 entrant {
                   id
                   name
+                  event {
+                    id
+                  }
                   players {
                     id
                     gamerTag
