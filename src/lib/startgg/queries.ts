@@ -1,11 +1,12 @@
 import { graphql } from '$lib/graphql';
 
 export const GetAuthenticatedUserQuery = `
-	query GetAuthenticatedUser {
-		currentUser {
-			id
-		}
-	}
+  query GetAuthenticatedUser {
+    currentUser {
+      id
+      slug
+    }
+  }
 `;
 
 export const searchPlayerByGamerTag = graphql(`

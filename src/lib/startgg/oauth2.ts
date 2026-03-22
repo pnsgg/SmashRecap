@@ -59,8 +59,11 @@ export class Startgg {
     return data as OAuth2Token;
   }
 
-  public async getAuthenticatedUserId(accessToken: string): Promise<string | undefined> {
-    const res = await fetch('https://api.start.gg/gql/alpha', {
+  public async getAuthenticatedUserSlug(
+    accessToken: string,
+    fetcher: typeof fetch
+  ): Promise<string | undefined> {
+    const res = await fetcher('https://api.start.gg/gql/alpha', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -76,6 +79,6 @@ export class Startgg {
       return undefined;
     }
 
-    return data.data.currentUser.id;
+    return data.data.currentUser.slug.split('/')[1];
   }
 }

@@ -1,16 +1,16 @@
 import { startgg } from '$lib/server/startgg';
 import { redirect } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
-export const GET = async ({ cookies }) => {
+export const GET: RequestHandler = async ({ cookies, fetch }) => {
   const accessToken = cookies.get('access_token');
   if (accessToken) {
-    const user = await startgg.getAuthenticatedUserId(accessToken);
-    if (user) {
-      redirect(302, `/user/${user}`);
+    const userSlug = await startgg.getAuthenticatedUserSlug(accessToken, fetch);
+    if (userSlug) {
+      throw redirect(302, `/user/${userSlug}`);
     }
   }
 
   const authorizationUrl = startgg.createAuthorizationURL(['user.identity', 'user.email']);
-
-  redirect(302, authorizationUrl.toString());
+  redirect(303, authorizationUrl.toString());
 };

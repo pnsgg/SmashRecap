@@ -4,7 +4,7 @@ import { error, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { localizeHref } from '$lib/paraglide/runtime';
 
-export const GET: RequestHandler = async ({ url, cookies }) => {
+export const GET: RequestHandler = async ({ url, cookies, fetch }) => {
   const code = url.searchParams.get('code');
 
   if (!code) {
@@ -16,8 +16,8 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
     error(400, 'Invalid authorization code');
   }
 
-  const userId = await startgg.getAuthenticatedUserId(token.access_token);
-  if (!userId) {
+  const userSlug = await startgg.getAuthenticatedUserSlug(token.access_token, fetch);
+  if (!userSlug) {
     error(400, 'Invalid user');
   }
 
@@ -29,5 +29,5 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
     maxAge: token.expires_in
   });
 
-  return redirect(302, localizeHref(`/user/${userId}`));
+  return redirect(302, localizeHref(`/user/${userSlug}`));
 };
