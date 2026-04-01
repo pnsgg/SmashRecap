@@ -210,7 +210,7 @@ export const calculateColorTimeline = (frames: Record<string, Frame>) => {
  * @param props - The main properties object.
  * @returns An object containing arrays for opacity interpolation (points and values).
  */
-export const calculateStocksOpacityTimeline = (frames: Record<string, Frame>, props: MainProps) => {
+export const calculateStocksOpacityTimeline = (frames: Record<string, Frame>) => {
   const { gauntlet, endCard } = frames;
 
   const opacityPoints = [0];
