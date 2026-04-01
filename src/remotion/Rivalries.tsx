@@ -146,7 +146,7 @@ export const Rivalries: React.FC<Rivalry> = ({ rival, nemesis }) => {
             textAlign: 'center'
           }}
         >
-          Rivals & Nemeses
+          Rivals & Nemesis
         </h1>
 
         <div
