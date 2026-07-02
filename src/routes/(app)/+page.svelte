@@ -8,7 +8,6 @@
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import * as m from '$lib/paraglide/messages';
   import { onMount } from 'svelte';
-  import { date } from 'valibot';
 
   let { data } = $props();
 
