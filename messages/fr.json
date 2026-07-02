@@ -36,7 +36,8 @@
       "title": "Profils en vedette",
       "description": "Top 20 joueurs de l'UltRank 2025",
       "profile_alt": "Voir le récapitulatif 2025 de {name}"
-    }
+    },
+    "out_of_service": "A partir du {date}, il ne sera plus possible de télécharger les récaps images et vidéos."
   },
   "common": {
     "or": "OU"

@@ -19,9 +19,17 @@
   onMount(() => {
     videoSrc = '/videos/Glutonny.webm';
   });
+
+  const endOfService = new Date('2026-06-29T00:00:00Z');
 </script>
 
 <SearchPlayer bind:open={searchOpen} />
+
+<div class="banner-info">
+  <p class="banner-text">
+    {m['home.out_of_service']({ date: endOfService.toLocaleDateString() })}
+  </p>
+</div>
 
 <section id="hero">
   <div class="info">
@@ -90,6 +98,31 @@
 </section>
 
 <style lang="scss">
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  .banner-info {
+    color: var(--nearly-black);
+    background-color: var(--really-white);
+    padding: 0.5rem 1rem;
+    text-align: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    .banner-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll 10s linear infinite;
+    }
+  }
+
   section {
     display: flex;
     flex-direction: column;

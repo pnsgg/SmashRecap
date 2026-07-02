@@ -36,7 +36,8 @@
       "title": "Featured Profiles",
       "description": "Top 20 players from UltRank 2025",
       "profile_alt": "View {name} 2025 recap"
-    }
+    },
+    "out_of_service": "Since {date}, downloading recap images and videos is no longer possible."
   },
   "common": {
     "or": "OR"

@@ -1,8 +1,7 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
   import { page } from '$app/state';
-  import { Button, type ButtonProps } from '$lib/components/Button';
-  import Download from '$lib/components/icons/Download.svelte';
+  import { Button } from '$lib/components/Button';
   import { IsMobile } from '$lib/hooks/is-mobile.svelte';
   import { getPlayerStats } from '$lib/remotes/players.remote';
   import { createBlueSkyIntent, createXIntent } from '$lib/socialIntents';
@@ -18,121 +17,10 @@
   const mobile = new IsMobile();
 
   let player = $state<PlayerRef | undefined>();
-  let downloadButton = $state<HTMLAnchorElement | undefined>();
-  let isDownloading = $state(false);
-  let isDownloadingStill = $state(false);
-  let renderingProgress = $state<number | undefined>(undefined);
-  let downloadButtonProps = $state<ButtonProps>();
 
   let userSlug = $derived(data.userSlug);
   let shareUrl = $derived(page.url.href);
   let isDebug = $derived(page.url.searchParams.get('debug') === 'true');
-
-  const downloadFromUrl = (url: string, name: string): void => {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
-
-  const renderRecap = async (stats: MainProps) => {
-    isDownloading = true;
-
-    const year = stats.thisIsMyRecapProps.year;
-    const filename =
-      `${stats.thisIsMyRecapProps.user.prefix ?? ''} ${stats.thisIsMyRecapProps.user.gamerTag}'s SmashRecap ${stats.thisIsMyRecapProps.year}.mp4`.trim();
-
-    // Trigger the render
-    const renderReq = await fetch(`/api/render`, {
-      method: 'POST',
-      body: JSON.stringify({ stats, userSlug, year })
-    });
-
-    if (!renderReq.ok) {
-      isDownloading = false;
-      renderingProgress = undefined;
-      return;
-    }
-
-    const renderResponse = await renderReq.json();
-    if ('url' in renderResponse) {
-      isDownloading = false;
-      renderingProgress = undefined;
-      return downloadFromUrl(renderResponse.url, filename);
-    }
-
-    const { renderId, bucketName } = renderResponse;
-
-    const checkProgress = async () => {
-      const progressReq = await fetch('/api/render/progress', {
-        method: 'POST',
-        body: JSON.stringify({ renderId, bucketName, userSlug, year })
-      });
-
-      if (!progressReq.ok) {
-        const message = await progressReq.text();
-        throw new Error(message);
-      }
-
-      return progressReq.json();
-    };
-
-    while (true) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      try {
-        const progress = await checkProgress();
-        if (progress.type === 'error') {
-          alert(m['recap.render_failed']({ error: progress.message }));
-          isDownloading = false;
-          renderingProgress = undefined;
-          return;
-        }
-
-        if (progress.type === 'done') {
-          isDownloading = false;
-          renderingProgress = undefined;
-
-          const downloadUrl = `/api/download?url=${encodeURIComponent(progress.url)}`;
-          downloadFromUrl(downloadUrl, filename);
-          break;
-        }
-        renderingProgress = progress.progress;
-      } catch {
-        isDownloading = false;
-        renderingProgress = undefined;
-        return;
-      }
-    }
-  };
-
-  const renderStill = async (stats: MainProps) => {
-    isDownloadingStill = true;
-
-    const filename =
-      `${stats.thisIsMyRecapProps.user.prefix ?? ''} ${stats.thisIsMyRecapProps.user.gamerTag}'s SmashRecap Summary ${stats.thisIsMyRecapProps.year}.png`.trim();
-
-    try {
-      const renderReq = await fetch(`/api/render/still`, {
-        method: 'POST',
-        body: JSON.stringify({ stats, userSlug })
-      });
-
-      if (!renderReq.ok) {
-        throw new Error('Failed to trigger still render');
-      }
-
-      const { url } = await renderReq.json();
-      const downloadUrl = `/api/download?url=${encodeURIComponent(url)}`;
-      downloadFromUrl(downloadUrl, filename);
-    } catch (e) {
-      console.error(e);
-      alert('Failed to download summary image');
-    } finally {
-      isDownloadingStill = false;
-    }
-  };
 </script>
 
 <div class="content">
@@ -194,41 +82,6 @@
                 Debug me
               </Button>
             {/if}
-            <Button
-              bind:ref={downloadButton}
-              id="download-button"
-              extended
-              size={mobile.current ? 'small' : 'medium'}
-              onclick={() => renderRecap(videoProps)}
-              disabled={isDownloading || isDownloadingStill}
-              icon={Download}
-              {...downloadButtonProps}
-            >
-              {#if isDownloading}
-                {#if renderingProgress !== undefined}
-                  {m['recap.download_progress']({ progress: Math.round(renderingProgress * 100) })}
-                {:else}
-                  {m['recap.downloading']()}
-                {/if}
-              {:else}
-                {m['recap.download_video']()}
-              {/if}
-            </Button>
-
-            <Button
-              extended
-              size={mobile.current ? 'small' : 'medium'}
-              onclick={() => renderStill(videoProps)}
-              disabled={isDownloading || isDownloadingStill}
-              icon={Download}
-              variant="secondary"
-            >
-              {#if isDownloadingStill}
-                {m['recap.downloading']()}
-              {:else}
-                {m['recap.download_summary_image']()}
-              {/if}
-            </Button>
             <div class="posts">
               <Button
                 extended
